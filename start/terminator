@@ -1,0 +1,38 @@
+[global_config]
+  enabled_plugins = CustomCommandsMenu, TestPlugin, LaunchpadCodeURLHandler, APTURLHandler, Logger
+  handle_size = 20
+  inactive_color_offset = 0.604938271605
+  title_font = UbuntuMono Nerd Font 14
+  title_hide_sizetext = True
+  title_inactive_bg_color = "#6c7a89"
+  title_inactive_fg_color = "#6c7a89"
+  title_receive_bg_color = "#6c7a89"
+  title_receive_fg_color = "#6c7a89"
+  title_transmit_bg_color = "#446cb3"
+  title_transmit_fg_color = "#dadfe1"
+  title_use_system_font = False
+  window_state = maximise
+[keybindings]
+[layouts]
+  [[default]]
+    [[[child1]]]
+      parent = window0
+      profile = default
+      type = Terminal
+    [[[window0]]]
+      parent = ""
+      type = Window
+[plugins]
+[profiles]
+  [[default]]
+    background_color = "#2e2e2e"
+    background_darkness = 0.95
+    background_type = transparent
+    cursor_color = "#f3f3f3"
+    cursor_color_fg = False
+    exit_action = hold
+    font = UbuntuMono Nerd Font 14
+    foreground_color = "#dadfe1"
+    login_shell = True
+    palette = "#282828:#96281b:#1e824c:#f39c12:#446cb3:#913d88:#67809f:#dadfe1:#6c7a89:#ef4836:#00b16a:#f5d76e:#59abe3:#be90d4:#86e2d5:#fefefe"
+    use_system_font = False

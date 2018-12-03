@@ -1,0 +1,45 @@
+[lmsensor acpitz-virtual-0 temp1]
+color=#cccc00000000
+graph_enabled=true
+
+[lmsensor coretemp-isa-0000 Package id 0]
+color=#34346565a4a4
+graph_enabled=true
+
+[lmsensor coretemp-isa-0000 Core 0]
+color=#ededd4d40000
+graph_enabled=true
+
+[lmsensor coretemp-isa-0000 Core 1]
+color=#8a8ae2e23434
+
+[lmsensor coretemp-isa-0000 Core 2]
+color=#72729f9fcfcf
+
+[lmsensor coretemp-isa-0000 Core 3]
+color=#adad7f7fa8a8
+
+[nvctrl GeForce GTX 870M 0 temp]
+color=#4e4e9a9a0606
+graph_enabled=true
+
+[nvctrl GeForce GTX 870M 0 graphics]
+color=#88888a8a8585
+
+[nvctrl GeForce GTX 870M 0 video]
+color=#eeeeeeeeecec
+
+[nvctrl GeForce GTX 870M 0 memory]
+color=#cccc00000000
+
+[nvctrl GeForce GTX 870M 0 PCIe]
+color=#f5f579790000
+
+[gtop2 cpu usage]
+color=#ededd4d40000
+
+[gtop2 mem free]
+color=#7373d2d21616
+
+[udisks2 ST1000LM014-1EJ164-W3817NHP]
+color=#34346565a4a4

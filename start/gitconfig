@@ -1,0 +1,24 @@
+[color]
+ 	branch = auto
+ 	diff = auto
+	grep = auto
+ 	interactive = auto
+	status = auto
+	ui = auto
+[core]
+	editor = "code --wait"
+[diff]
+    tool = vscode
+[difftool "vscode"]
+    cmd = "code --wait --diff $LOCAL $REMOTE"
+[merge]
+	tool = vscode
+[mergetool "vscode"]
+	cmd = "code --wait"
+[push]
+	default = current
+[rerere]
+	enabled = true
+[user]
+	email = marcelohmdias@gmail.com
+	name = marcelohmdias
