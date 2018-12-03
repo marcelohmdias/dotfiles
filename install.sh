@@ -306,22 +306,41 @@ function progress_start {
 # INSTALLATION FUNCTIONS
 ###############################################################################
 
-function other_install {
+function install_env {
   printf "\033c"
 
-  echo "Installing NVM"
+  progress_start 6 "Preparing environment                                      "
+  sleep 3
+
+  progress_step 0 "Installing NVM                                              "
   wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
 
 
-  echo "Installing Oh My ZSH"
+  progress_step 0 "Installing Oh My ZSH                                        "
   sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -qO -)"
 
+  progress_step 0 "Installing Plug Vim                                         "
+  wget -qo- https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim && mv plug.vim ~/.config/nvim/autoload/plug.vim
 
-  echo "Installing Plug Vim"
-  wget -qo- https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim ~/.config/nvim/autoload/plug.vim
-
-  echo "Installing package Colorls"
+  progress_step 0 "Installing package Colorls                                  "
   sudo gem install -q colorls
+
+  progress_step 0 "Copying Dotfiles                                            "
+  git clone -q https://github.com/marcelohmdias/dotfiles.git ~/dotfiles
+  mv ~/dotfiles/nvim ~/dotfiles/tmux ~/dotfiles/zsh -t ~/.custom
+  mv ~/dotfiles/start/gitconfig ~/.gitconfig
+  mv ~/dotfiles/start/neofetch ~/.config/neofetch/config.conf
+  mv ~/dotfiles/start/npmrc ~/.npmrc
+  mv ~/dotfiles/start/psensor ~/.psensor/psensor.cfg
+  mv ~/dotfiles/start/terminator ~/.config/terminator/config
+  mv ~/dotfiles/start/tmux ~/.tmux.conf
+  mv ~/dotfiles/start/zshrc ~/.zshrc
+
+  progress_step 0 "Setting ZSH as default                                      "
+  sudo chsh -s /bin/zsh
+
+  progress_end 1 "Finishing execution                                          "
+  sleep 2
 }
 
 #
@@ -434,29 +453,25 @@ function run_commands {
 ###############################################################################
 
 #
-# create_folders FOLDERS
+create_folders FOLDERS
 
 #
-# fonts_installer FONTS
-
-# #
-# run_commands "add-apt-repository -y -n" "Adding" "PPA" PPAS
-
-# #
-# run_commands "apt-get -qq" "Executing" "command" COMMANDS
-
-# #
-# run_commands "apt-get install -qq" "Installing" "theme" THEMES
-
-# #
-# run_commands "apt-get install -qq" "Installing" "package" PACKAGES
+fonts_installer FONTS
 
 #
-git_clone_to_folders
+run_commands "add-apt-repository -y -n" "Adding" "PPA" PPAS
 
 #
-# git_clone_to_folders FOLDER_CLONE GIT_CLONE
+run_commands "apt-get -qq" "Executing" "command" COMMANDS
 
+#
+run_commands "apt-get install -qq" "Installing" "theme" THEMES
 
+#
+run_commands "apt-get install -qq" "Installing" "package" PACKAGES
 
-# sudo chsh -s /bin/zsh
+#
+install_env
+
+#
+git_clone_to_folders FOLDER_CLONE GIT_CLONE
