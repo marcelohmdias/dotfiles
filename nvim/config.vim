@@ -1,5 +1,5 @@
 "  FORCE ENCODING
-set encoding=utf-8
+set encoding=UTF-8
 
 set hidden
 set inccommand=split

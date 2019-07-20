@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 ###############################################################################
 #      AUTHOR: @marcelohmdias
@@ -6,101 +6,6 @@
 #     VERSION: 1.0.0
 # INSPIRED BY: https://github.com/goldsborough/progress
 ###############################################################################
-
-###############################################################################
-# INSTALLATION LIST
-###############################################################################
-
-#
-FOLDERS=(
-  .config/nvim
-  .config/terminator
-  .custom
-  .fonts
-  .psensor
-  .tmux/plugins
-)
-
-#
-FONTS=(
-  # VS Code Forts
-  kencrocken/FiraCodeiScript/blob/master/FiraCodeiScript-Bold.ttf
-  kencrocken/FiraCodeiScript/blob/master/FiraCodeiScript-Italic.ttf
-  kencrocken/FiraCodeiScript/blob/master/FiraCodeiScript-Regular.ttf
-  # Gnome Terminal Fonts
-  powerline/fonts/blob/master/UbuntuMono/Ubuntu%20Mono%20derivative%20Powerline%20Bold%20Italic.ttf
-  powerline/fonts/blob/master/UbuntuMono/Ubuntu%20Mono%20derivative%20Powerline%20Bold.ttf
-  powerline/fonts/blob/master/UbuntuMono/Ubuntu%20Mono%20derivative%20Powerline%20Italic.ttf
-  powerline/fonts/blob/master/UbuntuMono/Ubuntu%20Mono%20derivative%20Powerline.ttf
-  # Terminator Fonts
-  ryanoasis/nerd-fonts/releases/download/v2.0.0/Ubuntu.zip
-  ryanoasis/nerd-fonts/releases/download/v2.0.0/UbuntuMono.zip
-  # Editor  Fonts
-  tonsky/FiraCode/archive/master.zip
-)
-
-# List of PPAs to be added in the system
-PPAS=(
-  ppa:daniruiz/flat-remix
-  ppa:dawidd0811/neofetch
-  ppa:git-core/ppa
-  ppa:noobslab/icons
-  ppa:noobslab/themes
-  ppa:papirus/papirus
-  ppa:snwh/ppa
-)
-
-# Linux Update Commands
-COMMANDS=(
-  update
-  upgrade
-  autoclean
-  autoremove
-)
-
-# Installation themes
-THEMES=(
-  arc-theme
-  flat-remix
-  numix-gtk-theme
-  numix-icon-theme
-  paper-icon-theme
-  papirus-icon-theme
-)
-
-# Installation packages
-PACKAGES=(
-  curl
-  git
-  htop
-  neofetch
-  neovim
-  psensor
-  ruby
-  ruby-dev
-  ruby-colorize
-  terminator
-  tmux
-  zsh
-)
-
-FOLDER_CLONE=(
-  .oh-my-zsh/custom/plugins/zsh-256color
-  .oh-my-zsh/custom/plugins/zsh-autosuggestions
-  .oh-my-zsh/custom/plugins/zsh-completions
-  .oh-my-zsh/custom/plugins/zsh-syntax-highlighting
-  .oh-my-zsh/custom/themes/powerlevel9k
-  .tmux/plugins/tpm
-)
-
-GIT_CLONE=(
-  chrissicool/zsh-256color
-  zsh-users/zsh-autosuggestions
-  zsh-users/zsh-completions
-  zsh-users/zsh-syntax-highlighting.git
-  bhilburn/powerlevel9k.git
-  tmux-plugins/tpm
-)
 
 ###############################################################################
 # BASIC FUNCTIONS
@@ -302,6 +207,7 @@ function progress_start {
   echo ""
 }
 
+
 ###############################################################################
 # INSTALLATION FUNCTIONS
 ###############################################################################
@@ -309,11 +215,11 @@ function progress_start {
 function install_env {
   printf "\033c"
 
-  progress_start 6 "Preparing environment                                      "
+  progress_start 7 "Preparing environment                                      "
   sleep 3
 
   progress_step 0 "Installing NVM                                              "
-  wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+  wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
 
 
   progress_step 0 "Installing Oh My ZSH                                        "
@@ -324,6 +230,9 @@ function install_env {
 
   progress_step 0 "Installing package Colorls                                  "
   sudo gem install -q colorls
+
+  progress_step 0 "Install SDK Man                                             "
+  wget -qO- "https://get.sdkman.io" | bash
 
   progress_step 0 "Copying Dotfiles                                            "
   git clone -q https://github.com/marcelohmdias/dotfiles.git ~/dotfiles
@@ -447,6 +356,113 @@ function run_commands {
   progress_end 1 "Finishing execution                                          "
   sleep 2
 }
+
+###############################################################################
+# INSTALLATION LIST
+###############################################################################
+
+#
+FOLDERS=(
+  .config/nvim
+  .config/terminator
+  .custom
+  .fonts
+  .psensor
+  .tmux/plugins
+)
+
+#
+FONTS=(
+  # VS Code Forts
+  kencrocken/FiraCodeiScript/blob/master/FiraCodeiScript-Bold.ttf
+  kencrocken/FiraCodeiScript/blob/master/FiraCodeiScript-Italic.ttf
+  kencrocken/FiraCodeiScript/blob/master/FiraCodeiScript-Regular.ttf
+  # Gnome Terminal Fonts
+  powerline/fonts/blob/master/UbuntuMono/Ubuntu%20Mono%20derivative%20Powerline%20Bold%20Italic.ttf
+  powerline/fonts/blob/master/UbuntuMono/Ubuntu%20Mono%20derivative%20Powerline%20Bold.ttf
+  powerline/fonts/blob/master/UbuntuMono/Ubuntu%20Mono%20derivative%20Powerline%20Italic.ttf
+  powerline/fonts/blob/master/UbuntuMono/Ubuntu%20Mono%20derivative%20Powerline.ttf
+  # Terminator Fonts
+  ryanoasis/nerd-fonts/releases/download/v2.0.0/Ubuntu.zip
+  ryanoasis/nerd-fonts/releases/download/v2.0.0/UbuntuMono.zip
+  # Editor  Fonts
+  tonsky/FiraCode/archive/master.zip
+)
+
+# List of PPAs to be added in the system
+PPAS=(
+  # Tools
+  ppa:git-core/ppa
+  # Apps
+  ppa:dawidd0811/neofetch
+  # Themes
+  ppa:daniruiz/flat-remix
+	ppa:dyatlov-igor/materia-theme
+  ppa:noobslab/icons
+  ppa:noobslab/themes
+  ppa:papirus/papirus
+  ppa:snwh/ppa
+)
+
+# Linux Update Commands
+COMMANDS=(
+  update
+  upgrade
+  autoclean
+  autoremove
+)
+
+# Installation themes
+THEMES=(
+  arc-theme
+  flat-remix
+  flat-remix-gnome
+  flat-remix-gtk
+	materia-gtk-theme
+  numix-gtk-theme
+  numix-icon-theme
+  paper-icon-theme
+  papirus-icon-theme
+	papirus-folders
+)
+
+# Installation packages
+PACKAGES=(    
+  curl
+  git
+  gnome-tweak-tool
+  htop
+  meld
+  neofetch
+  neovim
+  psensor
+  ruby
+  ruby-dev
+  ruby-colorize
+  terminator
+  tilix
+  tmux  
+  ubuntu-restricted-extras
+  zsh
+)
+
+FOLDER_CLONE=(
+  .oh-my-zsh/custom/plugins/zsh-256color
+  .oh-my-zsh/custom/plugins/zsh-autosuggestions
+  .oh-my-zsh/custom/plugins/zsh-completions
+  .oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+  .oh-my-zsh/custom/themes/powerlevel9k
+  .tmux/plugins/tpm
+)
+
+GIT_CLONE=(
+  chrissicool/zsh-256color
+  zsh-users/zsh-autosuggestions
+  zsh-users/zsh-completions
+  zsh-users/zsh-syntax-highlighting.git
+  bhilburn/powerlevel9k.git
+  tmux-plugins/tpm
+)
 
 ###############################################################################
 # INSTALLATION FUNCTIONS

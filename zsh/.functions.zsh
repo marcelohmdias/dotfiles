@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 function node-register () {
   sudo ln -s -f ~/.nvm/versions/node/$1/bin/node /usr/local/bin/node
   sudo ln -s -f ~/.nvm/versions/node/$1/bin/npm /usr/local/bin/npm
@@ -13,5 +15,5 @@ function pyserver () {
 }
 
 function kill_pid () {
-  sudo kill $(sudo lsof -t -i:$1)
+  sudo kill -9 $(sudo lsof -t -i:$1)
 }

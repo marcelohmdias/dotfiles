@@ -17,7 +17,7 @@ set -g status-left '#{prefix_highlight}#{prefix_highlight}#[fg=colour015,bg=colo
 set -g status-right-bg colour233
 set -g status-right-fg colour245
 set -g status-right-length 150
-set -g status-right '#[fg=colour007,bg=colour233]#[fg=colour000,bg=colour007] %H:%M:%S  #[fg=colour008,bg=colour007] #[fg=colour015,bg=colour008] %d-%b-%y  #[fg=colour000,bg=colour008] #[fg=colour007,bg=colour000,bold] #H    '
+set -g status-right '#[fg=colour007,bg=colour233]#[fg=colour000,bg=colour007] %H:%M  #[fg=colour008,bg=colour007] #[fg=colour015,bg=colour008] %d-%b-%y  #[fg=colour000,bg=colour008] #[fg=colour007,bg=colour000,bold] #H   '
 
 # WINDOW STATUS CONFIG
 set -g window-status-bg colour000
@@ -72,9 +72,3 @@ set -g message-command-fg black
 set -g mode-bg colour24
 set -g mode-fg colour231
 
-# Prefix Highlight
-set -g @prefix_highlight_fg colour015
-set -g @prefix_highlight_bg colour004
-set -g @prefix_highlight_show_copy_mode 'on'
-set -g @prefix_highlight_copy_prompt '^C'
-set -g @prefix_highlight_copy_mode_attr 'fg=colour015,bg=colour005'

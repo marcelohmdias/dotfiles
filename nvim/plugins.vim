@@ -10,4 +10,6 @@ Plug 'junegunn/fzf.vim'
 Plug 'ncm2/ncm2'
 Plug 'w0rp/ale'
 Plug 'cohama/lexima.vim'
+
+Plug 'ryanoasis/vim-devicons'
 call plug#end()

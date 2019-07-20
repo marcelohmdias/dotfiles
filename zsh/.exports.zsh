@@ -1,14 +1,13 @@
+#!/usr/bin/env zsh
+
 # NVM
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
+# SDK Man
+export SDKMAN_DIR="/home/marcelohmdias/.sdkman"
+[[ -s "/home/marcelohmdias/.sdkman/bin/sdkman-init.sh" ]] && source "/home/marcelohmdias/.sdkman/bin/sdkman-init.sh"
+
 # Node Env
 export NODE_ENV='development'
-
-# Oracle DB
-export ORACLE_HOME=/u01/app/oracle/product/11.2.0/xe
-export ORACLE_SID=XE
-export ORACLE_BASE=/u01/app/oracle
-export LD_LIBRARY_PATH=$ORACLE_HOME/lib
-export PATH=$ORACLE_HOME/bin:$PATH

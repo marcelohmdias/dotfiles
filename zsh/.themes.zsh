@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 # CUSTOMS
 POWERLEVEL9K_CUSTOM_ICON=$'echo \ue36e '
 

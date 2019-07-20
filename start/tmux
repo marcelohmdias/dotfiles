@@ -1,4 +1,4 @@
+#!/usr/bin/env bash
+
 source-file ~/.custom/tmux/init.tmux
-
-
 
