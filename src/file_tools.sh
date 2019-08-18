@@ -6,15 +6,15 @@ firefox_icon() {
 
 nvim_config() {
   printf "source $HOME/.custom/nvim/init.vim" >> "$HOME/.config/nvim/init.vim"
-  print_msg_success "Create init.vim"
+  print_msg_success "Create file 'init.vim'"
 }
 
 tmux_config() {
   printf "#!/usr/bin/env bash\n\nsource-file ~/.custom/tmux/init.tmux" >> "$HOME/.tmux.conf"
-  print_msg_success "Create .tmux.conf"
+  print_msg_success "Create file '.tmux.conf'"
 }
 
 zsh_config() {
   printf "#!/usr/bin/env zsh\n\n[ -f ~/.custom/zsh/.init.zsh ] && source ~/.custom/zsh/.init.zsh" >> "$HOME/.zshrc"
-  print_msg_success "Create .zshrc"
+  print_msg_success "Create file '.zshrc'"
 }
