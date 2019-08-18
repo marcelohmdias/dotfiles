@@ -7,7 +7,6 @@ cd "$(dirname "${BASH_SOURCE[0]}")" && . "./../utils.sh"
 main() {
   print_msg_sub_info "Deb Packages"
 
-
   install_deb "DBeaver" "dbeaver" "https://dbeaver.io/files/dbeaver-ce_latest_amd64.deb"
 
   install_deb "DockStation" "dockstation" "https://github.com/DockStation/dockstation/releases/download/v1.5.1/dockstation_1.5.1_amd64.deb"
@@ -29,10 +28,9 @@ main() {
   install_deb "Ukuu Kernel Update" "ukuu" "https://github.com/teejee2008/ukuu/releases/download/v18.9.1/ukuu-v18.9.1-amd64.deb"
 
   install_deb "Wps Office" "wps" "http://kdl.cc.ksosoft.com/wps-community/download/8722/wps-office_11.1.0.8722_amd64.deb"
-
-  break_line
 }
 
 # -----------------------------------------------------------------------------
 
 main
+break_line

@@ -71,7 +71,6 @@ main() {
   code_install_ext "$list" "wix.vscode-import-cost"                         "Import Cost"
   code_install_ext "$list" "Zignd.html-css-class-completion"                "IntelliSense for CSS class names in HTML"
   code_install_ext "$list" "Orta.vscode-jest"                               "Jest"
-  code_install_ext "$list" "ms-kubernetes-tools.vscode-kubernetes-tools"    "Kubernetes"
   code_install_ext "$list" "MS-vsliveshare.vsliveshare"                     "Live Share"
   code_install_ext "$list" "yzhang.markdown-all-in-one"                     "Markdown All in One"
   code_install_ext "$list" "eg2.vscode-npm-script"                          "NPM"

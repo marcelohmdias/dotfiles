@@ -10,9 +10,9 @@ main() {
 
   print_msg_sub_info "Apps"
   run_list_ppas PPAS NAMES
-  break_line
 }
 
 # -----------------------------------------------------------------------------
 
 main
+break_line

@@ -23,10 +23,9 @@ main() {
 
     install_package "albert" "Install Albert"
   fi
-
-  break_line
 }
 
 # -----------------------------------------------------------------------------
 
 main
+break_line

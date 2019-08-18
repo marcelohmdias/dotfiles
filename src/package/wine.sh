@@ -24,9 +24,9 @@ main() {
 
     install_package "winehq-stable" "Install WineHQ" "--install-recommends"
   fi
-  break_line
 }
 
 # -----------------------------------------------------------------------------
 
 main
+break_line

@@ -19,10 +19,9 @@ main() {
   install_package "paper-icon-theme" "Paper Icon"
 
   install_package "papirus-icon-theme" "Papirus Icon"
-
-  break_line
 }
 
 # -----------------------------------------------------------------------------
 
 main
+break_line

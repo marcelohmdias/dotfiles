@@ -24,10 +24,9 @@ main() {
   else
     print_msg_success "Kitematic Installed"
   fi
-
-  break_line
 }
 
 # -----------------------------------------------------------------------------
 
 main
+break_line

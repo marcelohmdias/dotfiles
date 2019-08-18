@@ -40,6 +40,10 @@ main() {
 
   install_package "xclip" "XClip" "--no-install-recommends"
 
+  install_package "gnupg-agent" "GNU Privacy Guard - Agent"
+
+  install_package "software-properties-common" "Software Properties Common"
+
   break_line
 }
 

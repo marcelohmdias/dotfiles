@@ -12,10 +12,9 @@ main() {
   install_snap "spotify"              "Spotify"
   install_snap "telegram-desktop"     "Telegram"
   install_snap "zenkit"               "Zenkit"
-
-  break_line
 }
 
 # -----------------------------------------------------------------------------
 
 main
+break_line

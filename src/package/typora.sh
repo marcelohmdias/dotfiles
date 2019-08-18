@@ -21,10 +21,9 @@ main() {
 
     install_package "typora" "Typora"
   fi
-
-  break_line
 }
 
 # -----------------------------------------------------------------------------
 
 main
+break_line

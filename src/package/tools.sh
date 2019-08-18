@@ -17,10 +17,9 @@ main() {
   install_package "tmux"                "Tmux"
   install_package "tree"                "Tree"
   install_package "zsh"                 "ZSH"
-
-  break_line
 }
 
 # -----------------------------------------------------------------------------
 
 main
+break_line

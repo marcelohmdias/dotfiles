@@ -22,10 +22,9 @@ main() {
 
     install_package "sublime-merge" "Install Sublime Merge"
   fi
-
-  break_line
 }
 
 # -----------------------------------------------------------------------------
 
 main
+break_line
