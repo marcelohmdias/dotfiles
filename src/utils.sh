@@ -251,14 +251,15 @@ autoremove_apt() {
 }
 
 code_install_ext() {
-  local -r ext="$1"
-  local -r name="$2"
+  local -r extensions="$1"
+  local -r ext="$2"
+  local -r name="$3"
 
-  execute "code --install-extension $ext" "Install extension $name"
-}
-
-command_is_installed() {
-  which "$1" &> /dev/null
+  if [ "$(echo "$extensions" | grep -c "$ext")" -eq 1 ]; then
+    print_msg_success "Extension $name installed"
+  else
+    execute "code --install-extension $ext" "Install extension $name"
+  fi
 }
 
 install_deb() {
@@ -268,7 +269,7 @@ install_deb() {
 
   tmpFile="$(mktemp /tmp/XXXXX)"
 
-  if ! command_is_installed "$package"; then
+  if ! cmd_exists "$package"; then
     execute "wget -qO $tmpFile '$url'" "Download $name"
     execute "sudo dpkg -i $tmpFile && sudo apt-get install -f &> /dev/null" "Install $name"
     rm -f "$tmpFile"

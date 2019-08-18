@@ -3,10 +3,9 @@
 # -----------------------------------------------------------------------------
 # |      AUTHOR: @marcelohmdias                                               |
 # | DESCRIPTION:                                                              |
-# |     VERSION: v1.0.0                                                       |
+# |     VERSION: v2.0.0                                                       |
 # -----------------------------------------------------------------------------
 
-declare -r VERSION="v1.0.0"
 declare -r USER="marcelohmdias"
 declare -r REPOSITORY="$USER/dotfiles"
 
@@ -160,13 +159,9 @@ main() {
   # -----------------------------------------------------------------------------
 
   ./ppas/main.sh
-
   ./directories/main.sh
-
   ./fonts/main.sh
-
   ./packages/main.sh
-
   ./tools/main.sh
 
   # -----------------------------------------------------------------------------
