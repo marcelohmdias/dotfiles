@@ -1,4 +1,0 @@
-#!/usr/bin/env zsh
-
-[ -f ~/.custom/zsh/.init.zsh ] && source ~/.custom/zsh/.init.zsh
-
