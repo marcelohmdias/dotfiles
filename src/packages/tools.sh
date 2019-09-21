@@ -11,6 +11,8 @@ main() {
   install_package "fzf"                 "Fuzzy Finder"
   install_package "git"                 "Git"
   install_package "htop"                "Htop"
+  install_package "imagemagick"         "ImageMagick"
+  install_package "jq"                  "JQ"
   install_package "neofetch"            "Neofetch"
   install_package "neovim"              "Neovim"
   install_package "silversearcher-ag"   "Silver Searcher"

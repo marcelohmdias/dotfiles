@@ -15,6 +15,7 @@ main() {
   install_package "meld"                        "Meld"
   install_package "menulibre"                   "MenuLibre"
   install_package "playonlinux"                 "PlayOnLinux"
+  install_package "piper"                       "Piper"
   install_package "psensor"                     "PSensor"
   install_package "speedcrunch"                 "SpeedCrunch"
   install_package "terminator"                  "Terminator"

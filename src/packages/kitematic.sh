@@ -5,7 +5,7 @@ cd "$(dirname "${BASH_SOURCE[0]}")" && . "./../utils.sh"
 # -----------------------------------------------------------------------------
 
 main() {
-  local -a version="0.17.7"
+  local -a version="0.17.8"
   local -a file="Kitematic-${version}-Ubuntu.zip"
   local -a debFile="Kitematic-${version}_amd64.deb"
   local -a url="https://github.com/docker/kitematic/releases/download/v${version}/${file}"
