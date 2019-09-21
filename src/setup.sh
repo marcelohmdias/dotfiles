@@ -30,8 +30,6 @@ download() {
   local output="$2"
 
   wget -qO "$output" "$url" &>/dev/null
-  #     │└─ write output to file
-  #     └─ don't show output
 
   return $?
 
