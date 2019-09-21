@@ -49,10 +49,10 @@ get_answer() {
 skip_questions() {
   while :; do
     case $1 in
-      -y | --yes) return 0 ;;
-      *) break ;;
+    -y | --yes) return 0 ;;
+    *) break ;;
     esac
-      shift 1
+    shift 1
   done
 
   return 1
@@ -118,17 +118,17 @@ execute() {
 }
 
 get_codiname() {
-  cat /etc/lsb-release \
-   | grep DISTRIB_CODENAME= \
-   | tr "DISTRIB_CODENAME=" " " \
-   | xargs
+  cat /etc/lsb-release |
+    grep DISTRIB_CODENAME= |
+    tr "DISTRIB_CODENAME=" " " |
+    xargs
 }
 
 get_release() {
-  cat /etc/lsb-release \
-   | grep DISTRIB_RELEASE= \
-   | tr "DISTRIB_RELEASE=" " " \
-   | xargs
+  cat /etc/lsb-release |
+    grep DISTRIB_RELEASE= |
+    tr "DISTRIB_RELEASE=" " " |
+    xargs
 }
 
 kill_all_subprocesses() {
@@ -250,7 +250,7 @@ autoremove_apt() {
   execute "sudo apt-get autoremove -qqy" "APT Autoremove"
 }
 
-code_install_ext() {
+install_code_ext() {
   local -r extensions="$1"
   local -r ext="$2"
   local -r name="$3"
@@ -316,7 +316,7 @@ mkd() {
 }
 
 package_is_installed() {
-  dpkg -s "$1" &> /dev/null
+  dpkg -s "$1" &>/dev/null
 }
 
 run_list_ppas() {
@@ -365,7 +365,7 @@ show_spinner() {
 
   # Display spinner while the commands are being executed.
 
-  while kill -0 "$PID" &> /dev/null; do
+  while kill -0 "$PID" &>/dev/null; do
 
     frameText="    [${FRAMES:i++%NUMBER_OR_FRAMES:1}] $MSG"
 
