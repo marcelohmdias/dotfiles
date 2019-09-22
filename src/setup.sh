@@ -158,9 +158,9 @@ main() {
 
   ./ppas/main.sh
   ./directories/main.sh
-  ./fonts/main.sh
   ./packages/main.sh
   ./tools/main.sh
+  ./fonts/main.sh
 
   # -----------------------------------------------------------------------------
 

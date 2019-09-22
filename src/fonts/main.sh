@@ -47,4 +47,3 @@ main () {
 
 print_msg_info "Install Fonts"
 main
-break_line
