@@ -44,9 +44,9 @@ main() {
 
   install_package "software-properties-common" "Software Properties Common"
 
-  break_line
 }
 
 # -----------------------------------------------------------------------------
 
 main
+break_line

@@ -114,6 +114,7 @@ download_dotfiles() {
 
   rm -rf "$tmpFile"
   print_result $? "Remove archive"
+  break_line
 
   cd "$DIRECTORY/src" || return 1
 
