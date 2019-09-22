@@ -293,9 +293,10 @@ install_package() {
 install_snap() {
   local -r package="$1"
   local -r name="$2"
+  local -r args="$3"
 
   if ! package_is_installed "$package"; then
-    execute "sudo snap install $package &> /dev/null" "Install $name"
+    execute "sudo snap install $package $args &> /dev/null" "Install $name"
   else
     print_msg_success "$name Installed"
   fi
