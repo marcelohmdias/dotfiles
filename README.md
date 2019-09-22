@@ -3,5 +3,5 @@
 ## Installation
 
 ```
-wget -qO- https://raw.githubusercontent.com/marcelohmdias/dotfiles/master/install.sh | bash
+bash -c "$(wget -qO - https://raw.githubusercontent.com/marcelohmdias/dotfiles/master/src/setup.sh)"
 ```
