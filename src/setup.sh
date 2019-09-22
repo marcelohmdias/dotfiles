@@ -12,7 +12,7 @@ declare -r REPOSITORY="$USER/dotfiles"
 # -----------------------------------------------------------------------------
 
 declare -r GIT_ORIGIN="git@github.com:$REPOSITORY.git"
-declare -r MY_DOTFILES="https://github.com/$REPOSITORY/$USER/tarball/master"
+declare -r MY_DOTFILES="https://github.com/$REPOSITORY/tarball/master"
 declare -r UTILS="https://raw.githubusercontent.com/$REPOSITORY/master/src/utils.sh"
 
 # -----------------------------------------------------------------------------
