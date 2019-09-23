@@ -16,9 +16,9 @@ main() {
   else
     execute "wget -qO - $url | gpg --dearmor > microsoft.gpg" "Add Key"
 
-    execute "sudo install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/ &> /dev/null" "Install Key"
+    execute "sudo install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/ &> /dev/null" "Install Key"
 
-    sudo sh -c 'echo "deb [arch=amd64] $repository stable main" > $file' &> /dev/null
+    sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] $repository stable main" > $file' &> /dev/null
 
     update_apt
 
