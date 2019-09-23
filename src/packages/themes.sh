@@ -10,8 +10,8 @@ main() {
   install_package "arc-theme" "Arc Theme"
 
   install_package "flat-remix" "Flat-remix Icon"
-  install_package "flat-remix-gnome" "Flat-remix Gnome Theme"
-  install_package "flat-remix-gtk" "Flat-remix Gtk Theme"
+  install_package "flat-remix-gnome" "Flat Remix Gnome Theme"
+  install_package "flat-remix-gtk" "Flat Remix Gtk Theme"
 
   install_package "numix-icon-theme" "Numix Icon"
   install_package "numix-gtk-theme" "Numix Theme"
