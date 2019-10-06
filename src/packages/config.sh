@@ -14,8 +14,6 @@ main() {
     "language-pack-gnome-pt language-pack-pt-base" \
     "PT-BR translation packages"
 
-  install_package "ubuntu-restricted-extras" "Extra Libraries for Ubuntu"
-
   install_package "gnome-shell-extensions" "Gnome Shell Extensions Plugin"
 
   install_package "bash-completion" "Bash Completion" "--no-install-recommends"

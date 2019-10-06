@@ -4,30 +4,6 @@ cd "$(dirname "${BASH_SOURCE[0]}")" && . "./../utils.sh"
 
 # -----------------------------------------------------------------------------
 
-main() {
-  local -a url="https://packages.microsoft.com/keys/microsoft.asc"
-  local -a repository="https://packages.microsoft.com/repos/vscode"
-  local -a file="/etc/apt/sources.list.d/vscode.list"
-
-  print_msg_sub_info "VS Code"
-
-  if cmd_exists "code"; then
-    print_msg_success "VS Code Installed"
-  else
-    execute "wget -qO - $url | gpg --dearmor > microsoft.gpg" "Add Key"
-
-    execute "sudo install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/ &> /dev/null" "Install Key"
-
-    sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] $repository stable main" > $file' &> /dev/null
-
-    update_apt
-
-    install_package "code" "VS Code"
-
-    sleep 0.5
-
-  fi
-
   list="$(code --list-extensions)"
 
   break_line

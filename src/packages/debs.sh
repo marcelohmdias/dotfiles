@@ -23,7 +23,9 @@ main() {
 
   install_deb "Ukuu Kernel Update" "ukuu" "https://github.com/teejee2008/ukuu/releases/download/v18.9.1/ukuu-v18.9.1-amd64.deb"
 
-  install_deb "Wps Office" "WPS" "http://kdl.cc.ksosoft.com/wps-community/download/8865/wps-office_11.1.0.8865_amd64.deb"
+  install_deb "VS Code" "code" "https://go.microsoft.com/fwlink/?LinkID=760868"
+
+  install_deb "Wps Office" "wps" "http://kdl.cc.ksosoft.com/wps-community/download/8865/wps-office_11.1.0.8865_amd64.deb"
 
   install_deb "Wps Fonts" "WPS Fonts" "http://kdl.cc.ksosoft.com/wps-community/download/fonts/wps-office-fonts_1.0_all.deb"
 }

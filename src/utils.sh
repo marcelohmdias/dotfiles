@@ -271,7 +271,7 @@ install_deb() {
 
   if ! cmd_exists "$package"; then
     execute "wget -qO $tmpFile '$url'" "Download $name"
-    execute "sudo dpkg -i $tmpFile && sudo apt-get install -f &> /dev/null" "Install $name"
+    execute "sudo dpkg --force-all -i $tmpFile &> /dev/null && sudo apt-get install -f -y &> /dev/null" "Install $name"
     rm -f "$tmpFile"
   else
     print_msg_success "$name Instaled"
