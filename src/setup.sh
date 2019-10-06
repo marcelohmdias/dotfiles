@@ -150,6 +150,13 @@ main() {
 
   # -----------------------------------------------------------------------------
 
+  execute "sudo rm /var/lib/apt/lists/lock &> /dev/null"        "Removing APT List Lock"
+  execute "sudo rm /var/cache/apt/archives/lock &> /dev/null"   "Removing Cache APT Lock"
+  execute "sudo rm /var/lib/dpkg/lock-frontend &> /dev/null"    "Removing DPKG Lock File"
+  execute "sudo dpkg --configure -a &> /dev/null"               "Reconfiguring Packages"
+
+  # -----------------------------------------------------------------------------
+
   update_apt
   upgrade_apt
   autoclean_apt
@@ -166,5 +173,7 @@ main() {
   # -----------------------------------------------------------------------------
 
 }
+
+sudo apt-get install -y ubuntu-restricted-extras ; clear
 
 main "$@"

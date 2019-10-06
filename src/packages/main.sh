@@ -18,4 +18,3 @@ print_msg_info "Install Packages."
 ./sublime_merge.sh
 ./typora.sh
 ./vs_code.sh
-./kitematic.sh

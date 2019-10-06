@@ -22,7 +22,7 @@ main() {
 
     update_apt
 
-    install_package "winehq-stable" "Install WineHQ" "--install-recommends"
+    install_package "winehq-stable wine-stable wine-stable-i386 wine-stable-amd64" "Install WineHQ" "--install-recommends"
   fi
 }
 

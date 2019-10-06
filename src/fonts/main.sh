@@ -39,6 +39,12 @@ main () {
 
   # -----------------------------------------------------------------------------
 
+  print_msg_sub_info "Download Others fonts"
+  download_fonts "microsoft/cascadia-code/releases/download/v1910.04/Cascadia.ttf" "Cascadia Code"
+  break_line
+
+  # -----------------------------------------------------------------------------
+
   find ~/.fonts -name "*.zip" -exec unzip -q -d ~/.fonts {} \;
   find ~/.fonts -name "*.zip" -exec rm -rf {} \;
 }

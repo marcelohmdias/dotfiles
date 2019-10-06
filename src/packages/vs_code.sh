@@ -62,6 +62,7 @@ main() {
   install_code_ext "$list" "tombonnike.vscode-status-bar-format-toggle"     "Formatting Toggle"
   install_code_ext "$list" "donjayamanne.githistory"                        "Git History"
   install_code_ext "$list" "lamartire.git-indicators"                       "Git Indicators"
+  install_code_ext "$list" "GitHub.vscode-pull-request-github"              "GitHub Pull Requests"
   install_code_ext "$list" "codezombiech.gitignore"                         "Gitignore"
   install_code_ext "$list" "eamodio.gitlens"                                "GitLens"
   install_code_ext "$list" "ms-vscode.Go"                                   "Go"
