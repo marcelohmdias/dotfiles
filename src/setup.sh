@@ -24,6 +24,11 @@ declare SKIP_QUESTIONS=false
 # |------------------------- |  Helper Functions  | --------------------------|
 # -----------------------------------------------------------------------------
 
+term_clear() {
+  clear
+  sleep 1000
+}
+
 download() {
 
   local url="$1"
@@ -172,9 +177,21 @@ main() {
   ./fonts/main.sh
 
   # -----------------------------------------------------------------------------
-
 }
 
-sudo apt-get install -y ubuntu-restricted-extras ; clear
+init() {
+  sudo apt-get update -y
+  sudo apt-get upgrade -y
+  sudo apt-get autoclean -y
+  sudo apt-get autoremove -y
+  term_clear
 
-main "$@"
+  sudo apt-get install -y ubuntu-restricted-extras
+  term_clear
+
+  main "$@"
+}
+
+
+
+init "$@"
