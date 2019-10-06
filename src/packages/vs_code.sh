@@ -3,10 +3,10 @@
 cd "$(dirname "${BASH_SOURCE[0]}")" && . "./../utils.sh"
 
 # -----------------------------------------------------------------------------
-
+  
+main() {
   list="$(code --list-extensions)"
 
-  break_line
   print_msg_sub_info "VS Code Extension"
 
   install_code_ext "$list" "kaicataldo.alpenglow-monokai"                   "Alpenglow Monokai"
