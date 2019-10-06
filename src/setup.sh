@@ -26,7 +26,7 @@ declare SKIP_QUESTIONS=false
 
 term_clear() {
   clear
-  sleep 1000
+  sleep 1
 }
 
 download() {
