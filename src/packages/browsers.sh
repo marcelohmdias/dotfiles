@@ -24,7 +24,7 @@ main() {
   fi
 
   tmpFile="$(mktemp /tmp/XXXXX)"
-  firefox="https://download-installer.cdn.mozilla.net/pub/devedition/releases/69.0b10/linux-x86_64/pt-BR/firefox-69.0b10.tar.bz2"
+  firefox="https://download-installer.cdn.mozilla.net/pub/devedition/releases/70.0b12/linux-x86_64/pt-BR/firefox-70.0b12.tar.bz2"
 
   if [ ! -f "/opt/firefox/firefox" ]; then
     execute "wget -P $tmpFile $firefox" "Download Firefox Developer Edition"
