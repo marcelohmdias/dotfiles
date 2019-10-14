@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 # CUSTOMS
-POWERLEVEL9K_CUSTOM_ICON=$'echo \ue36e '
+POWERLEVEL9K_CUSTOM_ICON=$'echo \uf31c '
 
 # ICONS
 POWERLEVEL9K_ANDROID_ICON=$'\uf531 '
