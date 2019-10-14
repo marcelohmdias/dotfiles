@@ -8,9 +8,9 @@
 [core]
 	editor = "code --wait"
 [diff]
-    tool = vscode
+  tool = vscode
 [difftool "vscode"]
-    cmd = "code --wait --diff $LOCAL $REMOTE"
+  cmd = "code --wait --diff $LOCAL $REMOTE"
 [merge]
 	tool = vscode
 [mergetool "vscode"]

@@ -106,7 +106,7 @@ download_dotfiles() {
   print_result $? "Remove archive"
   break_line
 
-  cd "$DIRECTORY/src" || return 1
+  cd "$DIRECTORY/setup" || return 1
 }
 
 extract() {
