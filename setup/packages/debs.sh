@@ -17,11 +17,9 @@ main() {
 
   install_deb "Gnome AppFolders Manager" "gnome-appfolders-manager" "https://github.com/muflone/gnome-appfolders-manager/releases/download/0.3.1/gnome-appfolders-manager_0.3.1-1_all.deb"
 
-  install_deb "Insync" "insync" "https://d2t3ff60b2tol4.cloudfront.net/builds/insync_3.0.21.40435-bionic_amd64.deb"
+  install_deb "Insync" "insync" "https://d2t3ff60b2tol4.cloudfront.net/builds/insync_3.0.22.40446-bionic_amd64.deb"
 
   install_deb "Stacer" "stacer" "https://github.com/oguzhaninan/Stacer/releases/download/v1.1.0/stacer_1.1.0_amd64.deb"
-
-  install_deb "Ukuu Kernel Update" "ukuu" "https://github.com/teejee2008/ukuu/releases/download/v18.9.1/ukuu-v18.9.1-amd64.deb"
 
   install_deb "VS Code" "code" "https://go.microsoft.com/fwlink/?LinkID=760868"
 

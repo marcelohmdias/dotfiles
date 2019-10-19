@@ -43,8 +43,9 @@ install_firefox() {
     execute "sudo apt-get remove --purge -qqy firefox" "Remove Firefox"
   fi
 
+  version="71.0b2"
   tmpFile="$(mktemp /tmp/XXXXX)"
-  firefox="https://download-installer.cdn.mozilla.net/pub/devedition/releases/70.0b12/linux-x86_64/pt-BR/firefox-70.0b12.tar.bz2"
+  firefox="https://download-installer.cdn.mozilla.net/pub/devedition/releases/$version/linux-x86_64/pt-BR/firefox-$version.tar.bz2"
 
   if [ ! -f "/opt/firefox/firefox" ]; then
     execute "wget -P $tmpFile $firefox" "Download Firefox Developer Edition"
