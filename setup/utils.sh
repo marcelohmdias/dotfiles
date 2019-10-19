@@ -320,15 +320,6 @@ package_is_installed() {
   dpkg -s "$1" &>/dev/null
 }
 
-run_list_ppas() {
-  local -n ppas=$1
-  local -n names=$2
-
-  for i in "${!ppas[@]}"; do
-    add_ppa "${ppas[$i]}" "${names[$i]}"
-  done
-}
-
 update_apt() {
   execute "sudo apt-get update -qqy" "APT Update"
 }
