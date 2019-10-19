@@ -5,11 +5,11 @@ cd "$(dirname "${BASH_SOURCE[0]}")" && . "./../utils.sh"
 # ------------------------------------------------------------------------------
 
 main() {
-  local -r PPAS=( "daniruiz/flat-remix" "snwh/ppa" "papirus/papirus" )
-  local -r NAMES=( "Flat Remix" "Paper" "Papirus" )
-
   print_msg_sub_info "Themes"
-  run_list_ppas PPAS NAMES
+
+  run_list_ppas "daniruiz/flat-remix"   "Flat Remix"
+  # run_list_ppas "snwh/ppa"              "Paper"
+  run_list_ppas "papirus/papirus"       "Papirus"
 }
 
 # ------------------------------------------------------------------------------

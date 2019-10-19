@@ -50,4 +50,6 @@ alias npm-install='npm i -g \
 alias git-config='git config --global -e'
 
 # Apps command
+alias tls="dconf dump /com/gexperts/Tilix/ < $HOME/.custom/files/tilix.dconf"
+alias tss="dconf dump /com/gexperts/Tilix/ > $HOME/.custom/files/tilix.dconf"
 alias vi=nvim
