@@ -24,7 +24,7 @@ alias update='sudo apt-get -y update && sudo apt-get -y upgrade && sudo apt-get 
 alias add='sudo add-apt-repository -y'
 alias remove='sudo apt-add-repository -r -y'
 
-# Python Virtual ENV command 
+# Python Virtual ENV command
 alias managepy='python"$VIRTUAL_ENV/manage.py'
 
 # Global Node libs

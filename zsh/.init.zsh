@@ -11,7 +11,6 @@ plugins=(
   jsontools
   npm
   nvm
-  terminitor
   tmux
   yarn
   zsh-256color

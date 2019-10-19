@@ -3,7 +3,7 @@
 cd "$(dirname "${BASH_SOURCE[0]}")" && . "./../utils.sh"
 
 # ------------------------------------------------------------------------------
-  
+
 main() {
   list="$(code --list-extensions)"
 
@@ -29,7 +29,6 @@ main() {
   install_code_ext "$list" "joelday.docthis"                                "Document This"
   install_code_ext "$list" "mikestead.dotenv"                               "DotENV"
   install_code_ext "$list" "EditorConfig.EditorConfig"                      "EditorConfig"
-  install_code_ext "$list" "mjmcloug.vscode-elixir"                         "Elixir"
   install_code_ext "$list" "dbaeumer.vscode-eslint"                         "Eslint"
   install_code_ext "$list" "file-icons.file-icons"                          "File-icons"
   install_code_ext "$list" "abierbaum.vscode-file-peek"                     "File Peek"
@@ -50,6 +49,7 @@ main() {
   install_code_ext "$list" "Orta.vscode-jest"                               "Jest"
   install_code_ext "$list" "MS-vsliveshare.vsliveshare"                     "Live Share"
   install_code_ext "$list" "yzhang.markdown-all-in-one"                     "Markdown All in One"
+  install_code_ext "$list" "ms-vscode.node-debug2"                          "Node Debug"
   install_code_ext "$list" "eg2.vscode-npm-script"                          "NPM"
   install_code_ext "$list" "karanba.npm-helper"                             "NPM Helper"
   install_code_ext "$list" "christian-kohler.npm-intellisense"              "NPM Intellisense"
@@ -67,6 +67,7 @@ main() {
   install_code_ext "$list" "jakob101.RelativePath"                          "Relative Path"
   install_code_ext "$list" "ms-vscode-remote.remote-containers"             "Remote - Containers"
   install_code_ext "$list" "ms-vscode-remote.remote-ssh"                    "Remote - SSH"
+  install_code_ext "$list" "ms-vscode-remote.remote-ssh-edit"               "Remote - SSH: Editing Configuration Files"
   install_code_ext "$list" "Syler.sass-indented"                            "Sass"
   install_code_ext "$list" "Shan.code-settings-sync"                        "Settings Sync"
   install_code_ext "$list" "foxundermoon.shell-format"                      "Shell-format"
@@ -77,7 +78,6 @@ main() {
   install_code_ext "$list" "cssho.vscode-svgviewer"                         "SVG Viewer"
   install_code_ext "$list" "bradlc.vscode-tailwindcss"                      "Tailwind CSS IntelliSense"
   install_code_ext "$list" "wayou.vscode-todo-highlight"                    "TODO Highlight"
-  install_code_ext "$list" "minhthai.vscode-todo-parser"                    "TODO Parser"
   install_code_ext "$list" "octref.vetur"                                   "Vetur"
   install_code_ext "$list" "dunstontc.viml"                                 "Viml-syntax"
   install_code_ext "$list" "VisualStudioExptTeam.vscodeintellicode"         "Visual Studio IntelliCode"

@@ -185,7 +185,7 @@ main() {
   ./preferences/main.sh
 
   # Finishing environment setup
-  print_in_purple "\n • Restart\n\n"
+  print_msg_sub_info "Restart"
   ask_for_confirmation "Do you want to restart?"
   printf "\n"
 
