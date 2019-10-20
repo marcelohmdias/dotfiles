@@ -151,20 +151,19 @@ main() {
     download_utils || exit 1
   fi
 
+  sleep 1
+
   # Checking permission
   skip_questions "$@" && SKIP_QUESTIONS=true
   ask_for_sudo
 
   # Download all dotfile
-  printf "%s" "${BASH_SOURCE[0]}" | grep "setup.sh" &>/dev/null \
-    || download_dotfiles
+  printf "%s" "${BASH_SOURCE[0]}" | grep "setup.sh" &>/dev/null || download_dotfiles
+
+  sleep 1
 
   # Cleaning look files
-  execute "sudo rm /var/lib/apt/lists/lock &> /dev/null"        "Removing APT List Lock"
-  execute "sudo rm /var/cache/apt/archives/lock &> /dev/null"   "Removing Cache APT Lock"
-  execute "sudo rm /var/lib/dpkg/lock* &> /dev/null"            "Removing DPKG Lock File"
-  execute "sudo dpkg --configure -a &> /dev/null"               "Reconfiguring Packages"
-  break_line
+  ./reset.sh
 
   # Running PPA Commands
   ./ppas/main.sh
@@ -185,12 +184,8 @@ main() {
   ./preferences/main.sh
 
   # Finishing environment setup
-  print_msg_sub_info "Restart"
-  ask_for_confirmation "Do you want to restart?"
-  printf "\n"
-
-  if answer_is_yes; then
-    sudo shutdown -r now &> /dev/null
+  if ! $skipQuestions; then
+    ./restart.sh
   fi
 }
 
