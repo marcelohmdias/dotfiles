@@ -175,9 +175,6 @@ main() {
   # Running package download command
   ./packages/main.sh
 
-  # Running tool download command
-  ./tools/main.sh
-
   # Running font download command
   ./fonts/main.sh
 
