@@ -6,8 +6,8 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # SDK Man
-export SDKMAN_DIR="/home/marcelohmdias/.sdkman"
-[[ -s "/home/marcelohmdias/.sdkman/bin/sdkman-init.sh" ]] && source "/home/marcelohmdias/.sdkman/bin/sdkman-init.sh"
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
 
 # Node Env
 export NODE_ENV='development'

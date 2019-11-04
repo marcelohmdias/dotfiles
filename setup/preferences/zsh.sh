@@ -13,9 +13,11 @@ main() {
     printf \
       "#!/usr/bin/env zsh\n\n[ -f ~/.custom/zsh/.init.zsh ] && source ~/.custom/zsh/.init.zsh" \
       >> "$HOME/.zshrc"
-      
+
     print_msg_success "Create file '.zshrc'"
   fi
+
+  chsh -s $(which zsh)
 }
 
 # ------------------------------------------------------------------------------

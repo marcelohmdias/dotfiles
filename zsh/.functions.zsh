@@ -13,7 +13,3 @@ function nvm-use () {
 function pyserver () {
   python -m SimpleHTTPServer 9001
 }
-
-function kill_port () {
-  sudo kill -9 $("lsof -i :$1")
-}

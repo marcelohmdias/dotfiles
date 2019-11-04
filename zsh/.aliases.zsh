@@ -29,11 +29,11 @@ alias managepy='python"$VIRTUAL_ENV/manage.py'
 
 # Global Node libs
 alias npm-install='npm i -g \
-  @adonisjs/cli \
   @quasar/cli \
   @storybook/cli \
   @vue/cli \
   create-nuxt-app \
+  commitizen \
   eslint \
   gitignore \
   gitmoji-cli \
@@ -43,13 +43,14 @@ alias npm-install='npm i -g \
   npm@latest \
   trash-cli \
   typescript \
-  vue-generator \
   yarn'
 
 # Edit Git config files
 alias git-config='git config --global -e'
 
 # Apps command
-alias tls="dconf dump /com/gexperts/Tilix/ < $HOME/.custom/files/tilix.dconf"
-alias tss="dconf dump /com/gexperts/Tilix/ > $HOME/.custom/files/tilix.dconf"
+alias trmdf="sudo update-alternatives --config x-terminal-emulator"
+alias trmlc="dconf dump /com/gexperts/Tilix/ < $HOME/.custom/files/tilix.dconf"
+alias trmsc="dconf dump /com/gexperts/Tilix/ > $HOME/.custom/files/tilix.dconf"
+
 alias vi=nvim

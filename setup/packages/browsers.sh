@@ -43,7 +43,7 @@ install_firefox() {
     execute "sudo apt-get remove --purge -qqy firefox" "Remove Firefox"
   fi
 
-  version="71.0b2"
+  version="71.0b6"
   tmpFile="$(mktemp /tmp/XXXXX)"
   firefox="https://download-installer.cdn.mozilla.net/pub/devedition/releases/$version/linux-x86_64/pt-BR/firefox-$version.tar.bz2"
 

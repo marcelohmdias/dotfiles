@@ -18,6 +18,7 @@ main() {
   local -a suggestions_url="https://github.com/zsh-users/zsh-autosuggestions"
   local -a completions_url="https://github.com/zsh-users/zsh-completions"
   local -a highlighting_url="https://github.com/zsh-users/zsh-syntax-highlighting.git"
+  local -a navi_url="https://github.com/denisidoro/navi.git"
 
   print_msg_sub_info "Oh My ZSH"
 
@@ -32,6 +33,7 @@ main() {
     execute "git clone $color_url $plugin_fold/zsh-256color &> /dev/null" "Install 256Color"
     execute "git clone $suggestions_url $plugin_fold/zsh-autosuggestions &> /dev/null" "Install Auto Suggestions"
     execute "git clone $completions_url $plugin_fold/zsh-completions &> /dev/null" "Install Completions"
+    execute "git clone $navi_url $plugin_fold/navi &> /dev/null" "Install Navi"
     execute "git clone $highlighting_url $plugin_fold/zsh-syntax-highlighting &> /dev/null" "Install Syntax Highlighting"
 
     rm -rf "$HOME/.zshrc"

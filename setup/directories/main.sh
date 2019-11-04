@@ -3,19 +3,13 @@
 cd "$(dirname "${BASH_SOURCE[0]}")" && . "./../utils.sh"
 
 main() {
-  local -a DIRECTORIES=(
-    "$HOME/.config/nvim"
-    "$HOME/.config/terminator"
-    "$HOME/.fonts"
-    "$HOME/.psensor"
-    "$HOME/.tmux/plugins"
-    "$HOME/.config/nvim/autoload"
-    "$HOME/.config/tilix/schemes"
-  )
-
-  for i in "${DIRECTORIES[@]}"; do
-    mkd "$i"
-  done
+  mkd "$HOME/.config/nvim"
+  mkd "$HOME/.config/terminator"
+  mkd "$HOME/.fonts"
+  mkd "$HOME/.psensor"
+  mkd "$HOME/.tmux/plugins"
+  mkd "$HOME/.config/nvim/autoload"
+  mkd "$HOME/.config/tilix/schemes"
 }
 
 print_msg_info "Create directories."

@@ -69,7 +69,7 @@ cmd_exists() {
 download_fonts() {
   local url="https://github.com/$1"
 
-  execute "wget -q $url -P $HOME/.fonts" "$2"
+  execute "wget -q $url -O $HOME/.fonts/$2" "$3"
 }
 
 execute() {
