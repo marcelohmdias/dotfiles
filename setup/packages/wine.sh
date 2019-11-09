@@ -5,7 +5,7 @@ cd "$(dirname "${BASH_SOURCE[0]}")" && . "./../utils.sh"
 # ------------------------------------------------------------------------------
 
 main() {
-  local -a name="$(get_codiname)"
+  local -a name= "disco" #"$(get_codiname)"
   local -a key="https://dl.winehq.org/wine-builds/winehq.key"
   local -a repository="https://dl.winehq.org/wine-builds/ubuntu/ $name main"
 

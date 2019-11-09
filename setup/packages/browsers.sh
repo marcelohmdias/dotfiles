@@ -30,7 +30,7 @@ install_brave() {
     source /etc/os-release
 
     echo "deb [arch=amd64] https://brave-browser-apt-release.s3.brave.com/ $name main" | \
-    sudo tee /etc/apt/sources.list.d/brave-browser-release-${name}.list &> /dev/null
+      sudo tee /etc/apt/sources.list.d/brave-browser-release-${name}.list &> /dev/null
 
     update_apt
 
@@ -43,7 +43,7 @@ install_firefox() {
     execute "sudo apt-get remove --purge -qqy firefox" "Remove Firefox"
   fi
 
-  version="71.0b6"
+  version="71.0b8"
   tmpFile="$(mktemp /tmp/XXXXX)"
   firefox="https://download-installer.cdn.mozilla.net/pub/devedition/releases/$version/linux-x86_64/pt-BR/firefox-$version.tar.bz2"
 

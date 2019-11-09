@@ -5,8 +5,6 @@ cd "$(dirname "${BASH_SOURCE[0]}")" && . "./../utils.sh"
 # -----------------------------------------------------------------------------
 
 main() {
-  local -a repository="https://flathub.org/repo/flathub.flatpakrepo"
-
   print_msg_sub_info "Flatpak Config"
 
   if cmd_exists "flatpak"; then
@@ -14,9 +12,7 @@ main() {
   else
     install_package "flatpak" "Flatpak Store"
     install_package "gnome-software-plugin-flatpak" "Plugin for Ubuntu Store"
-    execute \
-      "flatpak remote-add --if-not-exists flathub $repository" \
-      "Flatpak Repository"
+    execute "flatpak remote-add --if-not-exists flathub flathub https://flathub.org/repo/flathub.flatpakrepo" "Flatpak Repository"
   fi
 }
 

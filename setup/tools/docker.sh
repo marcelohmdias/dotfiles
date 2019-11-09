@@ -5,6 +5,7 @@ cd "$(dirname "${BASH_SOURCE[0]}")" && . "./../utils.sh"
 # -----------------------------------------------------------------------------
 
 main() {
+  local -a name= "disco" #"$(get_codiname)"
   local -r docker_url="https://download.docker.com/linux/ubuntu"
   local -r compose_version="1.24.1"
   local -r compose_url="https://github.com/docker/compose/releases/download/$compose_version/docker-compose-$(uname -s)-$(uname -m)"
@@ -15,7 +16,7 @@ main() {
     print_msg_success "Docker Installed"
   else
     add_key "$docker_url/gpg"
-    add_ppa_deb "[arch=amd64] $docker_url $(lsb_release -cs) stable" "Add Docker PPA"
+    add_ppa_deb "[arch=amd64] $docker_url $name stable" "Add Docker PPA"
     break_line
 
     update_apt

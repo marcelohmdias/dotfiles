@@ -118,6 +118,7 @@ execute() {
 }
 
 get_codiname() {
+  # lsb_release -cs
   cat /etc/lsb-release |
     grep DISTRIB_CODENAME= |
     tr "DISTRIB_CODENAME=" " " |
@@ -125,6 +126,7 @@ get_codiname() {
 }
 
 get_release() {
+  # lsb_release -rs
   cat /etc/lsb-release |
     grep DISTRIB_RELEASE= |
     tr "DISTRIB_RELEASE=" " " |
