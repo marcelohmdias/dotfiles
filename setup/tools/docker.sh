@@ -5,7 +5,8 @@ cd "$(dirname "${BASH_SOURCE[0]}")" && . "./../utils.sh"
 # -----------------------------------------------------------------------------
 
 main() {
-  local -a name= "disco" #"$(get_codiname)"
+  # local -a name="$(get_codiname)"
+  local -r name="disco"
   local -r docker_url="https://download.docker.com/linux/ubuntu"
   local -r compose_version="1.24.1"
   local -r compose_url="https://github.com/docker/compose/releases/download/$compose_version/docker-compose-$(uname -s)-$(uname -m)"
