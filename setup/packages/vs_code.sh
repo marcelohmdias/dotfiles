@@ -16,6 +16,7 @@ main() {
   install_code_ext "$list" "formulahendry.auto-rename-tag"                  "Auto Rename Tag"
   install_code_ext "$list" "HookyQR.beautify"                               "Beautify"
   install_code_ext "$list" "alefragnani.Bookmarks"                          "Bookmarks"
+  install_code_ext "$list" "Cacher.cacher-vscode"                           "Cacher"
   install_code_ext "$list" "wmaurer.change-case"                            "Change-case"
   install_code_ext "$list" "softwaredotcom.swdc-vscode"                     "Code Time"
   install_code_ext "$list" "kisstkondoros.vscode-codemetrics"               "CodeMetrics"
