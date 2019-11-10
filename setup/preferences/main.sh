@@ -12,4 +12,6 @@ print_msg_info "Setting preferences."
 
 dconf load /com/gexperts/Tilix/ < $HOME/.custom/files/tilix.dconf
 
+sudo usermod -aG docker $(whoami)
+
 chsh -s $(which zsh)
