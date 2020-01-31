@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 export ZSH=$HOME/.oh-my-zsh
-export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$ZSH_CUSTOM/plugins/navi"
 
 plugins=(
   bgnotify
@@ -38,5 +38,7 @@ source $ZSH/custom/themes/powerlevel9k/powerlevel9k.zsh-theme
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 autoload -U compinit && compinit
+
+nvm use &>/dev/null
 
 neofetch
