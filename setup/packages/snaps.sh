@@ -7,8 +7,6 @@ cd "$(dirname "${BASH_SOURCE[0]}")" && . "./../utils.sh"
 main() {
   print_msg_sub_info "Snap Packages"
 
-  install_snap "cacher"               "Cacher"
-  install_snap "discord"              "Discord"
   install_snap "figma-linux"          "Figma"
   install_snap "gnome-calendar"       "Gnome Calendar"
   install_snap "figma-linux"          "Figma"
