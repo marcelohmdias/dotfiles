@@ -13,6 +13,7 @@ main() {
   local -a plugin_fold="$ZSH_DIRECTORY/custom/plugins"
 
   local -a theme_url="https://github.com/bhilburn/powerlevel9k.git"
+  local -a p10k_url="git clone  https://github.com/romkatv/powerlevel10k.git"
 
   local -a color_url="https://github.com/chrissicool/zsh-256color"
   local -a suggestions_url="https://github.com/zsh-users/zsh-autosuggestions"
@@ -28,13 +29,14 @@ main() {
     execute "wget -qO- $url | sh" "Install Oh My ZSH"
     break_line
 
-    execute "git clone $theme_url $theme_fold/powerlevel9k &> /dev/null" "Install Powerlevel9k"
+    execute "git clone --depth=1 $theme_url $theme_fold/powerlevel9k &> /dev/null" "Install Powerlevel9k"
+    execute "git clone --depth=1 $p10k_url $theme_fold/powerlevel10k &> /dev/null" "Install Powerlevel10k"
 
-    execute "git clone $color_url $plugin_fold/zsh-256color &> /dev/null" "Install 256Color"
-    execute "git clone $suggestions_url $plugin_fold/zsh-autosuggestions &> /dev/null" "Install Auto Suggestions"
-    execute "git clone $completions_url $plugin_fold/zsh-completions &> /dev/null" "Install Completions"
-    execute "git clone $navi_url $plugin_fold/navi &> /dev/null" "Install Navi"
-    execute "git clone $highlighting_url $plugin_fold/zsh-syntax-highlighting &> /dev/null" "Install Syntax Highlighting"
+    execute "git clone --depth=1 $color_url $plugin_fold/zsh-256color &> /dev/null" "Install 256Color"
+    execute "git clone --depth=1 $suggestions_url $plugin_fold/zsh-autosuggestions &> /dev/null" "Install Auto Suggestions"
+    execute "git clone --depth=1 $completions_url $plugin_fold/zsh-completions &> /dev/null" "Install Completions"
+    execute "git clone --depth=1 $navi_url $plugin_fold/navi &> /dev/null" "Install Navi"
+    execute "git clone --depth=1 $highlighting_url $plugin_fold/zsh-syntax-highlighting &> /dev/null" "Install Syntax Highlighting"
 
     rm -rf "$HOME/.zshrc"
   fi

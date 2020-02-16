@@ -24,11 +24,11 @@ plugins=(
   zsh-syntax-highlighting
 )
 
+# ZSH_THEME="powerlevel10k/powerlevel10k"
 ZSH_THEME="powerlevel9k/powerlevel9k"
 POWERLEVEL9K_MODE="nerdfont-complete"
 
 source $ZSH/oh-my-zsh.sh
-source $ZSH/custom/themes/powerlevel9k/powerlevel9k.zsh-theme
 
 [ -f ~/.custom/zsh/.aliases.zsh ] && source ~/.custom/zsh/.aliases.zsh
 
