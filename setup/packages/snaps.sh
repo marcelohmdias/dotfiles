@@ -11,6 +11,7 @@ main() {
   install_snap "discord"              "Discord"
   install_snap "figma-linux"          "Figma"
   install_snap "gnome-calendar"       "Gnome Calendar"
+  install_snap "figma-linux"          "Figma"
   install_snap "postman"              "Postman"
   install_snap "slack"                "Slack"         "--classic"
   install_snap "simplenote"           "SimpleNote"

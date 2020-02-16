@@ -17,13 +17,15 @@ main() {
 
   install_deb "Gnome AppFolders Manager" "gnome-appfolders-manager" "https://github.com/muflone/gnome-appfolders-manager/releases/download/0.3.1/gnome-appfolders-manager_0.3.1-1_all.deb"
 
-  install_deb "Insync" "insync" "https://d2t3ff60b2tol4.cloudfront.net/builds/insync_3.0.23.40579-bionic_amd64.deb"
+  install_deb "Graphql Playground" "graphql-playground" "https://github.com/prisma-labs/graphql-playground/releases/download/v1.8.10/graphql-playground-electron_1.8.10_amd64.deb"
+
+  install_deb "Insync" "insync" "https://d2t3ff60b2tol4.cloudfront.net/builds/insync_3.0.29.40727-bionic_amd64.deb"
 
   install_deb "Stacer" "stacer" "https://github.com/oguzhaninan/Stacer/releases/download/v1.1.0/stacer_1.1.0_amd64.deb"
 
   install_deb "VS Code" "code" "https://go.microsoft.com/fwlink/?LinkID=760868"
 
-  install_deb "Wps Office" "wps" "http://wdl1.pcfg.cache.wpscdn.com/wpsdl/wpsoffice/download/linux/8865/wps-office_11.1.0.8865_amd64.deb"
+  install_deb "Wps Office" "wps" "http://wdl1.pcfg.cache.wpscdn.com/wpsdl/wpsoffice/download/linux/9080/wps-office_11.1.0.9080.XA_amd64.deb"
 
   # install_deb "Wps Fonts" "WPS Fonts" "http://kdl.cc.ksosoft.com/wps-community/download/fonts/wps-office-fonts_1.0_all.deb"
 }

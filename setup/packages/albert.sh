@@ -6,7 +6,7 @@ cd "$(dirname "${BASH_SOURCE[0]}")" && . "./../utils.sh"
 
 main() {
   local -a version="$(get_release)"
-  local -a key="https://build.opensuse.org/projects/home:manuelschneid3r/public_key"
+  local -a key="https://download.opensuse.org/repositories/home:manuelschneid3r/xUbuntu_19.10/Release.key"
   local -a repository="http://download.opensuse.org/repositories/home:/manuelschneid3r/xUbuntu_$version/"
   local -a file="/etc/apt/sources.list.d/home:manuelschneid3r.list"
 

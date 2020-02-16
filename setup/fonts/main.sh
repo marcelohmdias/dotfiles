@@ -10,6 +10,10 @@ main () {
   download_fonts "kencrocken/FiraCodeiScript/blob/master/FiraCodeiScript-Bold.ttf"      "FiraCodeiScript-Bold.ttf"  "FiraCode iScript Bold"
   download_fonts "kencrocken/FiraCodeiScript/blob/master/FiraCodeiScript-Italic.ttf"    "FiraCodeiScript-Italic.ttf" "FiraCode iScript Italic"
   download_fonts "kencrocken/FiraCodeiScript/blob/master/FiraCodeiScript-Regular.ttf"   "FiraCodeiScript-Regular.ttf" "FiraCode iScript Regular"
+
+  download_fonts "sainnhe/icursive-nerd-font/raw/master/Fira%20Code%20iCursive%20S12/Fira%20Code%20iCursive%20S12%20Bold.ttf"   "Fira\ Code\ iCursive\ S12\ Bold.ttf" "Fira Code iCursive S12 Bold"
+  download_fonts "sainnhe/icursive-nerd-font/raw/master/Fira%20Code%20iCursive%20S12/Fira%20Code%20iCursive%20S12%20Italic.ttf"   "Fira\ Code\ iCursive\ S12\ Italic.ttf" "Fira Code iCursive S12 Italic"
+  download_fonts "sainnhe/icursive-nerd-font/raw/master/Fira%20Code%20iCursive%20S12/Fira%20Code%20iCursive%20S12%20Regular.ttf"   "Fira\ Code\ iCursive\ S12\ Regular.ttf" "Fira Code iCursive S12 Regular"
   break_line
 
   # ------------------------------------------------------------------------------
