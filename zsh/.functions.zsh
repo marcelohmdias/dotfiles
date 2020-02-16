@@ -13,3 +13,15 @@ function nvm-use () {
 function pyserver () {
   python -m SimpleHTTPServer 9001
 }
+
+function kp () {
+  local -r port="$1"
+  local -r pid=$(lsof -t -i:$port)
+
+  if [ -n "$pid" ]; then
+    kill -9 "$pid"
+    echo "Process $pid terminated on port $port."
+  else
+    echo "There is no process on port $port."
+  fi
+}

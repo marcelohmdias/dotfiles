@@ -41,6 +41,7 @@ alias npm-install='npm i -g \
   mongo-hacker \
   nodemon \
   npm@latest \
+	pm2 \
   trash-cli \
   typescript \
   yarn'
