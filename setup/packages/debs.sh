@@ -27,7 +27,7 @@ main() {
 
   install_deb "Wps Office" "wps" "http://wdl1.pcfg.cache.wpscdn.com/wpsdl/wpsoffice/download/linux/9080/wps-office_11.1.0.9080.XA_amd64.deb"
 
-  # install_deb "Wps Fonts" "WPS Fonts" "http://kdl.cc.ksosoft.com/wps-community/download/fonts/wps-office-fonts_1.0_all.deb"
+  install_deb "Wps Translate" "WPS Translate" "https://doc-0o-7o-docs.googleusercontent.com/docs/securesc/6tioquud181vpmmpe4p7g356a4lbtot8/7bkr0bpd5pe6dbsmrlvk8ek1qre5gn2v/1581869700000/05233252432201595252/07199706726099415026/1uhxo3EsWjlBm02J0lDRvZH0Gy33a-a0J?e=download&authuser=0&nonce=e028liqcofdeq&user=07199706726099415026&hash=vm11c7qpu4mhstp0cfmrj53em4e2mq80"
 }
 
 # ------------------------------------------------------------------------------
