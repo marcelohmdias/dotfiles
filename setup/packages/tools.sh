@@ -15,6 +15,7 @@ main() {
   install_package "jq"                  "JQ"
   install_package "neofetch"            "Neofetch"
   install_package "neovim"              "Neovim"
+  install_package "poppler-utils"       "PDF Unite"
   install_package "silversearcher-ag"   "Silver Searcher"
   install_package "tmux"                "Tmux"
   install_package "tree"                "Tree"
