@@ -21,3 +21,11 @@ set -g history-limit 10000
 # DEFINE VI MODE
 setw -g mode-keys vi
 
+## Create bindings
+bind-key -T copy-mode-vi 'v' send -X begin-selection
+bind-key -T copy-mode-vi 'V' send -X select-line
+bind-key -T copy-mode-vi 'r' send -X rectangle-toggle
+
+## Enable copy to system's clipboard
+bind-key -T copy-mode-vi 'y' send -X copy-pipe-and-cancel "xclip -in -selection clipboard"
+
