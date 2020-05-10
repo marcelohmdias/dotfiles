@@ -29,6 +29,7 @@ alias managepy='python"$VIRTUAL_ENV/manage.py'
 
 # Global Node libs
 alias npm-install='npm i -g \
+  @nestjs/cli \
   @quasar/cli \
   @storybook/cli \
   @vue/cli \
