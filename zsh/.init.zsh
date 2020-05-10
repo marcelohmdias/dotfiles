@@ -13,7 +13,6 @@ plugins=(
   git
   git-extras
   jsontools
-  navi
   npm
   nvm
   tmux
