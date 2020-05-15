@@ -10,7 +10,7 @@ alias deb='sudo dpkg -i --force-depends'
 alias ls="colorls -a --sd --report --dark"
 
 # RAM Consumption Report
-alias ram='free -m'
+alias ram='free -h'
 alias ramf='sudo sysctl -w vm.drop_caches=3'
 
 # Install and Uninstall Command
