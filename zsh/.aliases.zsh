@@ -39,6 +39,7 @@ alias npm-install='npm i -g \
   gitignore \
   gitmoji-cli \
   knex \
+	lighthouse \
   mongo-hacker \
   nodemon \
   npm@latest \
