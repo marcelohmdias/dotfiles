@@ -23,8 +23,7 @@ plugins=(
   zsh-syntax-highlighting
 )
 
-# ZSH_THEME="powerlevel10k/powerlevel10k"
-ZSH_THEME="powerlevel9k/powerlevel9k"
+ZSH_THEME="powerlevel10k/powerlevel10k"
 POWERLEVEL9K_MODE="nerdfont-complete"
 
 source $ZSH/oh-my-zsh.sh
