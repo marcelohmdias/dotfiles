@@ -1,6 +1,6 @@
 # Dotfiles
 
-> My Post Install Shell Script for Ubuntu PCs.
+> My Post Install script for Linux.
 
 ## Installation
 
