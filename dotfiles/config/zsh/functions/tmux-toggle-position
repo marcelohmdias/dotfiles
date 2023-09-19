@@ -1,0 +1,13 @@
+#!/bin/bash
+
+function tmux-toggle-position() {
+  local position=$(tmux show -g status-position | choose -f ' ' 1)
+
+  if [[ "$position" == "top" ]]; then
+    position="bottom"
+  else
+    position="top"
+  fi
+
+  tmux set -g status-position "$position"
+}

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+function undo() {
+  hist -q delete -1
+}

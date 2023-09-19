@@ -1,0 +1,15 @@
+#!/bin/bash
+
+function v() {
+  local file
+  file=$(
+    fd -t f -H -i | \
+    fzf-tmux \
+      --bind 'ctrl-/:change-preview-window(down|hidden|)' \
+      --cycle \
+      --header=' Select and open' \
+      -p 80%,80% \
+      --preview 'bat -n --style=numbers --color=always {}'
+  ) || return
+  nvim "$file"
+}

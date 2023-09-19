@@ -1,0 +1,13 @@
+#!/bin/bash
+
+function tmux-toggle-bar() {
+  local visibility=$(tmux show -g status | choose -f ' ' 1)
+
+  if [[ "$visibility" == "on" ]]; then
+    visibility="off"
+  else
+    visibility="on"
+  fi
+
+  tmux set -g status "$visibility"
+}
