@@ -1,10 +1,10 @@
-local wez = require 'wezterm'
+local wez = require "wezterm"
 
 local M = {}
 
 -- Apps
 M.flatpak = "󰚰"
-M.nala = "󰚰"
+M.neovim = ""
 M.nvim = ""
 M.vim = ""
 M.term = ""
@@ -12,6 +12,7 @@ M.update = "󰚰"
 M.upgrade = "󰚰"
 
 -- CLIs
+M.apt = "󰚰"
 M.btm = ""
 M.btop = ""
 M.getnf = ""
@@ -22,31 +23,45 @@ M.htop = ""
 M.lazydocker = "󰡨"
 M.lazygit = "󰊢"
 M.lf = ""
+M.nala = "󰚰"
 M.tig = "󰊢"
 M.tmux = ""
+M.zap = "⚡"
 
 -- Hardwares
 M.keyboard = "󰌌"
 
 -- Commands
-M.activate_pane = "󰌌"
+M.activate_pane = ""
 M.calendar = ""
 M.clock = ""
 M.copy = "󰆏"
 M.execute = ""
-M.mod = "󰹻"
-M.resize_pane = "󰌌"
+M.leader = "󰹻"
+M.resize_pane = "󰆾"
 
 -- Dev Environments
+M.bun = "󰎙"
 M.cargo = "󱘗"
+M.fvm = "󰎙"
+M.g = ""
+M.go = ""
 M.java = "󰬷"
+M.lua = "󰢱"
+M.luarocks = "󰢱"
+M.mvn = "󰬷"
 M.node = "󰎙"
-M.nvm = "󰎙"
 M.rust = "󱘗"
 M.rustc = "󱘗"
+M.sdk = "󰬷"
 
 -- Paths
-M.folder = wez.pad_right("", 2)
+M.folder = wez.pad_right("󰝰", 2)
 M.home = wez.pad_right("", 2)
+
+-- Wezterm
+M.debug = ""
+M.launcher = "󰌧"
+M["tab navigator"] = "󰇐"
 
 return M

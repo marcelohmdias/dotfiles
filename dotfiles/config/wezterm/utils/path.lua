@@ -1,28 +1,23 @@
-local str = require "utils.string"
+local M = {}
 
-local Utils = {}
+function M:basename(s)
+  if s == nil then return "" end
+  return string.gsub(s, "(.*[/\\])(.*)", "%2")
+end
 
-function Utils:is_path(name)
-  if name == nil then
-    return false
-  end
+function M:is_path(name)
+  if name == nil then return false end
   return string.match(name, "/.+$")
 end
 
-function Utils:sanitize(name)
-  local t = str:to_split(name, "[\\/]+")
+function M:sanitize(path)
+  if path == nil or path == "" then return nil end
 
-  if t == nil then
-    return name
-  end
+  local uri = "file://" .. os.getenv "HOME"
 
-  local path = t[#t]
+  if path == uri then return "~" end
 
-  if path == nil then
-    return name
-  end
-
-  return "/" .. path
+  return "/" .. M:basename(path)
 end
 
-return Utils
+return M
