@@ -1,0 +1,32 @@
+# [delta]
+#   features = side-by-side line-numbers decorations
+#   syntax-theme = Catppuccin-frappe
+#   hyperlinks = true
+#   hyperlinks-file-link-format = "vscode://file/{path}:{line}"
+#   navigate = true
+#   side-by-side = true
+#   true-color = always
+
+# [delta "line-numbers"]
+#   line-numbers = true
+#   line-numbers-minus-style = "#a5adce"
+#   line-numbers-zero-style = "#a5adce"
+#   line-numbers-plus-style = "#a5adce"
+
+
+[delta]
+    features = side-by-side line-numbers decorations
+    hyperlinks = true
+    hyperlinks-file-link-format = "vscode://file/{path}:{line}"
+    syntax-theme = Catppuccin-frappe
+
+[delta "decorations"]
+    # commit-decoration-style = bold yellow box ul
+    # file-style = bold yellow ul
+    # file-decoration-style = box
+    # hunk-header-decoration-style = cyan box ul
+
+[delta "line-numbers"]
+    line-numbers-minus-style = "#e78284"
+    line-numbers-zero-style = "#a5adce"
+    line-numbers-plus-style = "#a6d189"
