@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 # Remap the prefix B to A
 unbind C-b
@@ -24,4 +24,16 @@ bind P previous-window
 
 # Remap keybindings to new window
 unbind c
-bind n new-window
+bind n new-window -c '#{pane_current_path}'
+
+# Move to pane
+bind h select-pane -L
+bind j select-pane -D
+bind k select-pane -U
+bind l select-pane -R
+
+# Rezise panels
+bind -r H resize-pane -L 5
+bind -r J resize-pane -D 5
+bind -r K resize-pane -U 5
+bind -r L resize-pane -R 5

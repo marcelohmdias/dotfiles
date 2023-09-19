@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 # settings 256 colors
 set -g default-terminal 'screen-256color'
@@ -28,6 +28,11 @@ set -g window-status-current-format '   #I: #W '
 
 # Window with activity status
 set -g window-status-activity-style bg=colour31,fg=colour233 # a bug in tmux
+
+# TITLE RENAME
+set-option -g set-titles on
+set-option -g set-titles-string '#T'
+set -g allow-rename on
 
 # STATUS RENAME
 setw -g automatic-rename off

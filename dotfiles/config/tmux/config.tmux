@@ -1,4 +1,9 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
+
+set -g default-shell  "/bin/zsh"
+set -g default-terminal "screen-256color"
+
+set -s set-clipboard on
 
 # STATUS UPDATE INTERVAL
 set -g status-interval 1
