@@ -1,0 +1,34 @@
+gui:
+  commitLength:
+    show: true
+  mouseEvents: true
+  nerdFontsVersion: "3"
+  # use the frappe catppuccin theme
+  theme:
+    activeBorderColor:
+      - "#8caaee"
+      - bold
+    inactiveBorderColor:
+      - "#a5adce"
+    optionsTextColor:
+      - "#8caaee"
+    selectedLineBgColor:
+      - "#414559"
+    selectedRangeBgColor:
+      - "#414559"
+    cherryPickedCommitBgColor:
+      - "#51576d"
+    cherryPickedCommitFgColor:
+      - "#8caaee"
+    unstagedChangesColor:
+      - "#e78284"
+    defaultFgColor:
+      - "#c6d0f5"
+    searchingActiveBorderColor:
+      - "#e5c890"
+
+git:
+  parseEmoji: true
+  paging:
+    colorArg: always
+    pager: delta --paging=never
