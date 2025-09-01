@@ -1,0 +1,56 @@
+# A TOML linter such as https://taplo.tamasfe.dev/ can use this schema to validate your config.
+# If you encounter any issues, please make an issue at https://github.com/yazi-rs/schemas.
+"$schema" = "https://yazi-rs.github.io/schemas/yazi.json"
+
+[mgr]
+linemode = "size"
+ratio = [1, 2, 4]
+show_hidden = true
+show_symlink = true
+sort_by = "natural"
+sort_dir_first = true
+sort_reverse = true
+sort_sensitive = true
+
+[open]
+rules = [
+  # Folder
+  { name = "*/", use = [ "edit", "open", "reveal" ] },
+  # Text
+  { mime = "text/*", use = [ "edit", "reveal" ] },
+  # Image
+  { mime = "image/*", use = [ "open", "reveal" ] },
+  # Media
+  { mime = "{audio,video}/*", use = [ "play", "reveal" ] },
+  # Archive
+  { mime = "application/{,g}zip", use = [ "extract", "reveal" ] },
+  { mime = "application/x-{tar,bzip*,7z-compressed,xz,rar}", use = [ "extract", "reveal" ] },
+  # JSON
+  { mime = "application/{json,x-ndjson}", use = [ "edit", "reveal" ] },
+  { mime = "*/javascript", use = [ "edit", "reveal" ] },
+  # Empty file
+  { mime = "inode/x-empty", use = [ "edit", "reveal" ] },
+  # Fallback
+  { name = "*", use = [ "open", "reveal" ] },
+]
+
+[opener]
+edit = [
+  { run = '${EDITOR:-vi} "$@"', desc = "$EDITOR", block = true, for = "unix" },
+]
+open = [
+  { run = 'xdg-open "$1"', desc = "Open", for = "linux" },
+  { run = 'open "$@"', desc = "Open", for = "macos" },
+]
+
+[preview]
+tab_size = 2
+max_width = 2000
+max_height = 1200
+ueberzug_scale = 1
+ueberzug_offset = [0, 0, 0, 0]
+
+[tasks]
+micro_workers = 5
+macro_workers = 10
+bizarre_retry = 5
