@@ -1,0 +1,209 @@
+#
+#  ██████╗ ██╗  ██╗ ██████╗ ███████╗████████╗████████╗██╗   ██╗
+# ██╔════╝ ██║  ██║██╔═══██╗██╔════╝╚══██╔══╝╚══██╔══╝╚██╗ ██╔╝
+# ██║  ███╗███████║██║   ██║███████╗   ██║      ██║    ╚████╔╝
+# ██║   ██║██╔══██║██║   ██║╚════██║   ██║      ██║     ╚██╔╝
+# ╚██████╔╝██║  ██║╚██████╔╝███████║   ██║      ██║      ██║
+#  ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚══════╝   ╚═╝      ╚═╝      ╚═╝
+#
+# Fast Terminal emulator
+# https://ghostty.org/
+
+# --------------------------------------------- #
+# --------------- Ghostty Config -------------- #
+# --------------------------------------------- #
+
+# Clipboard
+clipboard-read = allow
+clipboard-write = allow
+clipboard-trim-trailing-spaces = true
+copy-on-select = false
+
+# Cursor
+cursor-invert-fg-bg = true
+cursor-style = block
+cursor-style-blink = true
+
+# Font
+font-family = Maple Mono NF
+font-feature = calt
+font-feature = cv01
+font-feature = cv02
+font-feature = cv03
+font-feature = cv38
+font-feature = ss03
+font-feature = ss05
+font-feature = ss06
+font-feature = ss07
+font-feature = ss08
+font-feature = ss09
+font-feature = ss10
+font-feature = ss11
+font-feature = zero
+font-size = 13
+
+adjust-underline-position = 4
+background-blur = true
+background-opacity = 0.85
+link-url = true
+mouse-hide-while-typing = true
+
+# Linux Config
+adw-toolbar-style = flat
+gtk-adwaita = true
+gtk-single-instance = true
+gtk-titlebar = false
+gtk-wide-tabs = true
+
+# MacOS Config
+macos-option-as-alt = true
+
+# Shell
+shell-integration = zsh
+shell-integration-features = no-cursor,sudo,no-title
+
+# Window
+title = "󰊠  Ghostty"
+window-decoration = true
+window-theme = ghostty
+
+# --------------------------------------------- #
+# -------------------- Theme ------------------ #
+# --------------------------------------------- #
+
+background = #303446
+foreground = #c6d0f5
+
+cursor-color = #dadfe1
+cursor-text = #282828
+
+selection-background = #626880
+selection-foreground = #c0caf5
+
+palette = 0=#282828
+palette = 8=#5e6578
+
+palette = 1=#bd736e
+palette = 9=#d6a8a6
+
+palette = 2=#66b373
+palette = 10=#a5d4a7
+
+palette = 3=#e2b419
+palette = 11=#faec94
+
+palette = 4=#5689bc
+palette = 12=#68bce7
+
+palette = 5=#ac72a9
+palette = 13=#ca9ee6
+
+palette = 6=#8cb0b8
+palette = 14=#a9d4d6
+
+palette = 7=#dadfe1
+palette = 15=#fefefe
+
+bold-is-bright = true
+
+# --------------------------------------------- #
+# -------------- Ghostty Keybinds ------------- #
+# --------------------------------------------- #
+
+keybind = ctrl+/>-=new_split:down
+keybind = ctrl+/>shift+\=new_split:right
+keybind = ctrl+/>x=close_surface
+
+keybind = ctrl+/>n=new_tab
+keybind = ctrl+/>r=reload_config
+
+keybind = ctrl+/>i=inspector:toggle
+
+# Change Font Size
+keybind = ctrl+/>equal=increase_font_size:1
+keybind = ctrl+/>minus=decrease_font_size:1
+keybind = ctrl+/>zero=reset_font_size
+
+# Copy to Clipboard
+keybind = ctrl+shift+c=copy_to_clipboard
+
+# Past from Clipboard
+keybind = ctrl+shift+v=paste_from_clipboard
+
+# --------------------------------------------- #
+# --------------- Tmux Keybinds --------------- #
+# --------------------------------------------- #
+
+# Manage plugins
+keybind = ctrl+alt+shift+i=text:\x01\x49
+keybind = ctrl+alt+shift+u=text:\x01\x55
+
+# New pane
+keybind = ctrl+alt+n=text:\x01\x6E
+
+# Kill window or panel
+keybind = ctrl+alt+x=text:\x01\x78
+
+# Zoom pane
+keybind = ctrl+alt+z=text:\x01\x7A
+
+# Copy Mode
+keybind = ctrl+alt+[=text:\x01\x5b
+
+# Reload tmux config
+keybind = ctrl+alt+r=text:\x01\x72
+
+# Split Panels
+keybind = ctrl+alt+-=text:\x01\x2d
+keybind = ctrl+alt+\=text:\x01\x5c
+
+# Resize Panels
+keybind = ctrl+alt+shift+h=text:\x01\x48
+keybind = ctrl+alt+shift+j=text:\x01\x4a
+keybind = ctrl+alt+shift+k=text:\x01\x4b
+keybind = ctrl+alt+shift+l=text:\x01\x4c
+
+# Rotate between panes
+keybind = ctrl+alt+h=text:\x01\x1b\x68
+keybind = ctrl+alt+l=text:\x01\x1b\x6c
+
+# Rotate between sessions
+keybind = ctrl+alt+shift+nine=text:\x01\x28
+keybind = ctrl+alt+shift+zero=text:\x01\x29
+
+# Rotate panels
+keybind = ctrl+alt+shift+[=text:\x01\x7b
+keybind = ctrl+alt+shift+]=text:\x01\x7d
+
+# Tmux thumbs command
+keybind = ctrl+alt+c=text:\x01\x63
+
+# Tmux floax
+keybind = ctrl+alt+p=text:\x01\x70
+
+# Tmux URL search
+keybind = ctrl+alt+u=text:\x01\x75
+
+# Open btop
+keybind = ctrl+alt+b=text:\x01\x62
+
+# Open btm
+keybind = ctrl+alt+shift+b=text:\x01\x42
+
+# Open lazydocker
+keybind = ctrl+alt+d=text:\x01\x64
+
+# Open lazygit
+keybind = ctrl+alt+g=text:\x01\x67
+
+# Open gh dash
+keybind = ctrl+alt+shift+g=text:\x01\x47
+
+# Open sesh
+keybind = ctrl+alt+k=text:\x01\x6B
+
+# Open tig
+keybind = ctrl+alt+t=text:\x01\x74
+
+# Open yazi
+keybind = ctrl+alt+y=text:\x01\x79
