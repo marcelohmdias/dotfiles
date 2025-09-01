@@ -1,0 +1,7 @@
+@import "./catppuccin-frappe.css";
+
+@define-color background-color @base;
+@define-color border-color @blue;
+@define-color label @text;
+@define-color image @text;
+@define-color progress @text;

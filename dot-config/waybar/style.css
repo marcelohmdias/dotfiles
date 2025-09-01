@@ -1,0 +1,147 @@
+@import "../omarchy/current/theme/waybar.css";
+
+* {
+  font-family:  Maple Mono NF;
+  font-size: 1rem;
+  min-height: 0;
+}
+
+#waybar {
+  background-color: @base;
+  border-radius: 0.75rem;
+  color: @text;
+}
+
+.modules-center,
+.modules-left,
+.modules-right {
+  margin: 6px;
+}
+
+#custom-omarchy {
+  background-color: @blue;
+  border-radius: calc(0.75rem - 6px) 0 0 calc(0.75rem - 6px);
+  color: @base;
+  padding: 0 0.5rem;
+}
+
+#battery,
+#bluetooth,
+#clock,
+#cpu,
+#custom-expand-icon,
+#custom-update,
+#network,
+#pulseaudio,
+#tray,
+#workspaces {
+  background-color: @surface0;
+  border-radius: calc(0.75rem - 4px);
+  color: @subtext0;
+  margin: 0;
+  min-width: 1rem;
+  padding: 0 0.25rem;
+}
+
+#workspaces {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+
+#workspaces button {
+  all: initial;
+  color: @overlay2;
+  margin: 0 0.5rem;
+  min-width: 0.5rem;
+  padding: 0.1rem 0.5rem;
+}
+
+ #workspaces button.empty {
+   color: @overlay2;
+ }
+
+ #workspaces button:hover {
+   color: @text;
+ }
+
+#workspaces button.active {
+  background-color: @blue;
+  border-radius: 1rem;
+  color: @base;
+  font-weight: bold;
+}
+
+#clock {
+  border-radius: calc(0.75rem - 6px);
+  margin: 0 0.5rem;
+  padding: 0;
+}
+
+#clock.date {
+  padding-left: 0.75rem;
+}
+
+#clock.time {
+  padding-right: 0.75rem;
+}
+
+#tray,
+#cpu,
+#battery,
+#network,
+#bluetooth,
+#pulseaudio,
+#custom-expand-icon,
+#custom-update {
+  min-width: 1rem;
+  padding: 0 0.75rem;
+}
+
+#bluetooth,
+#cpu,
+#custom-update,
+#network,
+#pulseaudio,
+#tray {
+  border-radius: 0;
+}
+
+#tray:hover,
+#cpu:hover,
+#battery:hover,
+#network:hover,
+#bluetooth:hover,
+#pulseaudio:hover,
+#custom-expand-icon:hover,
+#custom-update:hover {
+  color: @text;
+}
+
+#custom-expand-icon {
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}
+
+#battery {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+
+tooltip {
+  background-color: @base;
+  border-radius: 0.5rem;
+  opacity: 0.85;
+}
+
+tooltip > box {
+  padding: 0.5rem;
+}
+
+tooltip label {
+  color: @text;
+  font-weight: bold;
+}
+
+.hidden {
+  opacity: 0;
+}
