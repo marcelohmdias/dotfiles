@@ -1,0 +1,65 @@
+#
+# ███████╗████████╗ █████╗ ██████╗ ███████╗██╗  ██╗██╗██████╗
+# ██╔════╝╚══██╔══╝██╔══██╗██╔══██╗██╔════╝██║  ██║██║██╔══██╗
+# ███████╗   ██║   ███████║██████╔╝███████╗███████║██║██████╔╝
+# ╚════██║   ██║   ██╔══██║██╔══██╗╚════██║██╔══██║██║██╔═══╝
+# ███████║   ██║   ██║  ██║██║  ██║███████║██║  ██║██║██║
+# ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝╚═╝
+#
+# The minimal, blazing-fast, and infinitely customizable prompt
+# https://starship.rs
+
+"$schema" = "https://starship.rs/config-schema.json"
+
+add_newline = false
+
+format = """
+$os\
+$username\
+$directory\
+"""
+
+right_format = """
+$cmd_duration\
+$time\
+"""
+
+[os]
+disabled = false
+style = "bg:005 fg:015"
+format = "[ $symbol ]($style)[](bg:008 fg:005)"
+
+[os.symbols]
+Arch = " "
+Macos = " "
+Pop = " "
+Ubuntu = " "
+
+[username]
+disabled = false
+show_always = true
+style_user = "bg:008 fg:015"
+format = "[ $user ]($style)[](bg:004 fg:008)"
+
+[directory]
+home_symbol = "󰋜  ~"
+style = "bg:004 fg:015"
+truncation_length = 1
+truncation_symbol = "󰝰  …/"
+format = "[ $path ]($style)[ ](fg:004)"
+
+[cmd_duration]
+min_time = 1000
+show_notifications = true
+style = "italic fg:008"
+format = "[$duration 󰔛 ]($style)"
+
+[time]
+disabled = false
+style = "italic fg:008"
+time_format = "%T"
+use_12hr = false
+format = "[$time 󰅐]($style)"
+
+[package]
+disabled = true
