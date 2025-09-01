@@ -1,0 +1,73 @@
+[include]
+  path = ~/.config/delta/themes.gitconfig
+
+[user]
+	email = marcelohmdias@gmail.com
+	name = marcelohmdias
+	signingkey = /home/marcelohmdias/.ssh/id_ed25519.pub
+
+[alias]
+  b = branch
+  s = status -sb
+  aa = add --all
+  ci = commit -v
+  cl = clean -fd
+  cm = commit
+  co = checkout
+  cp = cherry-pick
+  di = diff
+  dc = diff --cached
+  dt = difftool
+  fa = fetch --all
+  ps = push
+  rr = remote -v
+  st = status
+  vv = branch -vv
+  cob = checkout -b
+  undo = reset --soft HEAD~1
+  amend = commit --amend
+
+[color]
+ 	branch = auto
+ 	diff = auto
+	grep = auto
+ 	interactive = auto
+	status = auto
+	ui = auto
+
+[core]
+	editor = nvim
+  pager = delta
+
+[diff]
+  colorMoved = default
+  tool = nvim
+
+[difftool "nvim"]
+  cmd = "nvim -d $LOCAL $REMOTE"
+
+[difftool "vscode"]
+  cmd = "code --wait --diff $LOCAL $REMOTE"
+
+[interactive]
+    diffFilter = delta --color-only --features=interactive
+
+[merge]
+  conflictstyle = diff3
+ 	tool = nvim
+
+[mergetool "nvim"]
+  cmd = "nvim -d $LOCAL $REMOTE"
+
+[mergetool "vscode"]
+	cmd = "code --wait"
+
+[push]
+	default = current
+
+[rerere]
+	enabled = true
+[commit]
+	gpgsign = true
+[gpg]
+	format = ssh
