@@ -1,0 +1,4 @@
+**/.cache
+**/.git
+**/.npm
+**/node_modules
