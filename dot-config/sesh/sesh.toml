@@ -1,0 +1,49 @@
+blacklist = ["scratch"]
+
+[[session]]
+name = "home"
+path = "~"
+
+[[session]]
+name = "dotfiles"
+path = "~/.dotfiles"
+
+[[session]]
+name = "zsh-bun"
+path = "~/Workspaces/projects/zsh-bun/"
+
+[[session]]
+name = "zsh-deno"
+path = "~/Workspaces/projects/zsh-deno/"
+
+[[session]]
+name = "zsh-fzf"
+path = "~/Workspaces/projects/zsh-fzf/"
+
+[[session]]
+name = "zsh-gh"
+path = "~/Workspaces/projects/zsh-gh/"
+
+[[session]]
+name = "zsh-just"
+path = "~/Workspaces/projects/zsh-just/"
+
+[[session]]
+name = "zsh-rust"
+path = "~/Workspaces/projects/zsh-rust/"
+
+[[session]]
+name = "vaults"
+path = "~/Vaults/"
+
+[[session]]
+name = "brainforge"
+path = "~/Vaults/brainforge/"
+
+[[session]]
+name = "workspaces"
+path = "~/Workspaces"
+
+[[session]]
+name = "fonts"
+path = "~/.local/share/fonts"
