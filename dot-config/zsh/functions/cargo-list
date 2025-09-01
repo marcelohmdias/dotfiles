@@ -1,0 +1,7 @@
+#!/bin/bash
+
+function cargo-list() {
+  cargo install --list | \
+    rg '^[a-z0-9_-]+ v[0-9.]+:$' | \
+    choose -f ' ' 0
+}

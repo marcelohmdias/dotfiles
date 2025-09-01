@@ -1,0 +1,6 @@
+#!/bin/bash
+
+function reload() {
+  clear
+  source "$ZDOTDIR/.zshrc"
+}

@@ -1,0 +1,36 @@
+#!/bin/bash
+
+function _exec() {
+  gum spin \
+    --spinner="minidot" \
+    --spinner.margin="0 1 0 3" \
+    --spinner.foreground="#ca9ee6" \
+    --title "Installing $1" -- flatpak update -y --app $2
+  echo "  $(gum style --foreground='#059669' '[󰸞]') $1 Installed"
+}
+
+echo "  $(gum style --foreground='#bae6fd' '󰏗') Flatpak Apps Update \n"
+
+_exec "Bitwarden" "com.bitwarden.desktop"
+_exec "Anki" "net.ankiweb.Anki"
+_exec "DBeaver Community" "io.dbeaver.DBeaverCommunity"
+_exec "Discord" "com.discordapp.Discord"
+_exec "Flatseal" "com.github.tchx84.Flatseal"
+_exec "Font Forge" "org.fontforge.FontForge"
+_exec "GitKraken" "com.axosoft.GitKraken"
+_exec "GreenWithEnvy" "com.leinardi.gwe"
+_exec "Heroic Games Launcher" "lsdcom.heroicgameslauncher.hgl"
+_exec "Lutris" "net.lutris.Lutris"
+_exec "Libre Menu Editor" "page.codeberg.libre_menu_editor.LibreMenuEditor"
+_exec "Meld" "org.gnome.meld"
+_exec "Obsidian" "md.obsidian.Obsidian"
+_exec "GIMP" "org.gimp.GIMP"
+_exec "Simple Note" "com.simplenote.Simplenote"
+_exec "Spotify" "com.spotify.Client"
+_exec "Steam" "com.valvesoftware.Steam"
+_exec "SteamLink" "com.valvesoftware.SteamLink"
+_exec "Telegram" "org.telegram.desktop"
+_exec "Todoist" "com.todoist.Todoist"
+_exec "Typora" "io.typora.Typora"
+_exec "VLC" "org.videolan.VLC"
+_exec "Warehouse" "io.github.flattool.Warehouse"

@@ -1,0 +1,31 @@
+#!/bin/bash
+
+function cargo_install() {
+  gum spin \
+    --spinner="minidot" \
+    --spinner.margin="0 1 0 2" \
+    --spinner.foreground="#ca9ee6" \
+    --title "Installing $1" -- cargo install $2
+  echo " $(gum style --foreground='#059669' '[󰸞]') $1 Installed"
+}
+
+function main() {
+  file="$HOME/.dotfiles/dependencies.toml"
+  dependencies=($(yq eval '.cargo.dependencies[] | {"name":.name,"package":.package,"mod":.mod} | @json' "$file" -oy))
+
+  for dependency in "${dependencies[@]}"; do
+    name=$(echo "$dependency" | jq -r '.name' | tr '_' ' ')
+    package=$(echo "$dependency" | jq -r '.package')
+    mod=$(echo "$dependency" | jq -r '.mod')
+
+    if [ -n "$mod" ]; then
+      rule="$package $mod"
+    else
+      rule="$package"
+    fi
+
+    cargo_install "$name" "$rule"
+  done
+}
+
+main

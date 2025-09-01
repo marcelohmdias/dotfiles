@@ -1,0 +1,11 @@
+#!/bin/bash
+
+function tsm() {
+  exec </dev/tty
+  exec <&1
+  local session
+  session=$(sesh list -i | fzf)
+  zle reset-prompt >/dev/null 2>&1 || true
+  [[ -z "$session" ]] && return
+  sesh connect "$session"
+}

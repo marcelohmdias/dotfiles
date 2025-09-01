@@ -1,0 +1,21 @@
+#!/bin/bash
+
+function _exec() {
+  gum spin \
+    --spinner="minidot" \
+    --spinner.margin="0 1 0 3" \
+    --spinner.foreground="#ca9ee6" \
+    --title "Installing $1" -- go install github.com/$2@latest
+  echo "  $(gum style --foreground='#059669' '[󰸞]') $1 Installed"
+}
+
+echo "  $(gum style --foreground='#79d4fd' '') Go Packages Update \n"
+
+_exec "Bombardier" "codesenberg/bombardier"
+_exec "Gitmux" "arl/gitmux"
+_exec "Glow" "charmbracelet/glow"
+_exec "Gum" "charmbracelet/gum"
+_exec "Lazydocker" "jesseduffield/lazydocker"
+_exec "Lazygit" "jesseduffield/lazygit"
+_exec "Sesh" "joshmedeski/sesh"
+_exec "Yq" "mikefarah/yq/v4"
