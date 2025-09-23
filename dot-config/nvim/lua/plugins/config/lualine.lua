@@ -26,7 +26,7 @@ function M.opts(_, opts)
 
     local function status()
       local clients = package.loaded["copilot"]
-          and LazyVim.lsp.get_clients({ name = "copilot", bufnr = 0 })
+          and vim.lsp.get_clients({ name = "copilot", bufnr = 0 })
         or {}
       if #clients > 0 then
         local copilot_status = require("copilot.status").data.status

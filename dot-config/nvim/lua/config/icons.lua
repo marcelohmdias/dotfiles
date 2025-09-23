@@ -2,8 +2,8 @@ local M = {}
 
 M.alerts = {
   attention = " ",
-  Error = " ",
-  error = " ",
+  Error = "󰅚 ",
+  error = "󰅚 ",
   Hint = " ",
   hint = " ",
   Info = " ",

@@ -2,14 +2,6 @@ local C = require("catppuccin.palettes").get_palette()
 
 local M = { "akinsho/bufferline.nvim" }
 
--- TODO: temporary fix for catppuccin integration
-M.init = function()
-  local bufline = require("catppuccin.groups.integrations.bufferline")
-  function bufline.get()
-    return bufline.get_theme()
-  end
-end
-
 --- @class bufferline.UserConfig
 M.opts = {
   highlights = {

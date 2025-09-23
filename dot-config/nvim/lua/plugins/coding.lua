@@ -12,5 +12,4 @@ return {
   { import = "plugins.config.template_string" },
   { import = "plugins.config.treesj" },
   { import = "plugins.config.vim_visual_multi" },
-  { import = "plugins.config.yanky" },
 }

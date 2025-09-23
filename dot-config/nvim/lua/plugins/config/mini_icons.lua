@@ -1,4 +1,4 @@
-local M = { "echasnovski/mini.icons" }
+local M = { "nvim-mini/mini.icons" }
 
 M.opts = {
   default = {},

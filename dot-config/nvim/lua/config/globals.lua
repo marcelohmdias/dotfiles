@@ -1,6 +1,6 @@
 vim.g.ai_cmp = true
 vim.g.hardtime = false
-vim.g.lazyvim_blink_main = true
+vim.g.lazyvim_blink_main = false
 vim.g.lazyvim_default_config = false
 vim.g.lazyvim_prettier_needs_config = true
 vim.g.precognition = true

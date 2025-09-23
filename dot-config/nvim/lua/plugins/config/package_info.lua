@@ -1,3 +1,4 @@
+local C = require("catppuccin.palettes").get_palette()
 local icons = require("config.icons")
 
 local M = { "vuki656/package-info.nvim" }
@@ -11,15 +12,17 @@ M.event = "LazyFile"
 M.ft = { "json" }
 
 M.opts = {
-  colors = {
-    up_to_date = "#85c1dc",
-    outdated = "#ea999c",
+  highlights = {
+    up_to_date = { fg = C.teal },
+    outdated = { fg = C.peach },
+    invalid = { fg = C.red },
   },
   icons = {
     enable = true,
     style = {
       up_to_date = icons.git.staged,
       outdated = icons.git.removed,
+      invalid = icons.alerts.error,
     },
   },
   autostart = true,
