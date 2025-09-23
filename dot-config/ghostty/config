@@ -20,7 +20,8 @@ clipboard-trim-trailing-spaces = true
 copy-on-select = false
 
 # Cursor
-cursor-invert-fg-bg = true
+cursor-color=cell-foreground
+cursor-text=cell-background
 cursor-style = block
 cursor-style-blink = true
 
@@ -49,9 +50,8 @@ link-url = true
 mouse-hide-while-typing = true
 
 # Linux Config
-adw-toolbar-style = flat
-gtk-adwaita = true
 gtk-single-instance = true
+gtk-toolbar-style = flat
 gtk-titlebar = false
 gtk-wide-tabs = true
 
@@ -63,6 +63,8 @@ shell-integration = zsh
 shell-integration-features = no-cursor,sudo,no-title
 
 # Window
+confirm-close-surface=false
+resize-overlay = never
 title = "󰊠  Ghostty"
 window-decoration = true
 window-theme = ghostty
