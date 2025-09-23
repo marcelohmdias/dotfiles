@@ -1,0 +1,9 @@
+--dotfiles
+--ignore='^\.'
+--ignore='bin'
+--ignore='pkg'
+--ignore='scripts'
+--ignore='editorconfig'
+--ignore='stowrc'
+--ignore='github'
+--ignore='stylua.toml'
