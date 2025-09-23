@@ -8,11 +8,12 @@ deno = "latest"
 go = "latest"
 hk = "latest"
 java = "temurin-21.0.3"
+lefthook = "latest"
 lua = "5.1.5"
 maven = "3.8.1"
 node = "lts"
 pkl = "latest"
-rust = "nightly"
+rust = "latest"
 usage = "latest"
 zig = "0.13"
 zls = "0.13"
@@ -23,7 +24,6 @@ go_default_packages_file = "~/.go"
 idiomatic_version_file_enable_tools = ["ruby"]
 
 [settings.ruby]
-ruby_build_opts = "CC=gcc-14 CXX=g++-14"
 
 [tasks.update]
 description = 'Update system dependencies'
