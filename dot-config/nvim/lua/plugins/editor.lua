@@ -4,7 +4,6 @@ end
 
 return {
   { import = "plugins.config.bookmarks" },
-  { import = "plugins.config.codewindow" },
   { import = "plugins.config.colortils" },
   { import = "plugins.config.diffview" },
   { import = "plugins.config.dropbar" },
@@ -14,6 +13,7 @@ return {
   { import = "plugins.config.lazyvim" },
   { import = "plugins.config.markdown_table_mode" },
   { import = "plugins.config.neogit" },
+  { import = "plugins.config.neominimap" },
   { import = "plugins.config.neotest" },
   { import = "plugins.config.nvim_highlight_colors" },
   { import = "plugins.config.nvim_scrollbar" },
