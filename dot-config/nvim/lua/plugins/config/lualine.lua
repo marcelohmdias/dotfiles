@@ -18,35 +18,26 @@ function M.opts(_, opts)
   end
 
   local function copilot()
-    local colors = {
-      ok = "Special",
-      error = "DiagnosticError",
-      pending = "DiagnosticWarn",
+    local copilotIcons = {
+      Error = { " ", "DiagnosticError" },
+      Inactive = { " ", "MsgArea" },
+      Warning = { " ", "DiagnosticWarn" },
+      Normal = { LazyVim.config.icons.kinds.Copilot, "Special" },
     }
-
-    local function status()
-      local clients = package.loaded["copilot"]
-          and vim.lsp.get_clients({ name = "copilot", bufnr = 0 })
-        or {}
-      if #clients > 0 then
-        local copilot_status = require("copilot.status").data.status
-        return (copilot_status == "InProgress" and "pending")
-          or (copilot_status == "Warning" and "error")
-          or "ok"
-      end
-    end
 
     return {
       function()
-        return icons.kinds.Copilot
+        local status = require("sidekick.status").get()
+        return status and vim.tbl_get(copilotIcons, status.kind, 1)
       end,
       color = function()
-        return {
-          fg = Snacks.util.color(colors[status()] or colors.ok),
-        }
+        local status = require("sidekick.status").get()
+        local hl = status
+          and (status.busy and "DiagnosticWarn" or vim.tbl_get(copilotIcons, status.kind, 2))
+        return { fg = Snacks.util.color(hl) }
       end,
       cond = function()
-        return status() ~= nil
+        return require("sidekick.status").get() ~= nil
       end,
     }
   end
