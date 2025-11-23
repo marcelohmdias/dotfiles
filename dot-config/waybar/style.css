@@ -1,7 +1,9 @@
+/* vim: ft=less */
+
 @import "../omarchy/current/theme/waybar.css";
 
 * {
-  font-family:  Maple Mono NF;
+  font-family: Maple Mono NF;
   font-size: 1rem;
   min-height: 0;
 }
@@ -9,7 +11,7 @@
 #waybar {
   background-color: @base;
   border-radius: 0.75rem;
-  color: @text;
+  color: @subtext0;
 }
 
 .modules-center,
@@ -18,51 +20,47 @@
   margin: 6px;
 }
 
+#alerts,
+#clock,
+#play,
+#processors,
+#starter,
+#window {
+  background-color: @surface0;
+  border-radius: calc(0.75rem - 6px);
+}
+
 #custom-omarchy {
+  border-bottom-left-radius: calc(0.75rem - 6px);
+  border-top-left-radius: calc(0.75rem - 6px);
   background-color: @blue;
-  border-radius: calc(0.75rem - 6px) 0 0 calc(0.75rem - 6px);
   color: @base;
   padding: 0 0.5rem;
 }
 
-#battery,
-#bluetooth,
-#clock,
-#cpu,
-#custom-expand-icon,
-#custom-update,
-#network,
-#pulseaudio,
-#tray,
-#workspaces {
-  background-color: @surface0;
-  border-radius: calc(0.75rem - 4px);
-  color: @subtext0;
+.module {
   margin: 0;
   min-width: 1rem;
-  padding: 0 0.25rem;
-}
-
-#workspaces {
-  border-bottom-left-radius: 0;
-  border-top-left-radius: 0;
+  padding: 0 0.5rem;
 }
 
 #workspaces button {
   all: initial;
   color: @overlay2;
-  margin: 0 0.5rem;
-  min-width: 0.5rem;
   padding: 0.1rem 0.5rem;
 }
 
- #workspaces button.empty {
-   color: @overlay2;
- }
+#workspaces button+button {
+  margin-left: 0.5rem;
+}
 
- #workspaces button:hover {
-   color: @text;
- }
+#workspaces button.empty {
+  color: @overlay2;
+}
+
+#workspaces button:hover {
+  color: @text;
+}
 
 #workspaces button.active {
   background-color: @blue;
@@ -71,60 +69,44 @@
   font-weight: bold;
 }
 
-#clock {
-  border-radius: calc(0.75rem - 6px);
+#window {
   margin: 0 0.5rem;
-  padding: 0;
-}
-
-#clock.date {
-  padding-left: 0.75rem;
-}
-
-#clock.time {
-  padding-right: 0.75rem;
-}
-
-#tray,
-#cpu,
-#battery,
-#network,
-#bluetooth,
-#pulseaudio,
-#custom-expand-icon,
-#custom-update {
-  min-width: 1rem;
   padding: 0 0.75rem;
 }
 
-#bluetooth,
-#cpu,
-#custom-update,
-#network,
-#pulseaudio,
-#tray {
-  border-radius: 0;
+.empty #window {
+  background-color: transparent;
 }
 
-#tray:hover,
-#cpu:hover,
-#battery:hover,
-#network:hover,
-#bluetooth:hover,
-#pulseaudio:hover,
-#custom-expand-icon:hover,
-#custom-update:hover {
+#clock {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+#alerts,
+#play,
+#processors {
+  margin-left: 0.5rem;
+}
+
+#alerts .module,
+#play .module,
+#processors .module {
+  padding: 0 0.625rem;
+}
+
+#alerts .module:hover,
+#play .module:hover,
+#processors .module:hover {
   color: @text;
 }
 
-#custom-expand-icon {
-  border-bottom-right-radius: 0;
-  border-top-right-radius: 0;
+#processors #custom-screenrecording-indicator {
+  color: @red;
 }
 
-#battery {
-  border-bottom-left-radius: 0;
-  border-top-left-radius: 0;
+#processors #custom-screenrecording-indicator:hover {
+  color: @pink;
 }
 
 tooltip {
@@ -133,7 +115,7 @@ tooltip {
   opacity: 0.85;
 }
 
-tooltip > box {
+tooltip>box {
   padding: 0.5rem;
 }
 

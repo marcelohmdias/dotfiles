@@ -1,0 +1,42 @@
+{
+	"group/alerts": {
+		"modules": [
+			"custom/omarchy_update",
+			"custom/updates",
+			"custom/notification"
+		],
+		"orientation": "inherit"
+	},
+	"group/clock": {
+		"modules": ["clock"],
+		"orientation": "inherit"
+	},
+	"group/play": {
+		"modules": ["mpris"],
+		"orientation": "inherit"
+	},
+	"group/processors": {
+		"modules": [
+			"group/tray-expander",
+			"custom/screenrecording-indicator",
+			"bluetooth",
+			"network",
+			"pulseaudio",
+			"cpu",
+			"battery"
+		],
+		"orientation": "inherit"
+	},
+	"group/starter": {
+		"modules": ["custom/omarchy", "hyprland/workspaces"],
+		"orientation": "inherit"
+	},
+	"group/tray-expander": {
+		"drawer": {
+			"transition-duration": 600,
+			"children-class": "tray-group-item"
+		},
+		"modules": ["custom/expand-icon", "tray"],
+		"orientation": "inherit"
+	}
+}
