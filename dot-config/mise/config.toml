@@ -12,7 +12,10 @@ lefthook = "latest"
 lua = "5.1.5"
 maven = "3.8.1"
 node = "lts"
+"npm:@anthropic-ai/claude-code" = "latest"
+"npm:@openai/codex" = "latest"
 "npm:@github/copilot" = "latest"
+"npm:@charmland/crush" = "latest"
 "npm:@google/gemini-cli" = "latest"
 "npm:opencode-ai" = "latest"
 pkl = "latest"
@@ -24,7 +27,7 @@ zls = "0.13"
 [settings]
 experimental = true
 go_default_packages_file = "~/.go"
-idiomatic_version_file_enable_tools = ["ruby"]
+idiomatic_version_file_enable_tools = ["npm"]
 
 [settings.ruby]
 

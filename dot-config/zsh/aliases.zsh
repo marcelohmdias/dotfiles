@@ -41,8 +41,8 @@ alias serve='bunx serve'
 alias taze='bunx taze -r -w -I'
 alias untun='bunx untun'
 
-
 # Apps
+alias copilot='copilot --banner'
 alias wez='wezterm'
 alias vi='nvim'
 

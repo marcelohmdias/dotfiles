@@ -28,6 +28,7 @@ export FZF_DEFAULT_OPTS=$(echo " \
   --color 'fg:#b5bfe2,header:#8caaee,info:#ca9ee6,pointer:#8caaee' \
   --color 'border:#c6d0f5,label:#c6d0f5,scrollbar:#949cbb' \
   --color 'marker:#f2d5cf,fg+:#c6d0f5,prompt:#ca9ee6,hl+:#e78284' \
+  --gutter ' ' \
   --height '50%' \
   --info 'inline-right' \
   --margin '0' \
@@ -75,7 +76,10 @@ export VI_MODE_ESC_INSERT="jk"
 
 export YSU_HARDCORE=1
 
+export MISE_NPM_BUN=true
+
 # PATH config
 export PATH="$PATH:$HOME/.config/zsh/bin"
+export PATH="$PATH:$HOME/.dotfiles/bin"
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$HOME/.local/share/flatpak/exports/bin"
