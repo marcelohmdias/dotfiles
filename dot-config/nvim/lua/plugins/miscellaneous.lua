@@ -16,5 +16,4 @@ return {
   { import = "plugins.config.urlview" },
   { import = "plugins.config.vim_be_good" },
   { import = "plugins.config.vim_wakatime" },
-  { import = "plugins.config.wezterm" },
 }

@@ -8,6 +8,7 @@ return {
   { import = "plugins.config.blink_cmp" },
   { import = "plugins.config.coerce" },
   { import = "plugins.config.duplicate" },
+  { import = "plugins.config.inc_rename" },
   { import = "plugins.config.patterns" },
   { import = "plugins.config.template_string" },
   { import = "plugins.config.treesj" },

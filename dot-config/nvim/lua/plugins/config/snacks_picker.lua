@@ -125,6 +125,7 @@ function M.opts(_, opts)
         layout = { preset = get_dynamic_preset },
       },
     },
+    ui_select = true,
   }
 
   opts.picker = utils.merge(opts.picker, picker)

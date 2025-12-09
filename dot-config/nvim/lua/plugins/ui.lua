@@ -4,7 +4,6 @@ end
 
 return {
   { import = "plugins.config.bufferline" },
-  { import = "plugins.config.dressing" },
   { import = "plugins.config.edgy" },
   { import = "plugins.config.lualine" },
   { import = "plugins.config.mini_icons" },

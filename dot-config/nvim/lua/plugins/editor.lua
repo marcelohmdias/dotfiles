@@ -3,7 +3,6 @@ if vim.g.lazyvim_default_config then
 end
 
 return {
-  { import = "plugins.config.bookmarks" },
   { import = "plugins.config.colortils" },
   { import = "plugins.config.diffview" },
   { import = "plugins.config.dropbar" },

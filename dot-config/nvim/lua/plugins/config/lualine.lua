@@ -42,6 +42,21 @@ function M.opts(_, opts)
     }
   end
 
+  local function sidekick()
+    return {
+      function()
+        local status = require("sidekick.status").cli()
+        return icons.misc.robot .. (#status > 1 and #status or "")
+      end,
+      cond = function()
+        return #require("sidekick.status").cli() > 0
+      end,
+      color = function()
+        return { fg = Snacks.util.color("Special") }
+      end,
+    }
+  end
+
   local function cursor_position()
     return {
       function()
@@ -270,6 +285,7 @@ function M.opts(_, opts)
     Snacks.profiler.status(),
     noice_mode(),
     lazy_status(),
+    sidekick(),
     copilot(),
     dap(),
     file_size(),
