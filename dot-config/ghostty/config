@@ -56,7 +56,7 @@ gtk-wide-tabs = true
 macos-option-as-alt = true
 
 # Shell
-shell-integration = zsh
+shell-integration = fish
 shell-integration-features = no-cursor,sudo,no-title
 
 # Window
