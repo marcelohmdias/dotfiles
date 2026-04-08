@@ -1,6 +1,0 @@
-@import "./catppuccin-frappe.css";
-
-@define-color selected-text @blue;
-@define-color border @blue;
-@define-color foreground @text;
-@define-color background @base;

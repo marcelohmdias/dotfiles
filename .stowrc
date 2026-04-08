@@ -7,3 +7,5 @@
 --ignore='stowrc'
 --ignore='github'
 --ignore='stylua.toml'
+--ignore='README.md'
+--ignore='LICENSE'

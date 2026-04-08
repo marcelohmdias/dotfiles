@@ -1,4 +1,0 @@
-@import "./catppuccin-frappe.css";
-
-@define-color foreground @text;
-@define-color background @base;

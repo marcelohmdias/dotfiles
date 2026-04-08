@@ -1,4 +1,5 @@
 *.swp
 .env
 .cache/
+.crush/
 .temp/
