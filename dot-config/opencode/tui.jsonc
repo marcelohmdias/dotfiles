@@ -1,0 +1,10 @@
+{
+	"$schema": "https://opencode.ai/tui.json",
+  "keybinds": {
+    "leader": "ctrl+o",
+    "editor_open": "<leader>e",
+    "sidebar_toggle": "<leader>b",
+    "status_view": "<leader>s"
+  },
+	"theme": "catppuccin-frappe"
+}

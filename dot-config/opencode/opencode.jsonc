@@ -1,0 +1,51 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "browsermcp": {
+      "type": "local",
+      "command": [
+        "bunx",
+        "--bun",
+        "@browsermcp/mcp@latest"
+      ],
+      "enabled": false
+    },
+    "context7": {
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}"
+      },
+      "enabled": true
+    },
+    "context-mode": {
+      "type": "local",
+      "command": [
+        "context-mode"
+      ],
+      "enabled": true
+    },
+    "figma": {
+      "type": "remote",
+      "url": "https://mcp.figma.com/mcp",
+      "enabled": true
+    },
+    "github": {
+      "type": "remote",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "headers": {
+        "Authorization": "Bearer ${env:GITHUB_MCP_API_KEY}"
+      },
+      "enabled": false
+    },
+    "playwright": {
+      "type": "local",
+      "command": [
+        "bunx",
+        "--bun",
+        "@playwright/mcp@latest"
+      ],
+      "enabled": false
+    }
+  }
+}
