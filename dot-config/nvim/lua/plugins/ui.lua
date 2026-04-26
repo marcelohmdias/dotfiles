@@ -1,0 +1,17 @@
+return {
+  { import = 'plugins.config.blink_indent' },
+  { import = 'plugins.config.bufferline' },
+  { import = 'plugins.config.dropbar' },
+  { import = 'plugins.config.edgy' },
+  { import = 'plugins.config.helpview' },
+  { import = 'plugins.config.nvim_highlight_colors' },
+  { import = 'plugins.config.lualine' },
+  { import = 'plugins.config.neominimap' },
+  { import = 'plugins.config.noice' },
+  { import = 'plugins.config.snacks_dashboard' },
+  { import = 'plugins.config.snacks_image' },
+  { import = 'plugins.config.snacks_statuscolumn' },
+  { import = 'plugins.config.snacks_win' },
+  { import = 'plugins.config.treesitter_context' },
+  { import = 'plugins.config.virt_column' },
+}

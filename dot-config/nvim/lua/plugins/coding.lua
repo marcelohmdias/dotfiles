@@ -1,0 +1,18 @@
+return {
+  { import = 'plugins.config.better_escape' },
+  { import = 'plugins.config.blink_cmp' },
+  { import = 'plugins.config.blink_pairs' },
+  { import = 'plugins.config.coerce' },
+  { import = 'plugins.config.copilot' },
+  { import = 'plugins.config.lazydev' },
+  { import = 'plugins.config.mini_ai' },
+  { import = 'plugins.config.mini_operators' },
+  { import = 'plugins.config.mini_surround' },
+  { import = 'plugins.config.neogen' },
+  { import = 'plugins.config.opencode' },
+  { import = 'plugins.config.otter' },
+  { import = 'plugins.config.template_string' },
+  { import = 'plugins.config.treesj' },
+  { import = 'plugins.config.ts_comments' },
+  { import = 'plugins.config.yanky' },
+}

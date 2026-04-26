@@ -1,0 +1,10 @@
+nvim := 'nvim'
+tests_dir := 'tests'
+
+# Run all tests
+test:
+  {{ nvim }} --headless -u {{ tests_dir }}/minimal_init.lua -c "lua require('mini.test').setup(); MiniTest.run()"
+
+# Run a single test file: just test-file tests/test_sources.lua
+test-file file:
+  {{ nvim }} --headless -u {{ tests_dir }}/minimal_init.lua -c "lua require('mini.test').setup(); MiniTest.run_file('{{ file }}')"
