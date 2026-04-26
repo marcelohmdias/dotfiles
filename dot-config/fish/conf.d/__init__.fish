@@ -42,8 +42,10 @@ end
 # Add bin directories to path.
 set -g prepath (
     path filter \
-        $HOME/.dotfiles/bin \
         $HOME/.local/bin \
+        $HOME/.local/share/mise/install \
+        $HOME/.dotfiles/bin \
+        $HOME/.local/share/bob/nvim-bin \
         $HOME/.local/share/flatpak/exports/bin
 )
 

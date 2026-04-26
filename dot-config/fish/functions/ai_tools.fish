@@ -4,6 +4,7 @@ function ai_tools --description 'Launch AI CLI tools via fzf menu'
     set -l chosen (printf '%s\n' $AI_CLI_TOOLS | fzf --border-label ' 󰚩 AI Tools ')
 
     if test -z "$chosen"
+        echo "Nothing selected"
         return
     end
 

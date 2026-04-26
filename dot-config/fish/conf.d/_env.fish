@@ -64,7 +64,9 @@ set -Ux GO_DIR $HOME/.go
 
 set -Ux GOPATH $GO_DIR
 
-set -Ux MISE_NPM_BUN true
+set -gx LANG pt_BR.UTF-8
+
+set -gx LC_ALL pt_BR.UTF-8
 
 set -Ux NPM_CONFIG_USERCONFIG $HOME/.config/npm/.npmrc
 
