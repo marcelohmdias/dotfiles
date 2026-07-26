@@ -31,6 +31,7 @@ format = "[ $symbol ]($style)[](bg:008 fg:005)"
 
 [os.symbols]
 Arch = " "
+Fedora = " "
 Macos = " "
 Pop = " "
 Ubuntu = " "
@@ -47,6 +48,9 @@ style = "bg:004 fg:015"
 truncation_length = 1
 truncation_symbol = "󰝰  …/"
 format = "[ $path ]($style)[ ](fg:004)"
+
+[directory.substitutions]
+"/var/home/marcelohmdias" = "󰋜  ~"
 
 [cmd_duration]
 min_time = 1000
