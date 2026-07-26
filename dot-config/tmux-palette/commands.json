@@ -1,0 +1,68 @@
+[
+  {
+    "icon": "",
+    "title": "Bottom",
+    "category": "Tools",
+    "action": { "tmux": "new-window -c \"#{pane_current_path}\" -n \" bottom\" \"btm 2> /dev/null\"" }
+  },
+  {
+    "icon": "",
+    "title": "BTop",
+    "category": "Tools",
+    "action": { "tmux": "new-window -c \"#{pane_current_path}\" -n \" btop\" \"btop 2> /dev/null\"" }
+  },
+  {
+    "icon": "󰚩",
+    "title": "Claude Code",
+    "category": "Tools",
+    "action": { "tmux": "new-window -c \"#{pane_current_path}\" -n \"󰚩 claude\" \"claude\"" }
+  },
+  {
+    "icon": "",
+    "title": "Gh Dash",
+    "category": "Tools",
+    "action": { "tmux": "new-window -c \"#{pane_current_path}\" -n \" gh-dash\" \"gh dash\"" }
+  },
+  {
+    "icon": "󰚩",
+    "title": "Herdr",
+    "category": "Tools",
+    "action": { "tmux": "new-window -c \"#{pane_current_path}\" -n \"󰚩 herdr\" \"herdr\"" }
+  },
+  {
+    "icon": "󰊢",
+    "title": "Hunk",
+    "category": "Tools",
+    "action": { "tmux": "new-window -c \"#{pane_current_path}\" -n \"󰊢 hunk\" \"hunk diff" }
+  },
+  {
+    "icon": "󰡨",
+    "title": "Lazydocker",
+    "category": "Tools",
+    "action": { "tmux": "new-window -c \"#{pane_current_path}\" -n \"󰡨 lazydocker\" \"lazydocker #{pane_current_path}\"" }
+  },
+  {
+    "icon": "󰊢",
+    "title": "Lazygit",
+    "category": "Tools",
+    "action": { "tmux": "new-window -c \"#{pane_current_path}\" -n \"󰊢 lazygit\" \"lazygit #{pane_current_path}\"" }
+  },
+  {
+    "icon": "󰚩",
+    "title": "Opencode",
+    "category": "Tools",
+    "action": { "tmux": "new-window -c \"#{pane_current_path}\" -n \"󰚩 opencode\" \"opencode\"" }
+  },
+  {
+    "icon": "󰊢",
+    "title": "Tig",
+    "category": "Tools",
+    "action": { "tmux": "new-window -c \"#{pane_current_path}\" -n \"󰊢 tig\" \"tig #{pane_current_path}\"" }
+  },
+  {
+    "icon": "󰇥",
+    "title": "Yazi",
+    "category": "Tools",
+    "action": { "tmux": "new-window -c \"#{pane_current_path}\" -n \"󰇥 yazi\" \"yazi\"" }
+  }
+]
