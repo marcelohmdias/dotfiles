@@ -43,7 +43,7 @@ end
 set -g prepath (
     path filter \
         $HOME/.local/bin \
-        $HOME/.local/share/mise/install \
+        $HOME/.local/share/mise/shims \
         $HOME/.dotfiles/bin \
         $HOME/.local/share/bob/nvim-bin \
         $HOME/.local/share/flatpak/exports/bin

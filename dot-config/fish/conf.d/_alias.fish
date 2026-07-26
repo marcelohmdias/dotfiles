@@ -4,9 +4,11 @@ alias .... 'cd ../../..'
 alias ..... 'cd ../../../..'
 alias ...... 'cd ../../../../..'
 
+# Brew
+alias bup 'brew update && brew upgrade && brew bundle --force && brew cleanup'
+
 # Eza
-alias ls 'eza --grid $EZA_PARAMS'
-alias l 'eza --git-ignore --grid $EZA_PARAMS'
+alias l 'eza --grid $EZA_PARAMS'
 alias ll 'eza --all --header --long $EZA_PARAMS'
 alias llm 'eza --all --header --long --sort=modified $EZA_PARAMS'
 alias la 'eza -lbhHSa --icons'

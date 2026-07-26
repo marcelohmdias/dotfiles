@@ -1,14 +1,16 @@
-set -Ux ATUIN_NOBIND true
+set -gx ATUIN_NOBIND true
 
-set -Ux BAT_THEME Catppuccin-frappe
+set -gx BAT_THEME Catppuccin-frappe
 
-set -Ux EDITOR nvim
+set -Ux BUN_CONFIG_FORCE_IPV4 1
 
-set -Ux EZA_PARAMS --git --icons --group --group-directories-first --time-style=long-iso --color-scale=all
+set -gx EDITOR nvim
 
-set -Ux FORCE_COLOR true
+set -gx EZA_PARAMS --git --icons --group --group-directories-first --time-style=long-iso --color-scale=all
 
-set -Ux FZF_DEFAULT_OPTS (printf '%s ' \
+set -gx FORCE_COLOR true
+
+set -gx FZF_DEFAULT_OPTS (printf '%s ' \
     '--ansi' \
     '--bind=btab:up,tab:down' \
     '--border=rounded' \
@@ -34,14 +36,14 @@ set -Ux FZF_DEFAULT_OPTS (printf '%s ' \
     '--reverse' \
     '--tmux=60%' | string collect)
 
-set -Ux FZF_ALT_C_OPTS (printf '%s ' \
+set -gx FZF_ALT_C_OPTS (printf '%s ' \
     '--border-label "  Last Commands "' \
     '--preview "tree -C {}"' \
     '--tac' | string collect)
 
-set -Ux FZF_COMPLETION_TRIGGER //
+set -gx FZF_COMPLETION_TRIGGER //
 
-set -Ux FZF_CTRL_R_OPTS (printf '%s ' \
+set -gx FZF_CTRL_R_OPTS (printf '%s ' \
     '--bind="ctrl-/:toggle-preview"' \
     '--bind="ctrl-y:execute-silent(echo -n {2..} | xclip -selection clipboard)+abort"' \
     '--border-label="  Last Commands "' \
@@ -49,31 +51,45 @@ set -Ux FZF_CTRL_R_OPTS (printf '%s ' \
     '--preview="echo {}"' \
     '--preview-window="down:3:hidden:wrap"' | string collect)
 
-set -Ux FZF_CTRL_T_OPTS (printf '%s ' \
+set -gx FZF_CTRL_T_OPTS (printf '%s ' \
     '--bind="ctrl-/:change-preview-window(down|hidden|)"' \
     '--border-label="  Last Commands "' \
     '--header="󰆏 Select to copy \n\n"' \
     '--preview="bat -n --color=always {} --theme=Catppuccin-frappe"' \
     '--tac' | string collect)
 
-set -Ux GIT_SSH_COMMAND ssh -o "HostName=ssh.github.com" -o "Port=443" -o "IdentityFile=~/.ssh/id_rsa" -o "User=git"
+set -gx GIT_SSH_COMMAND ssh -o "HostName=ssh.github.com" -o "Port=443" -o "IdentityFile=~/.ssh/id_rsa" -o "User=git"
 
-set -Ux GLAMOUR_STYLE $HOME/.config/glamour/frappe.json
+set -gx GLAMOUR_STYLE $HOME/.config/glamour/frappe.json
 
-set -Ux GO_DIR $HOME/.go
+set -gx GO_DIR $HOME/.go
 
-set -Ux GOPATH $GO_DIR
+set -gx GOPATH $GO_DIR
 
-set -gx LANG pt_BR.UTF-8
+set -gx HOMEBREW_NO_AUTO_UPDATE 1
 
-set -gx LC_ALL pt_BR.UTF-8
+set -gx HOMEBREW_NO_INSTALL_CLEANUP 1
 
-set -Ux NPM_CONFIG_USERCONFIG $HOME/.config/npm/.npmrc
+set -gx HOMEBREW_NO_ANALYTICS 1
 
-set -Ux STARSHIP_CONFIG $HOME/.config/starship/starship.toml
+set -Ux LANG en_US.UTF-8
 
-set -Ux STARSHIP_SHELL fish
+set -Ux LC_ALL en_US.UTF-8
 
-set -Ux TERM xterm-256color
+set -Ux LD_LIBRARY_PATH $HOME/.local/lib $LD_LIBRARY_PATH
 
-set -Ux VISUAL nvim
+set -Ux MANGOHUD_CONFIGFILE $HOME/.config/MangoHud/MangoHud.conf
+
+set -gx NPM_CONFIG_USERCONFIG $HOME/.config/npm/.npmrc
+
+set -gx OPENSPEC_TELEMETRY 0
+
+set -gx STARSHIP_CONFIG $HOME/.config/starship/starship.toml
+
+set -gx STARSHIP_SHELL fish
+
+set -gx TERM xterm-256color
+
+set -Ux TMPDIR $HOME/.cache/tmp
+
+set -gx VISUAL nvim

@@ -2,8 +2,8 @@ bind -M default \ck tsm
 bind -M insert \ck tsm
 bind -M visual \ck tsm
 
-bind -M default \cx 'clear; source ~/.config/fish/config.fish; commandline -f repaint'
-bind -M insert \cx 'clear; source ~/.config/fish/config.fish; commandline -f repaint'
+bind -M default \cx 'clear; exec fish'
+bind -M insert \cx 'clear; exec fish'
 
 bind -M default \el 'clear; commandline -f repaint'
 bind -M insert \el 'clear; commandline -f repaint'
