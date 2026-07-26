@@ -2,6 +2,7 @@ return {
   { import = 'plugins.config.better_escape' },
   { import = 'plugins.config.blink_cmp' },
   { import = 'plugins.config.blink_pairs' },
+  { import = 'plugins.config.claudecode' },
   { import = 'plugins.config.coerce' },
   { import = 'plugins.config.copilot' },
   { import = 'plugins.config.lazydev' },

@@ -2,6 +2,7 @@ local M = {}
 
 local icons = require('core.icons')
 local loader = require('core.pkg.loader')
+local release_age = require('core.pkg.release_age')
 
 -- State ----------------------------------------------------------------------
 
@@ -28,12 +29,18 @@ local specs = {}
 local git_cache = {}
 
 --- Background update check results (persists across modal open/close).
----@type table<string, boolean>
+---@type table<string, boolean|table>
 local pending_updates = {}
 
 --- Update progress state.
 ---@type { current: number, total: number }?
 local update_progress = nil
+
+---@type boolean
+local check_running = false
+
+---@type function[]
+local check_callbacks = {}
 
 --- Test results: list of { desc = { file, group, name }, state = 'Pass'|'Fail', error? }
 ---@type table[]?
@@ -58,7 +65,9 @@ local PAD_ITEM = PAD .. '  '
 
 local function setup_highlights()
   local ok, palettes = pcall(require, 'catppuccin.palettes')
-  if not ok then return end
+  if not ok then
+    return
+  end
   local C = palettes.get_palette()
 
   local groups = {
@@ -68,6 +77,7 @@ local function setup_highlights()
     MiniPackName = { fg = C.blue },
     MiniPackUpdate = { fg = C.yellow },
     MiniPackUpdating = { fg = C.sapphire },
+    MiniPackPending = { fg = C.peach },
     MiniPackSep = { fg = C.surface1 },
     MiniPackTab = { fg = C.surface2 },
     MiniPackTabActive = { fg = C.sapphire, bold = true },
@@ -92,6 +102,24 @@ local function setup_highlights()
   end
 end
 
+---@param state boolean|table|nil
+---@return { kind: 'none'|'available'|'pending', checkout?: string, pending_label?: string, latest_hash?: string, policy_label?: string }
+local function normalize_update_state(state)
+  if state == nil or state == false then
+    return { kind = 'none' }
+  end
+  if state == true then
+    return { kind = 'available' }
+  end
+  if state.kind == 'pending' then
+    return state
+  end
+  if state.kind == 'available' or state.checkout or state.has_update then
+    return vim.tbl_extend('force', { kind = 'available' }, state)
+  end
+  return { kind = 'none' }
+end
+
 -- Helpers --------------------------------------------------------------------
 
 --- Apply a highlight to a buffer line region.
@@ -108,9 +136,13 @@ end
 ---@param src? string
 ---@return string org, string repo
 local function parse_org_repo(src)
-  if not src then return '—', '—' end
+  if not src then
+    return '—', '—'
+  end
   local org, repo = src:match('([^/]+)/([^/]+)$')
-  if repo then repo = repo:gsub('%.git$', '') end
+  if repo then
+    repo = repo:gsub('%.git$', '')
+  end
   return org or '—', repo or '—'
 end
 
@@ -119,17 +151,25 @@ end
 local _scan_cache ---@type string[]?
 
 local function scan_installed()
-  if _scan_cache then return _scan_cache end
+  if _scan_cache then
+    return _scan_cache
+  end
 
   local names = {} ---@type string[]
-  if vim.fn.isdirectory(PACK_PATH) == 0 then return names end
+  if vim.fn.isdirectory(PACK_PATH) == 0 then
+    return names
+  end
 
   local handle = vim.uv.fs_scandir(PACK_PATH)
-  if not handle then return names end
+  if not handle then
+    return names
+  end
 
   while true do
     local name, ftype = vim.uv.fs_scandir_next(handle)
-    if not name then break end
+    if not name then
+      break
+    end
     if ftype == 'directory' then
       names[#names + 1] = name
     end
@@ -169,7 +209,9 @@ local function try_refs(path, refs, callback)
   local i = 0
   local function next_ref()
     i = i + 1
-    if i > #refs then return callback(nil) end
+    if i > #refs then
+      return callback(nil)
+    end
     try_rev_parse(path, refs[i], function(hash)
       if hash then
         callback(hash)
@@ -213,43 +255,87 @@ end
 ---@param info table git info table to populate
 ---@param done function callback when done
 local function fetch_git_info(path, info, done)
-  vim.system(
-    { 'git', '-C', path, 'log', '--format=%h|||%H', '-1' },
-    { text = true },
-    function(out)
-      if out.code == 0 and out.stdout then
-        local short, full = out.stdout:match('([^|]+)|||(.+)')
-        if short then info.hash = vim.trim(short) end
-        info._full_hash = full and vim.trim(full) or nil
+  vim.system({ 'git', '-C', path, 'log', '--format=%h|||%H', '-1' }, { text = true }, function(out)
+    if out.code == 0 and out.stdout then
+      local short, full = out.stdout:match('([^|]+)|||(.+)')
+      if short then
+        info.hash = vim.trim(short)
+      end
+      info._full_hash = full and vim.trim(full) or nil
+    end
+
+    vim.system({ 'git', '-C', path, 'name-rev', '--name-only', 'HEAD' }, { text = true }, function(name_out)
+      if name_out.code == 0 and name_out.stdout then
+        local ref = vim.trim(name_out.stdout)
+        if ref ~= '' and ref ~= 'undefined' then
+          ref = ref:gsub('^remotes/origin/', '')
+          ref = ref:gsub('^remotes/', '')
+          ref = ref:gsub('^origin/', '')
+          ref = ref:gsub('^tags/', '')
+          ref = ref:gsub('~%d+$', '')
+          ref = ref:gsub('%^%d+$', '')
+          info.branch = ref
+        end
       end
 
-      vim.system(
-        { 'git', '-C', path, 'name-rev', '--name-only', 'HEAD' },
-        { text = true },
-        function(name_out)
-          if name_out.code == 0 and name_out.stdout then
-            local ref = vim.trim(name_out.stdout)
-            if ref ~= '' and ref ~= 'undefined' then
-              ref = ref:gsub('^remotes/origin/', '')
-              ref = ref:gsub('^remotes/', '')
-              ref = ref:gsub('^origin/', '')
-              ref = ref:gsub('^tags/', '')
-              ref = ref:gsub('~%d+$', '')
-              ref = ref:gsub('%^%d+$', '')
-              info.branch = ref
-            end
-          end
-
-          resolve_upstream(path, function(upstream_hash)
-            if upstream_hash and info._full_hash then
-              info.has_update = info._full_hash ~= upstream_hash
-            end
-            done()
-          end)
+      resolve_upstream(path, function(upstream_hash)
+        if upstream_hash and info._full_hash then
+          info.has_update = info._full_hash ~= upstream_hash
         end
-      )
+        done()
+      end)
+    end)
+  end)
+end
+
+---@param path string
+---@param name string
+---@param callback fun(state: table)
+local function resolve_update_state(path, name, callback)
+  local spec = specs[name]
+  if spec then
+    local policy = release_age.policy(spec)
+    if policy.enabled then
+      local resolved = release_age.resolve_local(path, spec, policy)
+      if resolved.actionable and resolved.checkout then
+        return callback({
+          kind = 'available',
+          checkout = resolved.checkout,
+          latest_hash = resolved.latest_hash,
+          policy_label = resolved.policy_label,
+        })
+      end
+      if resolved.pending then
+        return callback({
+          kind = 'pending',
+          pending_label = resolved.pending_label,
+          latest_hash = resolved.latest_hash,
+          policy_label = resolved.policy_label,
+        })
+      end
     end
-  )
+  end
+
+  vim.system({ 'git', '-C', path, 'rev-parse', 'HEAD' }, { text = true }, function(local_out)
+    resolve_upstream(path, function(upstream_hash)
+      local has_update = false
+      if local_out.code == 0 and upstream_hash then
+        local local_hash = vim.trim(local_out.stdout or '')
+        has_update = local_hash ~= '' and local_hash ~= upstream_hash
+      end
+      callback({ kind = has_update and 'available' or 'none' })
+    end)
+  end)
+end
+
+---@param name string
+---@param state table
+local function apply_update_state(name, state)
+  pending_updates[name] = state.kind == 'none' and false or state
+  if git_cache[name] then
+    git_cache[name].has_update = state.kind == 'available'
+    git_cache[name].pending_label = state.kind == 'pending' and state.pending_label or nil
+  end
 end
 
 --- Refresh git cache for all installed plugins, then re-render.
@@ -257,12 +343,16 @@ local function refresh_git_cache()
   local names = scan_installed()
   local remaining = #names
 
-  if remaining == 0 then return end
+  if remaining == 0 then
+    return
+  end
 
   local function on_complete()
     remaining = remaining - 1
     if remaining == 0 then
-      vim.schedule(function() M._render() end)
+      vim.schedule(function()
+        M._render()
+      end)
     end
   end
 
@@ -276,26 +366,47 @@ local function refresh_git_cache()
     info.branch = '…'
     info.hash = '…'
     info.has_update = false
+    info.pending_label = nil
     info.updating = false
     git_cache[name] = info
 
     if org == '—' then
-      vim.system(
-        { 'git', '-C', path, 'remote', 'get-url', 'origin' },
-        { text = true },
-        function(remote_out)
-          if remote_out.code == 0 and remote_out.stdout then
-            local url = vim.trim(remote_out.stdout)
-            url = url:gsub('^git@github%.com:', 'https://github.com/')
-            local r_org, r_repo = parse_org_repo(url)
-            info.org = r_org
-            info.repo = r_repo
-          end
-          fetch_git_info(path, info, on_complete)
+      vim.system({ 'git', '-C', path, 'remote', 'get-url', 'origin' }, { text = true }, function(remote_out)
+        if remote_out.code == 0 and remote_out.stdout then
+          local url = vim.trim(remote_out.stdout)
+          url = url:gsub('^git@github%.com:', 'https://github.com/')
+          local r_org, r_repo = parse_org_repo(url)
+          info.org = r_org
+          info.repo = r_repo
         end
-      )
+        fetch_git_info(path, info, function()
+          vim.schedule(function()
+            resolve_update_state(path, name, function(state)
+              apply_update_state(name, state)
+              on_complete()
+            end)
+          end)
+        end)
+      end)
     else
-      fetch_git_info(path, info, on_complete)
+      fetch_git_info(path, info, function()
+        vim.schedule(function()
+          resolve_update_state(path, name, function(state)
+            apply_update_state(name, state)
+            on_complete()
+          end)
+        end)
+      end)
+    end
+  end
+end
+
+local function flush_check_callbacks()
+  local callbacks = check_callbacks
+  check_callbacks = {}
+  for _, cb in ipairs(callbacks) do
+    if cb then
+      cb()
     end
   end
 end
@@ -305,38 +416,39 @@ end
 --- Check for pending updates in the background (git fetch + compare).
 ---@param callback? function Called when check is complete
 local function check_updates_bg(callback)
+  if callback then
+    check_callbacks[#check_callbacks + 1] = callback
+  end
+  if check_running then
+    return
+  end
+
   local names = scan_installed()
   local remaining = #names
+  check_running = true
 
   if remaining == 0 then
-    if callback then callback() end
+    check_running = false
+    flush_check_callbacks()
     return
   end
 
   for _, name in ipairs(names) do
     local path = PACK_PATH .. '/' .. name
 
-    vim.system({ 'git', '-C', path, 'fetch', '--quiet' }, { text = true }, function()
-      vim.system({ 'git', '-C', path, 'rev-parse', 'HEAD' }, { text = true }, function(local_out)
-        resolve_upstream(path, function(upstream_hash)
-          local has_update = false
-          if local_out.code == 0 and upstream_hash then
-            local local_hash = vim.trim(local_out.stdout or '')
-            has_update = local_hash ~= '' and local_hash ~= upstream_hash
-          end
-
-          pending_updates[name] = has_update
-          if git_cache[name] then
-            git_cache[name].has_update = has_update
-          end
+    vim.system({ 'git', '-C', path, 'fetch', '--quiet', '--tags' }, { text = true }, function()
+      vim.schedule(function()
+        resolve_update_state(path, name, function(state)
+          apply_update_state(name, state)
 
           remaining = remaining - 1
           if remaining == 0 then
             vim.schedule(function()
+              check_running = false
               if win and win.buf and vim.api.nvim_buf_is_valid(win.buf) then
                 M._render()
               end
-              if callback then callback() end
+              flush_check_callbacks()
             end)
           end
         end)
@@ -349,7 +461,9 @@ end
 
 --- Run tests headless and capture results via JSON.
 local function run_tests()
-  if test_state == 'running' then return end
+  if test_state == 'running' then
+    return
+  end
   test_state = 'running'
   test_results = nil
   M._render()
@@ -359,8 +473,10 @@ local function run_tests()
   vim.system({
     vim.v.progpath,
     '--headless',
-    '-u', config_dir .. '/tests/minimal_init.lua',
-    '-l', config_dir .. '/tests/run.lua',
+    '-u',
+    config_dir .. '/tests/minimal_init.lua',
+    '-l',
+    config_dir .. '/tests/run.lua',
   }, { text = true, cwd = config_dir }, function(out)
     vim.schedule(function()
       if out.code == 0 and out.stdout and out.stdout ~= '' then
@@ -390,9 +506,10 @@ end
 ---@param spec? table
 ---@return boolean
 local function has_details(spec)
-  if not spec then return false end
-  return spec.event ~= nil or spec.cmd ~= nil or spec.keys ~= nil
-    or spec.dependencies ~= nil or spec.version ~= nil
+  if not spec then
+    return false
+  end
+  return spec.event ~= nil or spec.cmd ~= nil or spec.keys ~= nil or spec.dependencies ~= nil or spec.version ~= nil
 end
 
 --- Build a single plugin entry (line string + metadata).
@@ -402,9 +519,14 @@ local function build_plugin_entry(name)
   local is_loaded = loader.is_loaded(name) or package.loaded[name] ~= nil
   local info = git_cache[name] or {}
   local load_time = loader.load_time(name)
+  local update_state = normalize_update_state(pending_updates[name])
 
   if pending_updates[name] ~= nil then
-    info.has_update = pending_updates[name]
+    info.has_update = update_state.kind == 'available'
+    info.pending_label = update_state.kind == 'pending' and update_state.pending_label or nil
+  else
+    info.has_update = info.has_update or false
+    info.pending_label = info.pending_label or nil
   end
 
   local spec = specs[name]
@@ -413,9 +535,7 @@ local function build_plugin_entry(name)
     src_org, src_repo = info.org, info.repo
   end
 
-  local display_name = (src_org ~= '—' and src_repo ~= '—')
-      and (src_org .. '/' .. src_repo)
-    or name
+  local display_name = (src_org ~= '—' and src_repo ~= '—') and (src_org .. '/' .. src_repo) or name
 
   local has_det = has_details(spec)
 
@@ -424,6 +544,8 @@ local function build_plugin_entry(name)
   local update_str = ''
   if info.updating then
     update_str = '  updating…'
+  elseif update_state.kind == 'pending' and info.pending_label then
+    update_str = '  ' .. info.pending_label
   elseif info.has_update then
     update_str = '  update available'
   end
@@ -439,12 +561,20 @@ local function build_plugin_entry(name)
     name = name,
     line = string.format(
       '%s%s%s%s - %s - %s%s%s',
-      PAD_ITEM, bullet, display_name, details_icon, info.branch or '…', info.hash or '…', time_str, update_str
+      PAD_ITEM,
+      bullet,
+      display_name,
+      details_icon,
+      info.branch or '…',
+      info.hash or '…',
+      time_str,
+      update_str
     ),
     info = info,
     is_loaded = is_loaded,
     load_time = load_time,
     has_details = has_det,
+    update_state = update_state,
   }
 end
 
@@ -454,7 +584,9 @@ end
 ---@param hl function
 local function render_plugin_details(name, lines, hl)
   local spec = specs[name]
-  if not spec then return end
+  if not spec then
+    return
+  end
 
   local detail_pad = PAD_ITEM .. '    '
   local fields = {}
@@ -468,7 +600,9 @@ local function render_plugin_details(name, lines, hl)
   if spec.keys then
     local key_strs = {}
     for _, k in ipairs(spec.keys) do
-      if k[1] then key_strs[#key_strs + 1] = k[1] end
+      if k[1] then
+        key_strs[#key_strs + 1] = k[1]
+      end
     end
     if #key_strs > 0 then
       fields[#fields + 1] = { 'keys', table.concat(key_strs, ', ') }
@@ -518,9 +652,7 @@ local function hl_plugin_entry(entry, line_idx, hl, default_bullet_hl)
   end
 
   -- Name (org/repo)
-  local name_part = (info.org and info.repo and info.org ~= '—')
-      and (info.org .. '/' .. info.repo)
-    or entry.name
+  local name_part = (info.org and info.repo and info.org ~= '—') and (info.org .. '/' .. info.repo) or entry.name
   local name_start = line:find(name_part, 1, true)
   if name_start then
     hl(line_idx, name_start - 1, name_start - 1 + #name_part, 'MiniPackName')
@@ -562,10 +694,19 @@ local function hl_plugin_entry(entry, line_idx, hl, default_bullet_hl)
   -- Update status
   if info.updating then
     local s = line:find('updating…', 1, true)
-    if s then hl(line_idx, s - 1, #line, 'MiniPackUpdating') end
+    if s then
+      hl(line_idx, s - 1, #line, 'MiniPackUpdating')
+    end
   elseif info.has_update then
     local s = line:find('update available', 1, true)
-    if s then hl(line_idx, s - 1, #line, 'MiniPackUpdate') end
+    if s then
+      hl(line_idx, s - 1, #line, 'MiniPackUpdate')
+    end
+  elseif entry.update_state.kind == 'pending' and info.pending_label then
+    local s = line:find(info.pending_label, 1, true)
+    if s then
+      hl(line_idx, s - 1, #line, 'MiniPackPending')
+    end
   end
 end
 
@@ -576,6 +717,7 @@ local function render_plugins_tab(lines, hl)
   local names = scan_installed()
   local loaded_list = {} ---@type table[]
   local not_loaded_list = {} ---@type table[]
+  local pending_list = {} ---@type table[]
 
   local filter_lower = filter_text ~= '' and filter_text:lower() or nil
 
@@ -594,7 +736,9 @@ local function render_plugins_tab(lines, hl)
     end
 
     local entry = build_plugin_entry(name)
-    if entry.is_loaded then
+    if entry.update_state.kind == 'pending' then
+      pending_list[#pending_list + 1] = entry
+    elseif entry.is_loaded then
       loaded_list[#loaded_list + 1] = entry
     else
       not_loaded_list[#not_loaded_list + 1] = entry
@@ -610,7 +754,11 @@ local function render_plugins_tab(lines, hl)
   local startup_str = st.startuptime > 0 and string.format('    Startup: %.1fms', st.startuptime) or ''
   local stats = string.format(
     '%sTotal: %d    Loaded: %d    Not Loaded: %d%s',
-    PAD, #names, #loaded_list, #not_loaded_list, startup_str
+    PAD,
+    #names,
+    #loaded_list,
+    #not_loaded_list,
+    startup_str
   )
   lines[#lines + 1] = stats
 
@@ -634,7 +782,9 @@ local function render_plugins_tab(lines, hl)
     if su_start then
       local time_str = string.format('%.1fms', st.startuptime)
       local ts = stats:find(time_str, su_start, true)
-      if ts then hl(stat_idx, ts - 1, ts - 1 + #time_str, 'MiniPackTime') end
+      if ts then
+        hl(stat_idx, ts - 1, ts - 1 + #time_str, 'MiniPackTime')
+      end
     end
   end
 
@@ -649,9 +799,8 @@ local function render_plugins_tab(lines, hl)
 
   -- Update progress
   if update_progress then
-    local prog_line = string.format(
-      '%s%s Updating %d/%d…', PAD, icons.misc.duck, update_progress.current, update_progress.total
-    )
+    local prog_line =
+      string.format('%s%s Updating %d/%d…', PAD, icons.misc.duck, update_progress.current, update_progress.total)
     lines[#lines + 1] = prog_line
     hl(#lines - 1, 0, #prog_line, 'MiniPackUpdating')
   end
@@ -667,7 +816,9 @@ local function render_plugins_tab(lines, hl)
     local h_idx = #lines - 1
     hl(h_idx, 0, #header, 'MiniPackH2')
     local paren = header:find('%(')
-    if paren then hl(h_idx, paren - 1, #header, 'MiniPackStatNum') end
+    if paren then
+      hl(h_idx, paren - 1, #header, 'MiniPackStatNum')
+    end
 
     for _, entry in ipairs(entries) do
       local line_idx = #lines
@@ -682,6 +833,9 @@ local function render_plugins_tab(lines, hl)
 
   render_section('Loaded', loaded_list, 'MiniPackBullet')
   render_section('Not Loaded', not_loaded_list, 'MiniPackBulletNotLoaded')
+  if #pending_list > 0 then
+    render_section('Pending', pending_list, 'MiniPackBulletUpdate')
+  end
 end
 
 -- Render: Tests tab ----------------------------------------------------------
@@ -704,12 +858,18 @@ local function render_tests_tab(lines, hl)
     return
   end
 
-  if not test_results then return end
+  if not test_results then
+    return
+  end
 
   -- Stats
   local pass_count, fail_count = 0, 0
   for _, r in ipairs(test_results) do
-    if r.state == 'Pass' then pass_count = pass_count + 1 else fail_count = fail_count + 1 end
+    if r.state == 'Pass' then
+      pass_count = pass_count + 1
+    else
+      fail_count = fail_count + 1
+    end
   end
 
   local stats = string.format('%sTotal: %d    Pass: %d    Fail: %d', PAD, #test_results, pass_count, fail_count)
@@ -763,13 +923,17 @@ local function render_tests_tab(lines, hl)
       -- Group name
       if group ~= '' then
         local gs = entry_line:find(group, #PAD_ITEM + #icon + 1, true)
-        if gs then hl(line_idx, gs - 1, gs - 1 + #group, 'MiniPackTestGroup') end
+        if gs then
+          hl(line_idx, gs - 1, gs - 1 + #group, 'MiniPackTestGroup')
+        end
       end
 
       -- Test name (hash gray)
       if test_name ~= '' then
         local ns_pos = entry_line:find(test_name, #PAD_ITEM + #icon + #group + 1, true)
-        if ns_pos then hl(line_idx, ns_pos - 1, ns_pos - 1 + #test_name, 'MiniPackHash') end
+        if ns_pos then
+          hl(line_idx, ns_pos - 1, ns_pos - 1 + #test_name, 'MiniPackHash')
+        end
       end
 
       -- Error details
@@ -790,9 +954,21 @@ end
 
 -- Render (main) --------------------------------------------------------------
 
+---@param callback fun()
+local function on_main_loop(callback)
+  if vim.in_fast_event() then
+    vim.schedule(callback)
+    return
+  end
+
+  callback()
+end
+
 --- Build and render all content with highlights.
 function M._render()
-  if not win or not win.buf or not vim.api.nvim_buf_is_valid(win.buf) then return end
+  if not win or not win.buf or not vim.api.nvim_buf_is_valid(win.buf) then
+    return
+  end
 
   local buf = win.buf
   local lines = {} ---@type string[]
@@ -852,10 +1028,14 @@ end
 --- Get plugin name from current cursor line.
 ---@return string?
 local function plugin_under_cursor()
-  if not win or not win.buf then return nil end
+  if not win or not win.buf then
+    return nil
+  end
   local line = vim.api.nvim_get_current_line()
   local org_repo = line:match('([%w%.%-_]+/[%w%.%-_]+)')
-  if not org_repo then return nil end
+  if not org_repo then
+    return nil
+  end
 
   -- Match against spec src
   for name, spec in pairs(specs) do
@@ -915,13 +1095,20 @@ end
 ---@return boolean updated
 local function git_fallback_update(path)
   -- Fetch
-  local fetch = vim.system({ 'git', '-C', path, 'fetch', '--quiet', '--tags', '--force', 'origin' }, { text = true }):wait()
-  if fetch.code ~= 0 then return false end
+  local fetch = vim
+    .system({ 'git', '-C', path, 'fetch', '--quiet', '--tags', '--force', 'origin' }, { text = true })
+    :wait()
+  if fetch.code ~= 0 then
+    return false
+  end
 
-  local head_before = vim.trim((vim.system({ 'git', '-C', path, 'rev-parse', 'HEAD' }, { text = true }):wait()).stdout or '')
+  local head_before =
+    vim.trim((vim.system({ 'git', '-C', path, 'rev-parse', 'HEAD' }, { text = true }):wait()).stdout or '')
 
   -- Check if on a tag → checkout latest tag
-  local tag_out = vim.system({ 'git', '-C', path, 'describe', '--tags', '--exact-match', 'HEAD' }, { text = true }):wait()
+  local tag_out = vim
+    .system({ 'git', '-C', path, 'describe', '--tags', '--exact-match', 'HEAD' }, { text = true })
+    :wait()
   if tag_out.code == 0 and tag_out.stdout and vim.trim(tag_out.stdout) ~= '' then
     local tags = vim.system({ 'git', '-C', path, 'tag', '--sort=-v:refname', '--list' }, { text = true }):wait()
     if tags.code == 0 and tags.stdout then
@@ -945,20 +1132,24 @@ local function git_fallback_update(path)
     end
   end
 
-  local head_after = vim.trim((vim.system({ 'git', '-C', path, 'rev-parse', 'HEAD' }, { text = true }):wait()).stdout or '')
+  local head_after =
+    vim.trim((vim.system({ 'git', '-C', path, 'rev-parse', 'HEAD' }, { text = true }):wait()).stdout or '')
   return head_before ~= head_after
 end
 
 --- Update all plugins with pending updates via vim.pack.
 local function update_plugins()
   -- Collect plugins that have updates
-  local to_update = {} ---@type string[]
-  for name, has in pairs(pending_updates) do
-    if has then to_update[#to_update + 1] = name end
+  local to_update = {} ---@type table[]
+  for name, state in pairs(pending_updates) do
+    local normalized = normalize_update_state(state)
+    if normalized.kind == 'available' then
+      to_update[#to_update + 1] = { name = name, state = normalized }
+    end
   end
   for name, info in pairs(git_cache) do
     if info.has_update and not pending_updates[name] then
-      to_update[#to_update + 1] = name
+      to_update[#to_update + 1] = { name = name, state = { kind = 'available' } }
     end
   end
 
@@ -968,9 +1159,11 @@ local function update_plugins()
   end
 
   -- Mark as updating
-  for _, name in ipairs(to_update) do
+  for _, item in ipairs(to_update) do
+    local name = item.name
     if git_cache[name] then
       git_cache[name].updating = true
+      git_cache[name].pending_label = nil
     end
   end
   update_progress = { current = 0, total = #to_update }
@@ -996,21 +1189,34 @@ local function update_plugins()
       return finish()
     end
 
-    local name = to_update[i]
+    local item = to_update[i]
+    local name = item.name
     local path = PACK_PATH .. '/' .. name
+    local spec = specs[name]
 
     vim.system({ 'git', '-C', path, 'rev-parse', 'HEAD' }, { text = true }, function(before_out)
       local head_before = before_out.code == 0 and vim.trim(before_out.stdout or '') or ''
 
       vim.schedule(function()
-        local ok = pcall(vim.pack.update, { name }, { force = true })
+        local ok = true
+        if spec then
+          local policy = release_age.policy(spec)
+          if policy.enabled and item.state.checkout then
+            vim.system({ 'git', '-C', path, 'fetch', '--quiet', '--tags' }, { text = true }):wait()
+            ok = release_age.checkout(path, item.state.checkout)
+          else
+            ok = pcall(vim.pack.update, { name }, { force = true })
+          end
+        else
+          ok = pcall(vim.pack.update, { name }, { force = true })
+        end
 
         vim.system({ 'git', '-C', path, 'rev-parse', 'HEAD' }, { text = true }, function(after_out)
           vim.schedule(function()
             local head_after = after_out.code == 0 and vim.trim(after_out.stdout or '') or ''
             local changed = head_before ~= '' and head_before ~= head_after
 
-            if not changed then
+            if not changed and (not spec or not release_age.policy(spec).enabled) then
               changed = git_fallback_update(path)
             end
 
@@ -1022,15 +1228,31 @@ local function update_plugins()
 
             if git_cache[name] then
               git_cache[name].updating = false
-              git_cache[name].has_update = not changed
+              git_cache[name].has_update = false
+              git_cache[name].pending_label = nil
             end
-            pending_updates[name] = not changed
-            if update_progress then
-              update_progress.current = update_progress.current + 1
-            end
-            M._render()
 
-            update_next(i + 1)
+            local function continue_update()
+              on_main_loop(function()
+                if update_progress then
+                  update_progress.current = update_progress.current + 1
+                end
+                M._render()
+                update_next(i + 1)
+              end)
+            end
+
+            if spec then
+              vim.schedule(function()
+                resolve_update_state(path, name, function(state)
+                  apply_update_state(name, state)
+                  continue_update()
+                end)
+              end)
+            else
+              pending_updates[name] = false
+              continue_update()
+            end
           end)
         end)
       end)
@@ -1045,8 +1267,10 @@ local function check_for_updates()
   vim.notify('[MiniPack] Checking for updates…', vim.log.levels.INFO)
   check_updates_bg(function()
     local count = 0
-    for _, has in pairs(pending_updates) do
-      if has then count = count + 1 end
+    for _, state in pairs(pending_updates) do
+      if normalize_update_state(state).kind == 'available' then
+        count = count + 1
+      end
     end
     if count > 0 then
       vim.notify(string.format('[MiniPack] %d plugin(s) have updates available', count), vim.log.levels.INFO)
@@ -1096,7 +1320,9 @@ end
 
 --- Update footer border when tab changes.
 local function update_footer()
-  if not win or not win.win or not vim.api.nvim_win_is_valid(win.win) then return end
+  if not win or not win.win or not vim.api.nvim_win_is_valid(win.win) then
+    return
+  end
   vim.api.nvim_win_set_config(win.win, { footer = build_footer(), footer_pos = 'center' })
 end
 
@@ -1163,23 +1389,59 @@ function M.open(all_specs, opts)
     keys = {
       q = 'close',
       ['<Esc>'] = 'close',
-      o = { function() open_repo() end, desc = 'Open Repo' },
-      u = { function() update_plugins() end, desc = 'Update' },
-      c = { function() check_for_updates() end, desc = 'Check Updates' },
-      x = { function() vim.cmd('MiniPack clean') end, desc = 'Clean' },
+      o = {
+        function()
+          open_repo()
+        end,
+        desc = 'Open Repo',
+      },
+      u = {
+        function()
+          update_plugins()
+        end,
+        desc = 'Update',
+      },
+      c = {
+        function()
+          check_for_updates()
+        end,
+        desc = 'Check Updates',
+      },
+      x = {
+        function()
+          vim.cmd('MiniPack clean')
+        end,
+        desc = 'Clean',
+      },
       h = {
         function()
-          if win then win:close() end
+          if win then
+            win:close()
+          end
           win = nil
           vim.cmd('checkhealth vim.pack')
         end,
         desc = 'Health',
       },
-      ['<Tab>'] = { function() switch_tab() end, desc = 'Switch Tab' },
-      r = { function() if active_tab == 'tests' then run_tests() end end, desc = 'Run Tests' },
+      ['<Tab>'] = {
+        function()
+          switch_tab()
+        end,
+        desc = 'Switch Tab',
+      },
+      r = {
+        function()
+          if active_tab == 'tests' then
+            run_tests()
+          end
+        end,
+        desc = 'Run Tests',
+      },
       ['/'] = {
         function()
-          if active_tab ~= 'plugins' then return end
+          if active_tab ~= 'plugins' then
+            return
+          end
           vim.ui.input({ prompt = 'Filter: ', default = filter_text }, function(input)
             filter_text = input or ''
             M._render()
@@ -1189,7 +1451,9 @@ function M.open(all_specs, opts)
       },
       ['<CR>'] = {
         function()
-          if active_tab ~= 'plugins' then return end
+          if active_tab ~= 'plugins' then
+            return
+          end
           local name = plugin_under_cursor()
           if name then
             expanded[name] = not expanded[name]
@@ -1224,25 +1488,42 @@ function M.check(callback)
   check_updates_bg(callback)
 end
 
+---@param all_specs table<string, table>
+function M.configure(all_specs)
+  specs = all_specs
+end
+
 --- Get the number of plugins with pending updates (for statusline).
 ---@return number?
 function M.pending_count()
   local count = 0
-  for _, has in pairs(pending_updates) do
-    if has then count = count + 1 end
+  for _, state in pairs(pending_updates) do
+    if normalize_update_state(state).kind == 'available' then
+      count = count + 1
+    end
   end
   return count > 0 and count or nil
 end
 
---- Start periodic update check (every hour, first after 5 min).
+---@param all_specs? table<string, table>
+function M.update_all(all_specs)
+  if all_specs then
+    specs = all_specs
+  end
+  update_plugins()
+end
+
+--- Start periodic update check (every hour, first after 20 sec).
 function M.start_check_timer()
-  if check_timer then return end
+  if check_timer then
+    return
+  end
 
   local interval = 60 * 60 * 1000
 
   check_timer = vim.uv.new_timer()
   if check_timer then
-    check_timer:start(5 * 60 * 1000, interval, function()
+    check_timer:start(20 * 1000, interval, function()
       vim.schedule(function()
         check_updates_bg()
       end)
@@ -1262,20 +1543,43 @@ end
 -- Expose internals for testing
 M._resolve_upstream = resolve_upstream
 M._git_fallback_update = git_fallback_update
-M._pending_updates = function() return pending_updates end
-M._set_pending_updates = function(t) pending_updates = t end
-M._build_plugin_entry = function(name) return build_plugin_entry(name) end
+M._pending_updates = function()
+  return pending_updates
+end
+M._set_pending_updates = function(t)
+  pending_updates = t
+end
+M._build_plugin_entry = function(name)
+  return build_plugin_entry(name)
+end
 M._hl_plugin_entry = hl_plugin_entry
 M._render_plugins_tab = render_plugins_tab
 M._render_tests_tab = render_tests_tab
+M._on_main_loop = on_main_loop
 M._build_footer = build_footer
-M._set_git_cache = function(t) git_cache = t end
-M._set_specs = function(t) specs = t end
-M._set_test_state = function(s) test_state = s end
-M._set_test_results = function(r) test_results = r end
-M._set_active_tab = function(t) active_tab = t end
-M._set_filter_text = function(t) filter_text = t end
-M._set_expanded = function(t) expanded = t end
-M._set_update_progress = function(t) update_progress = t end
+M._set_git_cache = function(t)
+  git_cache = t
+end
+M._set_specs = function(t)
+  specs = t
+end
+M._set_test_state = function(s)
+  test_state = s
+end
+M._set_test_results = function(r)
+  test_results = r
+end
+M._set_active_tab = function(t)
+  active_tab = t
+end
+M._set_filter_text = function(t)
+  filter_text = t
+end
+M._set_expanded = function(t)
+  expanded = t
+end
+M._set_update_progress = function(t)
+  update_progress = t
+end
 
 return M

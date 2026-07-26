@@ -9,7 +9,9 @@ g.maplocalleader = '\\'
 g.transparency_enabled = true
 
 -- AI
+g.claudecode_enabled = true
 g.copilot_enabled = true
+g.opencode_enabled = true
 
 -- LSP
 g.docker_enabled = true

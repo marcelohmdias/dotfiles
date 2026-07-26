@@ -43,11 +43,12 @@ function M.setup()
 
   -- Foundation plugins (outside MiniPack)
   local foundation = {
-    { src = gh('nvim-mini/mini.misc'), name = 'mini.misc' },
+    { src = gh('nvim-mini/mini.misc'),  name = 'mini.misc' },
     { src = gh('nvim-mini/mini.icons'), name = 'mini.icons' },
-    { src = gh('folke/snacks.nvim'), name = 'snacks.nvim' },
-    { src = gh('catppuccin/nvim'), name = 'catppuccin' },
+    { src = gh('folke/snacks.nvim'),    name = 'snacks.nvim', version = 'main' },
+    { src = gh('catppuccin/nvim'),      name = 'catppuccin' },
   }
+
   local foundation_missing = {} ---@type table[]
   local fnd_opt = vim.fn.stdpath('data') .. '/site/pack/core/opt/'
   for _, spec in ipairs(foundation) do
@@ -57,6 +58,7 @@ function M.setup()
       vim.cmd.packadd(spec.name)
     end
   end
+
   if #foundation_missing > 0 then
     vim.pack.add(foundation_missing)
   end
@@ -72,6 +74,7 @@ function M.setup()
     file = {
       ['.keep'] = { lyph = '󰊢 ', hl = 'MiniIconsGrey' },
       ['devcontainer.json'] = { glyph = ' ', hl = 'MiniIconsAzure' },
+      ['vite.config.ts'] = { glyph = ' ', hl = 'MiniIconsAzure' },
     },
     filetype = {
       dotenv = { glyph = ' ', hl = 'MiniIconsYellow' },
@@ -89,7 +92,7 @@ function M.setup()
   require('config.diagnostics')
 
   -- MiniPack loads all other plugins
-  require('core.pkg').setup({ import = 'plugins', confirm = true })
+  require('core.pkg').setup({ import = 'plugins', confirm = true, minimum_release_age = '7d' })
 
   -- Expose update check for statusline (lazy to avoid loading ui module at boot)
   MiniPack.pending_count = function()

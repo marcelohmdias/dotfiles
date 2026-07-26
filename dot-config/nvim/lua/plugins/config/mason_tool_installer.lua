@@ -34,6 +34,7 @@ M.opts = {
     'sqls',
     'tailwindcss-language-server',
     'taplo',
+    'tsgo',
     'vtsls',
     'vue-language-server',
     'yaml-language-server',

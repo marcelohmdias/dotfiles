@@ -24,12 +24,14 @@ local function make_git_repos(opts)
   -- Configure git user in clone
   vim.system({ 'git', '-C', clone, 'config', 'user.email', 'test@test.com' }, { text = true }):wait()
   vim.system({ 'git', '-C', clone, 'config', 'user.name', 'Test' }, { text = true }):wait()
+  vim.system({ 'git', '-C', clone, 'config', 'commit.gpgsign', 'false' }, { text = true }):wait()
 
   -- Initial commit on main
   vim.fn.writefile({ 'init' }, clone .. '/file.txt')
   vim.system({ 'git', '-C', clone, 'add', '.' }, { text = true }):wait()
   vim.system({ 'git', '-C', clone, 'commit', '-m', 'init' }, { text = true }):wait()
   vim.system({ 'git', '-C', clone, 'push', 'origin', 'main' }, { text = true }):wait()
+  vim.system({ 'git', '-C', clone, 'fetch', '--quiet', '--tags', 'origin' }, { text = true }):wait()
 
   if opts.tags then
     for _, tag in ipairs(opts.tags) do
@@ -39,13 +41,16 @@ local function make_git_repos(opts)
       vim.system({ 'git', '-C', clone, 'tag', tag }, { text = true }):wait()
     end
     vim.system({ 'git', '-C', clone, 'push', 'origin', '--tags', 'main' }, { text = true }):wait()
+    vim.system({ 'git', '-C', clone, 'fetch', '--quiet', '--tags', 'origin' }, { text = true }):wait()
   end
 
   return {
     remote = remote,
     clone = clone,
     tmp = tmp,
-    cleanup = function() vim.fn.delete(tmp, 'rf') end,
+    cleanup = function()
+      vim.fn.delete(tmp, 'rf')
+    end,
   }
 end
 
@@ -61,16 +66,17 @@ T['resolve_upstream']['tagged HEAD returns latest tag commit hash'] = function()
   -- Checkout old tag (detached HEAD, like vim.pack does)
   vim.system({ 'git', '-C', repos.clone, 'checkout', 'v1.0.0' }, { text = true }):wait()
 
-  local expected = vim.trim(
-    (vim.system({ 'git', '-C', repos.clone, 'rev-parse', 'v2.0.0^{commit}' }, { text = true }):wait()).stdout
-  )
+  local expected =
+    vim.trim((vim.system({ 'git', '-C', repos.clone, 'rev-parse', 'v2.0.0^{commit}' }, { text = true }):wait()).stdout)
 
   local result, done = nil, false
   ui._resolve_upstream(repos.clone, function(hash)
     result = hash
     done = true
   end)
-  vim.wait(5000, function() return done end)
+  vim.wait(5000, function()
+    return done
+  end)
 
   MiniTest.expect.equality(result, expected)
   repos.cleanup()
@@ -81,16 +87,16 @@ T['resolve_upstream']['tagged HEAD already on latest returns HEAD hash'] = funct
 
   vim.system({ 'git', '-C', repos.clone, 'checkout', 'v2.0.0' }, { text = true }):wait()
 
-  local head = vim.trim(
-    (vim.system({ 'git', '-C', repos.clone, 'rev-parse', 'HEAD' }, { text = true }):wait()).stdout
-  )
+  local head = vim.trim((vim.system({ 'git', '-C', repos.clone, 'rev-parse', 'HEAD' }, { text = true }):wait()).stdout)
 
   local result, done = nil, false
   ui._resolve_upstream(repos.clone, function(hash)
     result = hash
     done = true
   end)
-  vim.wait(5000, function() return done end)
+  vim.wait(5000, function()
+    return done
+  end)
 
   -- Latest tag is v2.0.0, HEAD is v2.0.0 → same hash
   MiniTest.expect.equality(result, head)
@@ -102,16 +108,17 @@ T['resolve_upstream']['branch detached HEAD falls back to origin/main'] = functi
 
   vim.system({ 'git', '-C', repos.clone, 'checkout', '--detach', 'HEAD' }, { text = true }):wait()
 
-  local expected = vim.trim(
-    (vim.system({ 'git', '-C', repos.clone, 'rev-parse', 'origin/main' }, { text = true }):wait()).stdout
-  )
+  local expected =
+    vim.trim((vim.system({ 'git', '-C', repos.clone, 'rev-parse', 'origin/main' }, { text = true }):wait()).stdout)
 
   local result, done = nil, false
   ui._resolve_upstream(repos.clone, function(hash)
     result = hash
     done = true
   end)
-  vim.wait(5000, function() return done end)
+  vim.wait(5000, function()
+    return done
+  end)
 
   MiniTest.expect.equality(result, expected)
   repos.cleanup()
@@ -127,7 +134,9 @@ T['resolve_upstream']['empty repo returns nil'] = function()
     result = hash
     done = true
   end)
-  vim.wait(5000, function() return done end)
+  vim.wait(5000, function()
+    return done
+  end)
 
   MiniTest.expect.equality(result, nil)
   vim.fn.delete(tmp, 'rf')
@@ -146,12 +155,9 @@ T['git_fallback_update']['updates outdated tag to latest'] = function()
 
   MiniTest.expect.equality(changed, true)
 
-  local head = vim.trim(
-    (vim.system({ 'git', '-C', repos.clone, 'rev-parse', 'HEAD' }, { text = true }):wait()).stdout
-  )
-  local expected = vim.trim(
-    (vim.system({ 'git', '-C', repos.clone, 'rev-parse', 'v2.0.0^{commit}' }, { text = true }):wait()).stdout
-  )
+  local head = vim.trim((vim.system({ 'git', '-C', repos.clone, 'rev-parse', 'HEAD' }, { text = true }):wait()).stdout)
+  local expected =
+    vim.trim((vim.system({ 'git', '-C', repos.clone, 'rev-parse', 'v2.0.0^{commit}' }, { text = true }):wait()).stdout)
   MiniTest.expect.equality(head, expected)
   repos.cleanup()
 end
@@ -161,15 +167,15 @@ T['git_fallback_update']['updates outdated branch to latest remote'] = function(
 
   -- Detach HEAD
   vim.system({ 'git', '-C', repos.clone, 'checkout', '--detach', 'HEAD' }, { text = true }):wait()
-  local head_before = vim.trim(
-    (vim.system({ 'git', '-C', repos.clone, 'rev-parse', 'HEAD' }, { text = true }):wait()).stdout
-  )
+  local head_before =
+    vim.trim((vim.system({ 'git', '-C', repos.clone, 'rev-parse', 'HEAD' }, { text = true }):wait()).stdout)
 
   -- Push new commit to remote via a second clone
   local tmp2 = vim.fn.tempname()
   vim.system({ 'git', 'clone', repos.remote, tmp2 }, { text = true }):wait()
   vim.system({ 'git', '-C', tmp2, 'config', 'user.email', 'test@test.com' }, { text = true }):wait()
   vim.system({ 'git', '-C', tmp2, 'config', 'user.name', 'Test' }, { text = true }):wait()
+  vim.system({ 'git', '-C', tmp2, 'config', 'commit.gpgsign', 'false' }, { text = true }):wait()
   vim.fn.writefile({ 'new content' }, tmp2 .. '/file2.txt')
   vim.system({ 'git', '-C', tmp2, 'add', '.' }, { text = true }):wait()
   vim.system({ 'git', '-C', tmp2, 'commit', '-m', 'new commit' }, { text = true }):wait()
@@ -180,9 +186,8 @@ T['git_fallback_update']['updates outdated branch to latest remote'] = function(
 
   MiniTest.expect.equality(changed, true)
 
-  local head_after = vim.trim(
-    (vim.system({ 'git', '-C', repos.clone, 'rev-parse', 'HEAD' }, { text = true }):wait()).stdout
-  )
+  local head_after =
+    vim.trim((vim.system({ 'git', '-C', repos.clone, 'rev-parse', 'HEAD' }, { text = true }):wait()).stdout)
   MiniTest.expect.equality(head_before ~= head_after, true)
   repos.cleanup()
 end
@@ -231,6 +236,14 @@ end
 
 T['pending_count']['single update'] = function()
   ui._set_pending_updates({ a = true })
+  MiniTest.expect.equality(ui.pending_count(), 1)
+end
+
+T['pending_count']['ignores cooldown pending entries'] = function()
+  ui._set_pending_updates({
+    a = { kind = 'pending', pending_label = 'available in 2 dias' },
+    b = true,
+  })
   MiniTest.expect.equality(ui.pending_count(), 1)
 end
 

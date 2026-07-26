@@ -1,18 +1,14 @@
 local M = { gh('nickjvandyke/opencode.nvim') }
 
+M.enabled = vim.g.opencode_enabled
+
 M.config = function(_, opts)
   ---@type opencode.Opts
   vim.g.opencode_opts = vim.tbl_deep_extend('force', {
     server = {
       start = function()
         Snacks.terminal.open('opencode --port', {
-          win = {
-            position = 'right',
-            enter = false,
-            on_win = function(win)
-              require('opencode.terminal').setup(win.win)
-            end,
-          },
+          win = { position = 'right', enter = false },
         })
       end,
     },

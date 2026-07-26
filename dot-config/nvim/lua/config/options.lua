@@ -57,7 +57,7 @@ opt.foldlevel = 99
 opt.foldlevelstart = 100
 opt.foldnestmax = 10
 opt.foldtext = ''
-opt.fillchars = { diff = '╱', eob = ' ', fold = ' ', foldclose = '>', foldopen = 'v', foldsep = ' ' }
+opt.fillchars = { diff = '╱', eob = ' ', fold = ' ', foldclose = '', foldopen = '', foldsep = ' ' }
 
 -- Files
 opt.autoread = true
@@ -77,6 +77,8 @@ opt.winborder = vim.g.border
 opt.winminwidth = 5
 
 -- Misc
+opt.encoding = 'utf-8'
+opt.fileencoding = 'utf-8'
 opt.formatexpr = 'v:lua.MiniPack.formatexpr()'
 opt.formatoptions = 'jcroqlnt'
 opt.grepformat = '%f:%l:%c:%m'

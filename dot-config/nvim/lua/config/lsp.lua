@@ -51,17 +51,14 @@ autocmd('LspAttach', {
     lsp_map('textDocument/hover', 'n', '<leader>cl', function() Snacks.picker.lsp_config() end, { desc = 'Lsp Info' }, buf)
 
     -- Go to
-    lsp_map('textDocument/definition', 'n', 'gd', vim.lsp.buf.definition, { desc = 'Goto Definition' }, buf)
-    lsp_map('textDocument/declaration', 'n', 'gD', vim.lsp.buf.declaration, { desc = 'Goto Declaration' }, buf)
-    lsp_map('textDocument/references', 'n', 'gr', vim.lsp.buf.references, { desc = 'References', nowait = true }, buf)
-    lsp_map('textDocument/implementation', 'n', 'gI', vim.lsp.buf.implementation, { desc = 'Goto Implementation' }, buf)
-    lsp_map('textDocument/typeDefinition', 'n', 'gy', vim.lsp.buf.type_definition, { desc = 'Goto T[y]pe Definition' }, buf)
+    lsp_map('textDocument/definition', 'n', 'gd', function() Snacks.picker.lsp_definitions() end, { desc = 'Goto Definition' }, buf)
+    lsp_map('textDocument/declaration', 'n', 'gD', function () Snacks.picker.lsp_declarations() end, { desc = 'Goto Declaration' }, buf)
+    lsp_map('textDocument/references', 'n', 'gr', function () Snacks.picker.lsp_references() end, { desc = 'Goto References', nowait = true }, buf)
+    lsp_map('textDocument/implementation', 'n', 'gI', function () Snacks.picker.lsp_implementations() end, { desc = 'Goto Implementations' }, buf)
+    lsp_map('textDocument/typeDefinition', 'n', 'gy', function () Snacks.picker.lsp_type_definitions() end, { desc = 'Goto Type Definition' }, buf)
 
-    -- Signature Help
+    -- Signature Help (insert mode handled by blink.cmp via <c-k>)
     lsp_map('textDocument/signatureHelp', 'n', '<leader>ck', function()
-      return vim.lsp.buf.signature_help()
-    end, { desc = 'Signature Help' }, buf)
-    lsp_map('textDocument/signatureHelp', 'i', '<c-k>', function()
       return vim.lsp.buf.signature_help()
     end, { desc = 'Signature Help' }, buf)
 
@@ -146,7 +143,6 @@ local servers = {
   'lua_ls',
   'marksman',
   'prismals',
-  'spellwand',
   'sqls',
   'tailwindcss',
   'taplo',

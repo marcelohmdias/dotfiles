@@ -101,6 +101,21 @@ T['build_plugin_entry()']['respects pending_updates over git_cache'] = function(
   child.stop()
 end
 
+T['build_plugin_entry()']['shows pending label without update available'] = function()
+  local child = make_child()
+  child.lua([[
+    _G.ui._set_specs({ ['foo.nvim'] = { src = 'https://github.com/org/foo.nvim' } })
+    _G.ui._set_git_cache({ ['foo.nvim'] = { org = 'org', repo = 'foo.nvim', branch = 'main', hash = 'abc1234', has_update = true } })
+    _G.ui._set_pending_updates({ ['foo.nvim'] = { kind = 'pending', pending_label = 'available in 3 dias' } })
+    _G._entry = _G.ui._build_plugin_entry('foo.nvim')
+  ]])
+  local entry = child.lua_get('_G._entry')
+
+  MiniTest.expect.equality(entry.line:find('available in 3 dias', 1, true) ~= nil, true)
+  MiniTest.expect.equality(entry.line:find('update available', 1, true) == nil, true)
+  child.stop()
+end
+
 -- hl_plugin_entry (real highlight calls) -------------------------------------
 
 T['hl_plugin_entry()'] = MiniTest.new_set()
@@ -147,9 +162,35 @@ T['hl_plugin_entry()']['uses update highlight when has_update'] = function()
   local hls = child.lua_get('_G._hls')
 
   local groups = {}
-  for _, h in ipairs(hls) do groups[h.group] = true end
+  for _, h in ipairs(hls) do
+    groups[h.group] = true
+  end
   MiniTest.expect.equality(groups['MiniPackBulletUpdate'], true)
   MiniTest.expect.equality(groups['MiniPackUpdate'], true)
+  child.stop()
+end
+
+T['hl_plugin_entry()']['uses pending highlight for cooldown label'] = function()
+  local child = make_child()
+  child.lua([[
+    _G.ui._set_specs({ ['foo.nvim'] = { src = 'https://github.com/org/foo.nvim' } })
+    _G.ui._set_git_cache({ ['foo.nvim'] = { org = 'org', repo = 'foo.nvim', branch = 'main', hash = 'abc1234' } })
+    _G.ui._set_pending_updates({ ['foo.nvim'] = { kind = 'pending', pending_label = 'available in 3 dias' } })
+    local entry = _G.ui._build_plugin_entry('foo.nvim')
+
+    _G._hls = {}
+    local function hl(_, _, _, group)
+      _G._hls[#_G._hls + 1] = { group = group }
+    end
+    _G.ui._hl_plugin_entry(entry, 0, hl, 'MiniPackBullet')
+  ]])
+  local hls = child.lua_get('_G._hls')
+
+  local groups = {}
+  for _, h in ipairs(hls) do
+    groups[h.group] = true
+  end
+  MiniTest.expect.equality(groups['MiniPackPending'], true)
   child.stop()
 end
 
@@ -168,7 +209,9 @@ T['render_tests_tab()']['idle state shows run prompt'] = function()
 
   local found = false
   for _, l in ipairs(lines) do
-    if l:find('Press  r  to run tests', 1, true) then found = true end
+    if l:find('Press  r  to run tests', 1, true) then
+      found = true
+    end
   end
   MiniTest.expect.equality(found, true)
   child.stop()
@@ -186,7 +229,9 @@ T['render_tests_tab()']['running state shows duck icon'] = function()
 
   local found = false
   for _, l in ipairs(lines) do
-    if l:find(duck, 1, true) and l:find('Running tests', 1, true) then found = true end
+    if l:find(duck, 1, true) and l:find('Running tests', 1, true) then
+      found = true
+    end
   end
   MiniTest.expect.equality(found, true)
   child.stop()
@@ -232,12 +277,51 @@ T['render_tests_tab()']['groups results by file'] = function()
   -- Find file headers
   local spec_idx, loader_idx
   for i, l in ipairs(lines) do
-    if l:find('test_spec.lua', 1, true) and not l:find('normalize', 1, true) then spec_idx = i end
-    if l:find('test_loader.lua', 1, true) and not l:find('is_loaded', 1, true) then loader_idx = i end
+    if l:find('test_spec.lua', 1, true) and not l:find('normalize', 1, true) then
+      spec_idx = i
+    end
+    if l:find('test_loader.lua', 1, true) and not l:find('is_loaded', 1, true) then
+      loader_idx = i
+    end
   end
   MiniTest.expect.equality(spec_idx ~= nil, true)
   MiniTest.expect.equality(loader_idx ~= nil, true)
   MiniTest.expect.equality(spec_idx < loader_idx, true)
+  child.stop()
+end
+
+-- on_main_loop (real function) -------------------------------------------------
+
+T['on_main_loop()'] = MiniTest.new_set()
+
+T['on_main_loop()']['schedules callback during fast events'] = function()
+  local child = make_child()
+  child.lua([[
+    local orig_in_fast_event = vim.in_fast_event
+    local orig_schedule = vim.schedule
+
+    _G._scheduled = 0
+    _G._ran = false
+
+    vim.in_fast_event = function()
+      return true
+    end
+
+    vim.schedule = function(callback)
+      _G._scheduled = _G._scheduled + 1
+      callback()
+    end
+
+    _G.ui._on_main_loop(function()
+      _G._ran = true
+    end)
+
+    vim.in_fast_event = orig_in_fast_event
+    vim.schedule = orig_schedule
+  ]])
+
+  MiniTest.expect.equality(child.lua_get('_G._scheduled'), 1)
+  MiniTest.expect.equality(child.lua_get('_G._ran'), true)
   child.stop()
 end
 

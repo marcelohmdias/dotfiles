@@ -6,7 +6,7 @@ M.dependencies = {
   gh('fang2hou/blink-copilot'),
   gh('Kaiser-Yang/blink-cmp-git'),
   gh('rafamadriz/friendly-snippets'),
-  gh('saghen/blink.download'),
+  gh('saghen/blink.lib'),
   gh('xzbdmw/colorful-menu.nvim'),
 }
 M.event = { 'InsertEnter', 'CmdlineEnter' }
@@ -28,15 +28,16 @@ M.opts = {
         end,
       },
     },
-    keymap = {
-      preset = 'cmdline',
-      ['<Left>'] = false,
-      ['<Right>'] = false,
-    },
+    keymap = { preset = 'cmdline' },
   },
   completion = {
     accept = {
       auto_brackets = { enabled = true },
+    },
+    ghost_text = { enabled = true },
+    trigger = {
+      show_on_trigger_character = true,
+      show_on_blocked_trigger_characters = { ' ', '\n', '\t' },
     },
     documentation = {
       auto_show = false,
@@ -91,12 +92,15 @@ M.opts = {
     },
   },
   keymap = {
-    preset = 'enter',
+    preset = 'super-tab',
     ['<C-y>'] = { 'select_and_accept' },
   },
   signature = {
     enabled = true,
-    window = { border = vim.g.border },
+    window = {
+      border = vim.g.border,
+      show_documentation = true,
+    },
   },
   sources = {
     default = { 'lsp', 'path', 'snippets', 'buffer', 'copilot', 'markdown' },
@@ -104,6 +108,7 @@ M.opts = {
       gitcommit = { inherit_defaults = true, 'git' },
       lua = { inherit_defaults = true, 'lazydev' },
       markdown = { inherit_defaults = true, 'git' },
+      opencode_ask = { 'lsp', 'buffer' },
     },
     providers = {
       copilot = {

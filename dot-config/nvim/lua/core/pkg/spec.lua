@@ -13,6 +13,8 @@ local KNOWN_FIELDS = {
   init = true,
   keys = true,
   lazy = true,
+  minimum_release_age = true,
+  minimum_release_age_downgrade = true,
   name = true,
   opts = true,
   src = true,
@@ -32,8 +34,12 @@ end
 --- Derive name from src (last path segment, strip .git).
 ---@param spec table
 local function normalize_name(spec)
-  if spec.name then return end
-  if not spec.src then return end
+  if spec.name then
+    return
+  end
+  if not spec.src then
+    return
+  end
   local name = spec.src:match('/([^/]+)%.git$') or spec.src:match('/([^/]+)$')
   spec.name = name
 end
@@ -70,7 +76,9 @@ end
 --- Each entry becomes { src = url, name = name }.
 ---@param spec table
 local function normalize_dependencies(spec)
-  if not spec.dependencies then return end
+  if not spec.dependencies then
+    return
+  end
   local deps = type(spec.dependencies) == 'string' and { spec.dependencies } or spec.dependencies
   local normalized = {}
   for _, dep in ipairs(deps) do
@@ -103,7 +111,9 @@ local CUSTOM_EVENTS = { VeryLazy = true, LazyFile = true }
 --- Expand custom events (VeryLazy, LazyFile) to 'User X' pattern.
 ---@param spec table
 local function normalize_events(spec)
-  if not spec.event then return end
+  if not spec.event then
+    return
+  end
   for i, event in ipairs(spec.event) do
     if CUSTOM_EVENTS[event] then
       spec.event[i] = 'User ' .. event
@@ -114,7 +124,9 @@ end
 --- Convert ft field to FileType events.
 ---@param spec table
 local function normalize_ft(spec)
-  if not spec.ft then return end
+  if not spec.ft then
+    return
+  end
   local fts = type(spec.ft) == 'string' and { spec.ft } or spec.ft
   spec.event = spec.event or {}
   for _, ft in ipairs(fts) do
@@ -141,10 +153,14 @@ end
 ---@return boolean
 function M.validate(spec)
   -- Import-only entries are valid without src
-  if spec.import then return true end
+  if spec.import then
+    return true
+  end
 
   -- No-src config specs are valid (foundation plugins)
-  if not spec.src and (spec.config or spec.opts) then return true end
+  if not spec.src and (spec.config or spec.opts) then
+    return true
+  end
 
   if not spec.src then
     vim.notify('[MiniPack] Spec missing "src": ' .. vim.inspect(spec), vim.log.levels.WARN)
@@ -192,6 +208,8 @@ end
 --- List fields that are concatenated (not overwritten) during merge.
 local LIST_FIELDS = { 'cmd', 'dependencies', 'event', 'keys' }
 
+local OVERRIDE_FIELDS = { 'minimum_release_age', 'minimum_release_age_downgrade' }
+
 --- Merge a secondary spec into a primary spec (in-place).
 --- opts: deep-merged. List fields (keys, event, cmd, dependencies): concatenated.
 --- Scalar fields (src, name, config, init, build, lazy): primary wins.
@@ -218,6 +236,12 @@ function M.merge(primary, secondary)
     if secondary[field] then
       primary[field] = primary[field] or {}
       vim.list_extend(primary[field], secondary[field])
+    end
+  end
+
+  for _, field in ipairs(OVERRIDE_FIELDS) do
+    if secondary[field] ~= nil then
+      primary[field] = secondary[field]
     end
   end
 end

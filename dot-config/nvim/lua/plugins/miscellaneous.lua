@@ -18,11 +18,10 @@ return {
   { import = 'plugins.config.render_markdown' },
   { import = 'plugins.config.schemastore' },
   { import = 'plugins.config.showkeys' },
-  { import = 'plugins.config.spellwand' },
   { import = 'plugins.config.tailwind_fold' },
   { import = 'plugins.config.treesitter' },
   { import = 'plugins.config.treesitter_textobjects' },
   { import = 'plugins.config.ts_autotag' },
   { import = 'plugins.config.ts_error_translator' },
-  { import = 'plugins.config.vim_wakatime' },
+  -- { import = 'plugins.config.vim_wakatime' },
 }
