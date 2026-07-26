@@ -1,0 +1,4 @@
+[tasks.update]
+description = 'Update system dependencies'
+run = "~/.dotfiles/scripts/commands/update.sh"
+alias = 'up'

@@ -5,36 +5,10 @@ NODE_ENV = "development"
 experimental = true
 go_default_packages_file = "~/.go"
 idiomatic_version_file_enable_tools = ["npm"]
+lockfile = true
+minimum_release_age = "3d"
+minimum_release_age_excludes = ["herdr"]
 
 [settings.npm]
 bun = false
 package_manager = "aube"
-
-[tools]
-aube = "latest"
-bun = "latest"
-deno = "latest"
-go = "latest"
-hk = "latest"
-java = "temurin-21.0.3"
-lefthook = "latest"
-lua = "5.1.5"
-maven = "3.8.1"
-node = "lts"
-pkl = "latest"
-rust = "latest"
-usage = "latest"
-"cargo:koji" = "latest"
-"github:anomalyco/opencode" = "latest"
-"npm:@anthropic-ai/claude-code" = "latest"
-"npm:@openai/codex" = "latest"
-"npm:@github/copilot" = "latest"
-"npm:@charmland/crush" = "latest"
-"npm:@google/gemini-cli" = "latest"
-"npm:context-mode" = "latest"
-"npm:cavemem" = "latest"
-
-[tasks.update]
-description = 'Update system dependencies'
-run = "~/.dotfiles/scripts/commands/update.sh"
-alias = 'up'
