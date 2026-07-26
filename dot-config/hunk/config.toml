@@ -1,0 +1,4 @@
+line_numbers = true
+theme = "catppuccin-frappe"
+transparent_background = false
+vcs = "git"

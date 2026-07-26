@@ -1,0 +1,68 @@
+onboarding = false
+
+[experimental]
+kitty_graphics = true
+pane_history = true
+
+[keys]
+focus_pane_left = "ctrl+h"
+focus_pane_down = "ctrl+j"
+focus_pane_up = "ctrl+k"
+focus_pane_right = "ctrl+l"
+
+[theme]
+name = "catppuccin"
+auto_switch = false
+
+[theme.custom]
+accent = "#8caaee"
+panel_bg = "#292c3c"
+surface0 = "#414559"
+surface1 = "#51576d"
+surface_dim = "#303446"
+overlay0 = "#737994"
+overlay1 = "#838ba7"
+text = "#c6d0f5"
+subtext0 = "#a5adce"
+mauve = "#ca9ee6"
+green = "#a6d189"
+yellow = "#e5c890"
+red = "#e78284"
+blue = "#8caaee"
+teal = "#81c8be"
+peach = "#ef9f76"
+
+[ui]
+accent = "#8caaee"
+confirm_close = true
+hide_tab_bar_when_single_tab = true
+pane_borders = true
+pane_gaps = true
+show_agent_labels_on_pane_borders = false
+sidebar_collapsed_mode = "hidden"
+sidebar_max_width = 60
+sidebar_min_width = 30
+sidebar_width = 40
+
+[ui.sidebar.agents]
+row_gap = 1
+rows = [
+  ["state_icon", "workspace", "tab"],
+  ["agent", "state_text"],
+]
+
+[ui.sidebar.spaces]
+row_gap = 1
+rows = [
+  ["state_icon", "workspace"],
+  ["branch", "git_status"],
+]
+
+[ui.sound]
+enabled = true
+
+[ui.toast]
+delivery = "terminal"
+
+[update]
+channel = "stable"
