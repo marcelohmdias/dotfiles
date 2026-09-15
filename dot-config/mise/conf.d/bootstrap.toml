@@ -6,8 +6,6 @@
 "brew:git" = "latest"
 "brew:inxi" = "latest"
 "brew:poppler" = "latest"
-"brew:serie" = "latest"
-"brew:sesh" = "latest"
 "brew:sevenzip" = "latest"
 "brew:stow" = "latest"
 "brew:tig" = "latest"
