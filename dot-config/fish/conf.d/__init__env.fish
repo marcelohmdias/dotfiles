@@ -72,11 +72,11 @@ set -gx HOMEBREW_NO_INSTALL_CLEANUP 1
 
 set -gx HOMEBREW_NO_ANALYTICS 1
 
-set -Ux LANG en_US.UTF-8
+set -gx LANG en_US.UTF-8
 
-set -Ux LC_ALL en_US.UTF-8
+set -gx LC_ALL en_US.UTF-8
 
-set -Ux LD_LIBRARY_PATH $HOME/.local/lib $LD_LIBRARY_PATH
+set -gx LD_LIBRARY_PATH $HOME/.local/lib $LD_LIBRARY_PATH
 
 set -Ux MANGOHUD_CONFIGFILE $HOME/.config/MangoHud/MangoHud.conf
 
@@ -90,6 +90,6 @@ set -gx STARSHIP_SHELL fish
 
 set -gx TERM xterm-256color
 
-set -Ux TMPDIR $HOME/.cache/tmp
+set -gx TMPDIR $HOME/.cache/tmp
 
 set -gx VISUAL nvim

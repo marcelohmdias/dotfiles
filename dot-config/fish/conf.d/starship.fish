@@ -1,10 +1,15 @@
 status is-interactive || exit
 
 if type -q starship
-    if not test -r $__fish_cache_dir/starship_init.fish
-        starship init fish >$__fish_cache_dir/starship_init.fish
+    set -l tool_version (starship --version 2>/dev/null | string match -r '[\d.]+' | head -1)
+    if test -z "$tool_version"
+        set tool_version "dev"
     end
-    source $__fish_cache_dir/starship_init.fish
+    set -l cache_file $__fish_cache_dir/starship_init_$tool_version.fish
+    if not test -r $cache_file
+        starship init fish >$cache_file
+    end
+    source $cache_file
 else
     echo "starship is not installed"
 end

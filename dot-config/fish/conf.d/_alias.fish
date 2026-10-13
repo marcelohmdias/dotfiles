@@ -5,7 +5,7 @@ alias ..... 'cd ../../../..'
 alias ...... 'cd ../../../../..'
 
 # Brew
-alias bup 'brew update && brew upgrade && brew bundle --force && brew cleanup'
+alias bup 'brew update && brew upgrade && brew bundle --force && brew cleanup && update-completions'
 
 # Eza
 alias l 'eza --grid $EZA_PARAMS'
