@@ -14,7 +14,7 @@ M.keys = {
 ---@module 'mini.surround'
 ---@type MiniSurround.config
 M.opts = {
-  mappings = ({
+  mappings = {
     add = 'gsa',
     delete = 'gsd',
     find = 'gsf',
@@ -22,7 +22,7 @@ M.opts = {
     highlight = 'gsh',
     replace = 'gsr',
     update_n_lines = 'gsn',
-  }),
+  },
 }
 
 return M

@@ -43,10 +43,10 @@ function M.setup()
 
   -- Foundation plugins (outside MiniPack)
   local foundation = {
-    { src = gh('nvim-mini/mini.misc'),  name = 'mini.misc' },
+    { src = gh('nvim-mini/mini.misc'), name = 'mini.misc' },
     { src = gh('nvim-mini/mini.icons'), name = 'mini.icons' },
-    { src = gh('folke/snacks.nvim'),    name = 'snacks.nvim', version = 'main' },
-    { src = gh('catppuccin/nvim'),      name = 'catppuccin' },
+    { src = gh('folke/snacks.nvim'), name = 'snacks.nvim', version = 'main' },
+    { src = gh('catppuccin/nvim'), name = 'catppuccin' },
   }
 
   local foundation_missing = {} ---@type table[]
@@ -72,7 +72,7 @@ function M.setup()
   -- Init mini.icons
   require('mini.icons').setup({
     file = {
-      ['.keep'] = { lyph = '󰊢 ', hl = 'MiniIconsGrey' },
+      ['.keep'] = { glyph = '󰊢 ', hl = 'MiniIconsGrey' },
       ['devcontainer.json'] = { glyph = ' ', hl = 'MiniIconsAzure' },
       ['vite.config.ts'] = { glyph = ' ', hl = 'MiniIconsAzure' },
     },
@@ -101,7 +101,7 @@ function M.setup()
 
   -- Post-plugin config
   require('config.keymaps')
-  require('config.lsp')
+  require('config.lsp').setup()
 end
 
 return M

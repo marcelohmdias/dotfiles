@@ -1,12 +1,12 @@
 local M = {}
 
 M.alerts = {
-  attention = ' ',
+  attention = '󰗖 ',
   error = '󰅚 ',
   hint = ' ',
-  info = ' ',
-  question = ' ',
-  warn = ' ',
+  info = '󰋽 ',
+  question = ' ',
+  warn = ' ',
 }
 
 M.dap = {

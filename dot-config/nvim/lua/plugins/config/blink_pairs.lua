@@ -1,6 +1,6 @@
 local M = { gh('saghen/blink.pairs') }
 
-M.dependencies = { gh('saghen/blink.download') }
+M.dependencies = { gh('saghen/blink.download'), gh('saghen/blink.lib') }
 
 M.event = 'LazyFile'
 

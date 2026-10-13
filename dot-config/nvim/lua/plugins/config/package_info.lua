@@ -34,13 +34,55 @@ M.opts = function()
 end
 
 M.keys = {
-  { '<leader>Id', function() require('package-info').delete() end,         desc = 'Delete package' },
-  { '<leader>Ih', function() require('package-info').hide() end,           desc = 'Hide package info' },
-  { '<leader>Ii', function() require('package-info').install() end,        desc = 'Install package' },
-  { '<leader>In', function() require('package-info').toggle() end,         desc = 'Toggle package info' },
-  { '<leader>Is', function() require('package-info').show() end,           desc = 'Show package info' },
-  { '<leader>Iu', function() require('package-info').update() end,         desc = 'Update package' },
-  { '<leader>Iv', function() require('package-info').change_version() end, desc = 'Change package version' },
+  {
+    '<leader>Id',
+    function()
+      require('package-info').delete()
+    end,
+    desc = 'Delete package',
+  },
+  {
+    '<leader>Ih',
+    function()
+      require('package-info').hide()
+    end,
+    desc = 'Hide package info',
+  },
+  {
+    '<leader>Ii',
+    function()
+      require('package-info').install()
+    end,
+    desc = 'Install package',
+  },
+  {
+    '<leader>In',
+    function()
+      require('package-info').toggle()
+    end,
+    desc = 'Toggle package info',
+  },
+  {
+    '<leader>Is',
+    function()
+      require('package-info').show()
+    end,
+    desc = 'Show package info',
+  },
+  {
+    '<leader>Iu',
+    function()
+      require('package-info').update()
+    end,
+    desc = 'Update package',
+  },
+  {
+    '<leader>Iv',
+    function()
+      require('package-info').change_version()
+    end,
+    desc = 'Change package version',
+  },
 }
 
 return M

@@ -36,7 +36,11 @@ nvim/
 │   ├── autocmds.lua              → Non-plugin autocmds (yank hl, checktime, etc.)
 │   ├── colorscheme.lua           → Catppuccin config + vim.cmd.colorscheme()
 │   ├── diagnostics.lua           → vim.diagnostic.config + signs + navigation
-│   └── lsp.lua                   → vim.lsp.enable() + LspAttach keymaps
+│   └── lsp/                      → LSP layer (native 0.12, require-safe)
+│       ├── init.lua              → Enable list + base capabilities + vim.lsp.enable()
+│       ├── keymaps.lua           → LspAttach buffer-local keymaps
+│       ├── handlers.lua          → Snacks.util.lsp.on handlers (inlay, move-to-file, gopls)
+│       └── health.lua            → :checkhealth report for the LSP layer
 ├── lua/plugins/                  → Plugin index files (imports by category)
 │   ├── coding.lua                → Completion, pairs, surround, AI, comments
 │   ├── editor.lua                → Navigation, git, search, diagnostics, key discovery
@@ -60,7 +64,9 @@ nvim/
 5. Foundation plugins via `vim.pack.add()` + immediate setup
 6. Pre-plugin config: colorscheme, autocmds, diagnostics
 7. `require('core.pkg').setup({ import = 'plugins', confirm = true })` — load all plugins
-8. Post-plugin config: keymaps (after `has_key()` available), lsp
+8. Post-plugin config:
+   - `config.keymaps` (after `has_key()` available)
+   - `config.lsp.setup()` (Enable List + capabilities + keymaps + handlers)
 
 ### Plugin Spec Format
 
@@ -108,19 +114,19 @@ Four index files in `lua/plugins/` group specs by category. Each returns a list 
 
 ### `coding.lua` — Completion, pairs, surround, AI, comments
 
-Imports: better_escape, blink_cmp, blink_pairs, coerce, copilot, lazydev, mini_ai, mini_operators, mini_surround, neogen, opencode, otter, template_string, treesj, ts_comments, yanky
+Imports: better_escape, blink_cmp, blink_pairs, claudecode, coerce, copilot, lazydev, mini_ai, mini_operators, mini_surround, neogen, opencode, otter, template_string, treesj, ts_comments, yanky
 
 ### `editor.lua` — Navigation, git, search, diagnostics, key discovery
 
-Imports: actions_preview, dial, codediff, flash, gitsigns, grug_far, hover, inc_rename, mini_move, multicursor, neogit, origami, outline, package_info, patterns, refactoring, snacks, snacks_explorer, snacks_picker, symbol_usage, todo_comments, trouble, vim_tmux_navigator, which_key
+Imports: actions_preview, codediff, dial, flash, gitsigns, grug_far, hover, inc_rename, mini_move, multicursor, neogit, origami, outline, package_info, patterns, refactoring, snacks, snacks_explorer, snacks_picker, symbol_usage, todo_comments, trouble, vim_tmux_navigator, which_key
 
 ### `miscellaneous.lua` — Formatters, linters, DAP, testing, treesitter, mason
 
-Imports: conform, dap, dap_dart, dap_js, dap_nlua, freemarker, garbage_day, mason, mason_tool_installer, markdown_table_mode, mini_sessions, mini_test, neotest, nvim_lint, obsidian, octo, render_markdown, schemastore, showkeys, spellwand, tailwind_fold, treesitter, treesitter_textobjects, ts_autotag, ts_error_translator, vim_wakatime
+Imports: conform, dap, dap_dart, dap_js, dap_nlua, freemarker, garbage_day, markdown_table_mode, mason, mason_tool_installer, mini_sessions, mini_test, neotest, nvim_lint, obsidian, octo, render_markdown, schemastore, showkeys, tailwind_fold, treesitter, treesitter_textobjects, ts_autotag, ts_error_translator
 
 ### `ui.lua` — Statusline, tabline, dashboard, image, noice
 
-Imports: blink_indent, bufferline, dropbar, edgy, helpview, nvim_highlight_colors, lualine, neominimap, noice, snacks_dashboard, snacks_image, snacks_statuscolumn, snacks_win, treesitter_context, virt_column
+Imports: blink_indent, bufferline, dropbar, edgy, helpview, lualine, modicator, neominimap, noice, nvim_highlight_colors, snacks_dashboard, snacks_image, snacks_statuscolumn, snacks_win, treesitter_context, virt_column
 
 ## Coding Conventions
 
@@ -153,11 +159,42 @@ NVIM_APPNAME=nvim-test nvim                      # isolate config
 ### Add LSP server
 
 1. Create `lsp/<server>.lua` — return `vim.lsp.Config` table
-2. Add to `vim.lsp.enable()` in `config/lsp.lua`
+2. Add the server name to the Enable List in `lua/config/lsp/init.lua`
+3. If the server needs a lifecycle handler (e.g. inlay hints, move-to-file), add it to `lua/config/lsp/handlers.lua`
+4. If the server binary is managed by Mason, add the package to `lua/plugins/config/mason_tool_installer.lua`
+5. Add/update tests in `tests/test_lsp.lua` for resolver and handler logic
+6. Run `just test` and `stylua --check .`
+
+### System dependencies (not managed by Mason)
+
+These servers rely on tools installed outside Neovim/Mason:
+
+- `denols` — Deno runtime (`deno` on PATH)
+- `dartls` — Dart SDK (`dart` on PATH)
+
+All other always-on servers must be covered by `mason-tool-installer` so the config works unchanged on macOS and Fedora.
 
 ### Add filetype settings
 
 1. Create `after/ftplugin/<ft>.lua` — buffer-local settings
+
+## LSP Layer — Conscious divergences from LazyVim
+
+The config uses **native Neovim 0.12 LSP** (`vim.lsp.Config`, `vim.lsp.enable`). It does **not** use `nvim-lspconfig`, `mason-lspconfig`, or `lazy.nvim` as server managers. Parity with LazyVim is intentional only on portable values/defaults, not on architecture.
+
+| Area | Choice | LazyVim reference |
+|------|--------|-------------------|
+| LSP manager | Native `vim.lsp` only | `nvim-lspconfig` + `mason-lspconfig` |
+| Handler registry | Central `lua/config/lsp/handlers.lua` via `Snacks.util.lsp.on` | Per-extra handlers |
+| Folds | Treesitter foldexpr (kept in `plugins/config/treesitter.lua`); LSP foldexpr only for YAML | LSP foldexpr for some filetypes |
+| `gK` | Selective hover via `hover.nvim` | Signature help |
+| Copilot | Ghost text + menu simultaneously (`ai_cmp` always true) | Configurable `ai_cmp` flag |
+| Diagnostics styling | Custom signs/virtual text | LazyVim defaults |
+| CodeLens | Native `vim.lsp.codelens` auto-display | Same, refresh keymap kept |
+| vtsls keys | Per-server `gD/gR/cM/cD/cV` keys NOT adopted | Adopted in LazyVim extra |
+| none-ls / neoconf | Not used | Used in LazyVim |
+
+See `ARCHITECTURE.md` for the LSP layer module breakdown and `docs/adr/` for the ADRs.
 
 ## References
 

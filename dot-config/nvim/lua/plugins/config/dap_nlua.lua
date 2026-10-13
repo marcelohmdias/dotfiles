@@ -1,4 +1,12 @@
-local M = { gh('mfussenegger/nvim-dap') }
+local M = {}
+
+M.name = 'dap_nlua'
+M.event = 'VeryLazy'
+
+M.dependencies = {
+  gh('mfussenegger/nvim-dap'),
+  gh('jbyuki/one-small-step-for-vimkind'),
+}
 
 M.config = function()
   local dap = require('dap')
@@ -36,7 +44,5 @@ M.config = function()
     },
   }
 end
-
-M.dependencies = { gh('jbyuki/one-small-step-for-vimkind') }
 
 return M

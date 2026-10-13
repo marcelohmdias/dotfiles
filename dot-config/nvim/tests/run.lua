@@ -12,10 +12,14 @@ MiniTest.execute(cases, {
   reporter = {
     update = function(case_num)
       local case = cases[case_num]
-      if not case or not case.exec then return end
+      if not case or not case.exec then
+        return
+      end
 
       local state = case.exec.state
-      if state ~= 'Pass' and state ~= 'Fail' then return end
+      if state ~= 'Pass' and state ~= 'Fail' then
+        return
+      end
 
       local entry = { desc = case.desc, state = state }
       if state == 'Fail' and case.exec.fails then

@@ -14,7 +14,7 @@ M.keys = {
 M.opts = {
   mouse_delay = 1000,
   mouse_providers = {
-    "LSP",
+    'LSP',
   },
   preview_opts = {
     border = vim.g.border,

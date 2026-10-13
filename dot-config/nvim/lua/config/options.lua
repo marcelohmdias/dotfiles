@@ -90,7 +90,7 @@ opt.mouse = 'a'
 opt.sessionoptions = { 'buffers', 'curdir', 'tabpages', 'winsize', 'help', 'globals', 'skiprtp', 'folds' }
 opt.shortmess:append({ W = true, I = true, c = true, C = true })
 opt.smoothscroll = true
-opt.spelllang = { 'en', 'pt_br' }
+opt.spelllang = { 'en', 'pt' }
 opt.timeoutlen = vim.g.vscode and 1000 or 300
 opt.virtualedit = 'block'
 opt.wildmode = 'longest:full,full'

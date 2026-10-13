@@ -60,7 +60,6 @@ function M.config()
     { '<leader>gh', group = 'hunks' },
     { '<leader>q', group = 'quit/session' },
     { '<leader>r', group = 'refactor' },
-    { '<leader>R', group = 'rest' },
     { '<leader>s', group = 'search' },
     { '<leader>u', group = 'ui' },
     {

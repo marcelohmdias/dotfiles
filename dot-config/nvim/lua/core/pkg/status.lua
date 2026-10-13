@@ -92,8 +92,12 @@ function M.stats()
       if handle then
         while true do
           local name, ftype = vim.uv.fs_scandir_next(handle)
-          if not name then break end
-          if ftype == 'directory' then cached_count = cached_count + 1 end
+          if not name then
+            break
+          end
+          if ftype == 'directory' then
+            cached_count = cached_count + 1
+          end
         end
       end
     end

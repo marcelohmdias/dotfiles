@@ -25,6 +25,16 @@ M.keys = {
   { '<leader>fp',      function() Snacks.picker.projects() end,                                desc = 'Projects' },
   -- git
   { '<leader>gd',      function() Snacks.picker.git_diff() end,                                desc = 'Git Diff (hunks)' },
+  { '<leader>gM',      function()
+    local branch = vim.fn.system('git rev-parse --abbrev-ref HEAD'):gsub('%s+', '')
+    local upstream = vim.fn.system('git rev-parse --abbrev-ref --symbolic-full-name ' .. branch .. '@{u}'):gsub('%s+', '')
+    local base = upstream ~= '' and vim.fn.system('git merge-base ' .. upstream .. ' ' .. branch):gsub('%s+', '') or ''
+    if base == '' then
+      vim.notify('[MiniPack] No merge base found', vim.log.levels.WARN)
+      return
+    end
+    Snacks.picker.git_diff({ base = base })
+  end, desc = 'Git Diff (merge base)' },
   { '<leader>gs',      function() Snacks.picker.git_status() end,                              desc = 'Git Status' },
   { '<leader>gS',      function() Snacks.picker.git_stash() end,                               desc = 'Git Stash' },
   -- grep
@@ -66,7 +76,9 @@ M.opts = {
       end,
       ---@param p snacks.Picker
       toggle_cwd = function(p)
-        local root = MiniPack.root({ buf = p.input.filter.current_buf, normalize = true })
+        local filter = p:filter()
+        local buf = filter and filter.current_buf or vim.api.nvim_get_current_buf()
+        local root = MiniPack.root({ buf = buf, normalize = true })
         local cwd = vim.fs.normalize(vim.uv.cwd() or '.')
         local current = p:cwd()
         p:set_cwd(current == root and cwd or root)
@@ -111,7 +123,7 @@ M.opts = {
             title = '{title} {live} {flags}',
             title_pos = 'center',
           },
-          { win = 'list',    border = 'rounded' },
+          { win = 'list', border = 'rounded' },
           { win = 'preview', title = '{preview}', border = 'rounded' },
         },
       },

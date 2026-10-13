@@ -29,11 +29,7 @@ vim.api.nvim_create_user_command('LspCopilotSignIn', function()
       return
     end
     -- Device flow: show code + URL
-    local msg = string.format(
-      '[MiniPack] Go to %s and enter code: %s',
-      result.verificationUri,
-      result.userCode
-    )
+    local msg = string.format('[MiniPack] Go to %s and enter code: %s', result.verificationUri, result.userCode)
     vim.notify(msg, vim.log.levels.INFO)
     -- Copy code to clipboard
     vim.fn.setreg('+', result.userCode)

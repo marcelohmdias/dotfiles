@@ -32,7 +32,65 @@ M.config = function(_, opts)
     TS.install(missing, { summary = true })
   end
 
-  -- FileType autocmd for highlight, indent, folds
+  -- Folding: treesitter-first everywhere except YAML, where LSP foldexpr is used.
+
+  ---@param buf number
+  ---@return boolean
+  local function is_yaml(buf)
+    local ft = vim.bo[buf].filetype
+    return ft == 'yaml' or ft == 'yaml.docker-compose'
+  end
+
+  ---@param buf number
+  ---@return boolean
+  local function has_lsp_folds(buf)
+    if vim.b[buf].snacks_bigfile or not is_yaml(buf) then
+      return false
+    end
+    for _, client in ipairs(vim.lsp.get_clients({ bufnr = buf })) do
+      if client:supports_method('textDocument/foldingRange', buf) then
+        return true
+      end
+    end
+    return false
+  end
+
+  ---@param buf number
+  local function set_lsp_folds(buf)
+    if vim.b[buf].minipack_folds == 'lsp' or not has_lsp_folds(buf) then
+      return
+    end
+    local win = vim.fn.bufwinid(buf)
+    if win == -1 then
+      return
+    end
+    vim.wo[win].foldmethod = 'expr'
+    vim.wo[win].foldexpr = 'v:lua.vim.lsp.foldexpr()'
+    vim.b[buf].minipack_folds = 'lsp'
+  end
+
+  ---@param buf number
+  local function set_treesitter_folds(buf)
+    if vim.b[buf].minipack_folds then
+      return
+    end
+    local win = vim.fn.bufwinid(buf)
+    if win == -1 then
+      return
+    end
+    local ft = vim.bo[buf].filetype
+    local l = vim.treesitter.language.get_lang(ft)
+    if not (l and installed_set[l]) then
+      return
+    end
+    local ok, result = pcall(vim.treesitter.query.get, l, 'folds')
+    if ok and result ~= nil then
+      vim.wo[win].foldmethod = 'expr'
+      vim.wo[win].foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+      vim.b[buf].minipack_folds = 'treesitter'
+    end
+  end
+
   vim.api.nvim_create_autocmd('FileType', {
     group = vim.api.nvim_create_augroup('minipack_treesitter', { clear = true }),
     callback = function(ev)
@@ -69,14 +127,22 @@ M.config = function(_, opts)
       end
 
       if enabled('folds', 'folds') then
-        local win = vim.fn.bufwinid(ev.buf)
-        if win ~= -1 and vim.wo[win].foldmethod == 'manual' then
-          vim.wo[win].foldmethod = 'expr'
-          vim.wo[win].foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+        if is_yaml(ev.buf) then
+          set_lsp_folds(ev.buf)
+        end
+        if not vim.b[ev.buf].minipack_folds then
+          set_treesitter_folds(ev.buf)
         end
       end
     end,
   })
+
+  -- Switch to LSP folds when a client attaches (or later registers foldingRange).
+  -- Using Snacks.util.lsp.on catches dynamic capability registration, which a
+  -- plain LspAttach autocmd would miss.
+  Snacks.util.lsp.on({ method = 'textDocument/foldingRange' }, function(buf, _)
+    set_lsp_folds(buf)
+  end)
 end
 
 M.event = { 'LazyFile', 'VeryLazy' }
@@ -99,7 +165,6 @@ M.opts = {
     'gitattributes',
     'gitcommit',
     'gitignore',
-    'gherkin',
     'go',
     'gomod',
     'gosum',

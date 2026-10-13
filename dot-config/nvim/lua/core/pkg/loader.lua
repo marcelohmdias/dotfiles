@@ -39,8 +39,12 @@ end
 ---@param spec table Normalized spec
 ---@param defer? boolean Use bang for packadd (defer sourcing)
 function M.load_plugin(spec, defer)
-  if not spec or not spec.name then return end
-  if loaded[spec.name] then return end
+  if not spec or not spec.name then
+    return
+  end
+  if loaded[spec.name] then
+    return
+  end
   loaded[spec.name] = true
 
   local t0 = vim.uv.hrtime()
@@ -119,11 +123,15 @@ end
 --- map() filters via has_key(), which would create a circular dependency.
 ---@param spec table
 local function register_key_stubs(spec)
-  if not spec.keys then return end
+  if not spec.keys then
+    return
+  end
 
   for _, key in ipairs(spec.keys) do
     local lhs = key[1]
-    if not lhs then goto continue end
+    if not lhs then
+      goto continue
+    end
 
     local rhs = key[2]
     local modes = key_modes(key)
@@ -236,7 +244,9 @@ end
 ---@param specs table[] List of specs that have cmd triggers
 local function register_cmd_stubs(specs)
   for _, spec in ipairs(specs) do
-    if not spec.cmd then goto continue end
+    if not spec.cmd then
+      goto continue
+    end
 
     for _, command in ipairs(spec.cmd) do
       vim.api.nvim_create_user_command(command, function(args)
@@ -290,7 +300,9 @@ function M.register_lazy_file()
   local fired = false
   autocmd({ 'BufReadPost', 'BufNewFile', 'BufWritePre' }, {
     callback = function(ev)
-      if fired then return true end -- delete autocmd
+      if fired then
+        return true
+      end -- delete autocmd
       -- Skip unnamed empty buffers (e.g. dashboard, startup screen)
       if ev.event == 'BufNewFile' then
         local name = vim.api.nvim_buf_get_name(ev.buf)
@@ -316,7 +328,9 @@ function M.register_stubs(specs)
   for _, spec in ipairs(specs) do
     if spec.name then
       specs_by_name[spec.name] = spec
-      if spec.src then src_to_name[spec.src] = spec.name end
+      if spec.src then
+        src_to_name[spec.src] = spec.name
+      end
     end
   end
 
@@ -334,7 +348,9 @@ function M.register_specs(specs)
   for _, spec in ipairs(specs) do
     if spec.name then
       specs_by_name[spec.name] = spec
-      if spec.src then src_to_name[spec.src] = spec.name end
+      if spec.src then
+        src_to_name[spec.src] = spec.name
+      end
     end
   end
 end

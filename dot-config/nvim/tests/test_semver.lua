@@ -50,22 +50,30 @@ end
 T['compare()'] = MiniTest.new_set()
 
 T['compare()']['equal versions return 0'] = function()
-  child.lua([[_G._r = require('core.pkg.semver').compare(require('core.pkg.semver').parse('1.2.3'), require('core.pkg.semver').parse('1.2.3'))]])
+  child.lua(
+    [[_G._r = require('core.pkg.semver').compare(require('core.pkg.semver').parse('1.2.3'), require('core.pkg.semver').parse('1.2.3'))]]
+  )
   MiniTest.expect.equality(child.lua_get('_G._r'), 0)
 end
 
 T['compare()']['greater major returns 1'] = function()
-  child.lua([[_G._r = require('core.pkg.semver').compare(require('core.pkg.semver').parse('2.0.0'), require('core.pkg.semver').parse('1.9.9'))]])
+  child.lua(
+    [[_G._r = require('core.pkg.semver').compare(require('core.pkg.semver').parse('2.0.0'), require('core.pkg.semver').parse('1.9.9'))]]
+  )
   MiniTest.expect.equality(child.lua_get('_G._r'), 1)
 end
 
 T['compare()']['lesser minor returns -1'] = function()
-  child.lua([[_G._r = require('core.pkg.semver').compare(require('core.pkg.semver').parse('1.1.0'), require('core.pkg.semver').parse('1.2.0'))]])
+  child.lua(
+    [[_G._r = require('core.pkg.semver').compare(require('core.pkg.semver').parse('1.1.0'), require('core.pkg.semver').parse('1.2.0'))]]
+  )
   MiniTest.expect.equality(child.lua_get('_G._r'), -1)
 end
 
 T['compare()']['patch difference'] = function()
-  child.lua([[_G._r = require('core.pkg.semver').compare(require('core.pkg.semver').parse('1.2.4'), require('core.pkg.semver').parse('1.2.3'))]])
+  child.lua(
+    [[_G._r = require('core.pkg.semver').compare(require('core.pkg.semver').parse('1.2.4'), require('core.pkg.semver').parse('1.2.3'))]]
+  )
   MiniTest.expect.equality(child.lua_get('_G._r'), 1)
 end
 

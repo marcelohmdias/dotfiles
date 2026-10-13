@@ -1,7 +1,5 @@
 local M = { gh('nvim-mini/mini.sessions') }
 
-M.lazy = false
-
 -- stylua: ignore
 M.keys = {
   { '<leader>qs', function() MiniSessions.read() end, desc = 'Restore Session' },

@@ -4,7 +4,7 @@ M.dependencies = {
   { gh('lewis6991/async.nvim'), name = 'async' },
 }
 
-M.event = { "BufReadPre", "BufNewFile" }
+M.event = { 'BufReadPre', 'BufNewFile' }
 
 -- stylua: ignore
 M.keys = {

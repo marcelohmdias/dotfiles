@@ -14,31 +14,31 @@ end
 ---@type obsidian.config
 M.opts = {
   daily_notes = {
-    folder = "daily",
-    date_format = "YYYY-MM-DD",
-    template = "templates/daily_template.md",
+    folder = 'daily',
+    date_format = 'YYYY-MM-DD',
+    template = 'templates/daily_template.md',
   },
   completion = {
     blink = true,
   },
   legacy_commands = false,
-  new_notes_location = "notes_subdir",
-  notes_subdir = "zettels",
+  new_notes_location = 'notes_subdir',
+  notes_subdir = 'zettels',
   picker = {
     name = 'snacks.pick',
   },
   templates = {
-    subdir = "templates",
-    date_format = "YYYY-MM-DD",
-    time_format = "HH:mm",
+    subdir = 'templates',
+    date_format = 'YYYY-MM-DD',
+    time_format = 'HH:mm',
   },
   ui = {
     enable = false,
   },
   workspaces = {
     {
-      name = "Brainforge",
-      path = "~/Vaults/brainforge",
+      name = 'Brainforge',
+      path = '~/Vaults/brainforge',
     },
   },
 }

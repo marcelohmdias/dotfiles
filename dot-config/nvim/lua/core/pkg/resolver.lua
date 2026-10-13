@@ -32,11 +32,15 @@ end
 local function scan_dir(dir, import_path)
   local modules = {} ---@type string[]
   local handle = vim.uv.fs_scandir(dir)
-  if not handle then return modules end
+  if not handle then
+    return modules
+  end
 
   while true do
     local name, ftype = vim.uv.fs_scandir_next(handle)
-    if not name then break end
+    if not name then
+      break
+    end
     if ftype == 'file' and name:match('%.lua$') then
       local mod_name = name:gsub('%.lua$', '')
       modules[#modules + 1] = import_path .. '.' .. mod_name

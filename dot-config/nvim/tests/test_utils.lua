@@ -168,7 +168,14 @@ T['conflict_setup_hl()']['creates highlight groups'] = function()
     end
     require('core.utils').conflict_setup_hl()
   ]])
-  local groups = { 'GitConflictCurrent', 'GitConflictCurrentLabel', 'GitConflictIncoming', 'GitConflictIncomingLabel', 'GitConflictAncestor', 'GitConflictAncestorLabel' }
+  local groups = {
+    'GitConflictCurrent',
+    'GitConflictCurrentLabel',
+    'GitConflictIncoming',
+    'GitConflictIncomingLabel',
+    'GitConflictAncestor',
+    'GitConflictAncestorLabel',
+  }
   for _, group in ipairs(groups) do
     local hl = child.lua_get(string.format([[vim.api.nvim_get_hl(0, { name = '%s' })]], group))
     MiniTest.expect.equality(hl.bg ~= nil, true)

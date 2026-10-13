@@ -1,7 +1,7 @@
 return {
   { import = 'plugins.config.actions_preview' },
-  { import = 'plugins.config.dial' },
   { import = 'plugins.config.codediff' },
+  { import = 'plugins.config.dial' },
   { import = 'plugins.config.flash' },
   { import = 'plugins.config.gitsigns' },
   { import = 'plugins.config.grug_far' },

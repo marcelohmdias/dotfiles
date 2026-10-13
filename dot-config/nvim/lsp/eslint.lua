@@ -38,7 +38,7 @@ return {
     rulesCustomizations = {},
     run = 'onType',
     validate = 'on',
-    workingDirectory = { mode = 'location' },
+    workingDirectory = { mode = 'auto' },
   },
   workspace_required = true,
 }

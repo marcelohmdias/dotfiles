@@ -2,6 +2,13 @@ local icons = require('core.icons')
 
 local M = { gh('folke/snacks.nvim') }
 
+-- Dashboard config must be applied at startup so the startup screen shows.
+M.lazy = false
+
+M.dependencies = {
+  gh('nvim-mini/mini.sessions'),
+}
+
 --- Split a string by pattern into a list.
 ---@param str string
 ---@param pattern string Lua pattern with captures or matching groups
@@ -87,14 +94,19 @@ M.opts = {
           desc = 'Config',
           action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})",
         },
-        { icon = icons.dashboard.session, key = 's', desc = 'Restore Session', action = function()
-          local name = vim.fn.fnamemodify(vim.uv.cwd() or '', ':t')
-          if name ~= '' and MiniSessions.detected[name] then
-            MiniSessions.read(name)
-          else
-            MiniSessions.select('read')
-          end
-        end },
+        {
+          icon = icons.dashboard.session,
+          key = 's',
+          desc = 'Restore Session',
+          action = function()
+            local name = vim.fn.fnamemodify(vim.uv.cwd() or '', ':t')
+            if name ~= '' and MiniSessions.detected[name] then
+              MiniSessions.read(name)
+            else
+              MiniSessions.select('read')
+            end
+          end,
+        },
         {
           icon = icons.dashboard.zoxide,
           key = 'z',

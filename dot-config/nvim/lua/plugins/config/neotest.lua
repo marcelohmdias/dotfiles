@@ -44,6 +44,7 @@ M.config = function(_, opts)
 end
 
 M.dependencies = {
+  gh('folke/trouble.nvim'),
   gh('marilari88/neotest-vitest'),
   gh('nvim-neotest/nvim-nio'),
   gh('nvim-neotest/neotest-vim-test'),

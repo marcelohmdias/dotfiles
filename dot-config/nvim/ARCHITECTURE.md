@@ -19,7 +19,8 @@
 10. Pre-plugin config               — colorscheme, autocmds, diagnostics
 11. core.pkg.setup()                — resolve + install + load all plugins
 12. _G.MiniPack.pending_count       — lazy closure to pkg.ui
-13. Post-plugin config              — keymaps (needs has_key), lsp (needs plugins)
+13. Post-plugin config              — keymaps (needs has_key),
+                                       config.lsp.setup() (capabilities + enable + keymaps + handlers)
 ```
 
 Order is critical: globals before options, sources before foundation URLs, mappers before any keymap, foundation before colorscheme, pkg.setup before keymaps/lsp.
@@ -43,6 +44,7 @@ Loaded outside MiniPack via `vim.pack.add()` in `core/init.lua`:
 |--------|------|
 | `init.lua` | `setup()`, `:MiniPack` command, `PackChanged` hook for builds |
 | `loader.lua` | `load_plugin()`, event/cmd/key stubs, `VeryLazy`/`LazyFile`, `has_key()` |
+| `release_age.lua` | `minimum_release_age` policy: parse/defaults, gated eligible-ref resolution for updates, checkout helper |
 | `resolver.lua` | Import chain resolution: file → require, dir → scan alphabetical |
 | `sources.lua` | `gh('org/repo')` → GitHub URL, `cb()` → Codeberg URL |
 | `spec.lua` | Normalize `[1]`→`src`, derive `name`, validate, merge duplicate specs |
@@ -62,7 +64,7 @@ setup({ import = 'plugins', confirm = true })
   → spec: normalize + validate + filter enabled=false
   → separate: lazy=false first, then lazy specs
   → PackChanged autocmd for build hooks
-  → vim.pack.add() missing plugins (with confirm)
+  → vim.pack.add() missing plugins (with confirm; first installs bypass the release-age gate)
   → loader.register_specs() — index by name
   → load lazy=false plugins immediately
   → loader: register stubs for lazy specs (event/cmd/keys)
@@ -145,7 +147,35 @@ Multiple specs with same `name` (from `src`) are merged:
 | `autocmds.lua` | Non-plugin autocmds |
 | `colorscheme.lua` | Colorscheme setup |
 | `diagnostics.lua` | `vim.diagnostic.config()` + signs + navigation |
-| `lsp.lua` | `vim.lsp.enable()` + LspAttach keymaps |
+| `lsp/init.lua` | Resolve Enable List + base capabilities + `vim.lsp.enable()` |
+| `lsp/keymaps.lua` | Buffer-local LspAttach keymaps |
+| `lsp/handlers.lua` | `Snacks.util.lsp.on` registry (inlay hints, move-to-file, gopls) |
+| `lsp/health.lua` | `:checkhealth` report for the LSP layer |
+
+## LSP Layer
+
+The LSP layer is split into four require-safe modules under `lua/config/lsp/`:
+
+- **`init.lua`** resolves the Enable List from feature flags, project markers and an executable guard; declares base capabilities (`workspace.fileOperations`); calls `vim.lsp.enable()`.
+- **`keymaps.lua`** registers buffer-local keymaps on `LspAttach`, gated by `client:supports_method()`.
+- **`handlers.lua`** registers LSP-pure handlers via `Snacks.util.lsp.on` (inlay hints, vtsls move-to-file, gopls semantic tokens workaround).
+- **`health.lua`** reports the resolved Enable List, binary availability, Mason coverage, base capabilities and TypeScript server version.
+
+Server configs live as pure data tables in `lsp/*.lua` and are loaded automatically by `vim.lsp.enable()`.
+
+### Conscious divergences from LazyVim
+
+| Decision | This config | LazyVim reference |
+|----------|-------------|-------------------|
+| Server management | Native `vim.lsp` only | `nvim-lspconfig` + `mason-lspconfig` |
+| Handler organisation | Central registry in `lsp/handlers.lua` | Distributed across extras |
+| Folds | Treesitter foldexpr (`plugins/config/treesitter.lua`); LSP foldexpr only for YAML | LSP foldexpr in some extras |
+| `gK` | Hover via `hover.nvim` | Signature help |
+| Copilot | Ghost text + completion menu simultaneously | `ai_cmp` toggle |
+| vtsls per-server keys | Not adopted (`gD/gR/cM/cD/cV`) | Adopted |
+| none-ls / neoconf | Not used | Used |
+
+See `docs/adr/` for ADR-0001 (native LSP), ADR-0002 (modular layer) and ADR-0003 (TS hybrid / plugin host).
 
 ## Plugin Index Files
 

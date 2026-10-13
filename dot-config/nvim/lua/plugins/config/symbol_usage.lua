@@ -3,9 +3,14 @@ local M = { gh('Wansmer/symbol-usage.nvim') }
 M.event = 'LspAttach'
 
 M.keys = {
-  { '<leader>uU', function() require('symbol-usage').toggle() end, desc = 'Toggle Symbol Usage' },
+  {
+    '<leader>uU',
+    function()
+      require('symbol-usage').toggle()
+    end,
+    desc = 'Toggle Symbol Usage',
+  },
 }
-
 
 ---@module 'symbol-usage'
 ---@type UserOpts

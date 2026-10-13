@@ -14,10 +14,12 @@ local all_specs = {}
 -- Build execution ------------------------------------------------------------
 
 --- Check if a plugin is active (sourced).
+--- Prefer loader state over command existence, since few plugins expose
+--- a user command matching the plugin name.
 ---@param name string
 ---@return boolean
 local function is_active(name)
-  return vim.fn.exists(':' .. name) > 0 or loader.is_loaded(name)
+  return loader.is_loaded(name) or vim.fn.exists(':' .. name) > 0
 end
 
 --- Execute build steps for a spec.
@@ -70,6 +72,38 @@ local subcommands = {
   end,
   update = function()
     require('core.pkg.ui').update_all(all_specs)
+  end,
+  lock = function()
+    local plugins = {}
+    for _, plugin in ipairs(vim.pack.get()) do
+      local name = plugin.spec and plugin.spec.name
+      local src = plugin.spec and plugin.spec.src
+      if name and src then
+        local rev = plugin.rev
+        local path = plugin.path
+        if path then
+          local out = vim.fn.system({ 'git', '-C', path, 'rev-parse', 'HEAD' })
+          if vim.v.shell_error == 0 then
+            rev = vim.trim(out)
+          end
+        end
+        plugins[name] = { rev = rev, src = src }
+      end
+    end
+
+    local lock_path = vim.fn.stdpath('config') .. '/nvim-pack-lock.json'
+    local lock = { plugins = plugins }
+
+    local json = vim.json.encode(lock)
+    if vim.fn.executable('jq') == 1 then
+      local pretty = vim.fn.system({ 'jq', '.' }, json)
+      if vim.v.shell_error == 0 then
+        json = pretty
+      end
+    end
+
+    vim.fn.writefile(vim.split(json, '\n'), lock_path)
+    vim.notify('[MiniPack] Lockfile written: ' .. lock_path, vim.log.levels.INFO)
   end,
   check = function()
     require('core.pkg.ui').check(function()
@@ -182,6 +216,9 @@ function M.setup(opts)
 
   release_age.set_defaults(opts)
 
+  -- Specs installed this session (skip age gate in deferred resolution)
+  local just_installed = {}
+
   -- 1. Resolve all specs from import chain
   local specs = resolver.resolve(opts.import)
 
@@ -203,7 +240,6 @@ function M.setup(opts)
   -- 3. Separate lazy/eager
   local eager = {} ---@type table[]
   local lazy = {} ---@type table[]
-  local blocked = {} ---@type table<string, string>
 
   for _, spec in ipairs(specs) do
     if spec.lazy == false then
@@ -225,20 +261,6 @@ function M.setup(opts)
   local seen = {} ---@type table<string, boolean>
   local version_specs = {} ---@type table[] specs needing version resolution (deferred)
   local opt_dir = sources.PACK_PATH .. '/'
-
-  ---@param spec table
-  ---@return boolean
-  local function has_blocked_dependency(spec)
-    if not spec.dependencies then
-      return false
-    end
-    for _, dep in ipairs(spec.dependencies) do
-      if dep.name and blocked[dep.name] then
-        return true
-      end
-    end
-    return false
-  end
 
   -- Build set of eager spec names for dependency classification
   local eager_names = {} ---@type table<string, boolean>
@@ -267,21 +289,7 @@ function M.setup(opts)
       return
     end
 
-    local policy = release_age.policy(spec)
-    if policy.enabled then
-      local resolved = release_age.resolve_remote(spec, policy)
-      if not resolved.checkout then
-        blocked[name] = string.format(
-          '[MiniPack] %s is blocked by minimum_release_age (%s); %s',
-          name,
-          policy.label,
-          release_age.pending_message()
-        )
-        return
-      end
-      spec.checkout = resolved.checkout
-    end
-
+    -- First installs bypass the release-age gate (policy applies to updates only)
     local pack_spec = { src = src, name = name }
     if spec.checkout then
       pack_spec.checkout = spec.checkout
@@ -290,6 +298,10 @@ function M.setup(opts)
       eager_missing[#eager_missing + 1] = pack_spec
     else
       lazy_missing[#lazy_missing + 1] = pack_spec
+    end
+    -- Track as just-installed so deferred resolution skips the age-gated branch
+    if name then
+      just_installed[name] = true
     end
   end
 
@@ -302,28 +314,6 @@ function M.setup(opts)
       end
     end
     collect(spec.src, spec.name, spec, is_eager)
-  end
-
-  if next(blocked) then
-    local filtered = {} ---@type table[]
-    for _, spec in ipairs(specs) do
-      if not blocked[spec.name] and not has_blocked_dependency(spec) then
-        filtered[#filtered + 1] = spec
-      end
-    end
-    specs = filtered
-    eager = {}
-    lazy = {}
-    for _, spec in ipairs(specs) do
-      if spec.lazy == false then
-        eager[#eager + 1] = spec
-      else
-        lazy[#lazy + 1] = spec
-      end
-    end
-    for _, message in pairs(blocked) do
-      vim.notify(message, vim.log.levels.ERROR)
-    end
   end
 
   -- Install missing eager plugins immediately (needed before load_plugin)
@@ -358,7 +348,12 @@ function M.setup(opts)
           local range_specs = {} ---@type table[]
           for _, spec in ipairs(version_specs) do
             local policy = release_age.policy(spec)
-            if policy.enabled and spec.name and vim.uv.fs_stat(opt_dir .. spec.name) then
+            if
+              policy.enabled
+              and spec.name
+              and not just_installed[spec.name]
+              and vim.uv.fs_stat(opt_dir .. spec.name)
+            then
               local plugin_dir = opt_dir .. spec.name
               vim.system({ 'git', '-C', plugin_dir, 'fetch', '--tags', '--quiet' }, {}, function()
                 vim.schedule(function()

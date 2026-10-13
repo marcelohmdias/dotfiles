@@ -20,12 +20,14 @@ M.opts = {
     'docker-compose-language-service',
     'emmet-language-server',
     'eslint-lsp',
+    'fish-lsp',
     'gopls',
     'graphql-language-service-cli',
     'harper-ls',
     'html-lsp',
     'jdtls',
     'json-lsp',
+    'just-lsp',
     'lemminx',
     'lua-language-server',
     'marksman',
@@ -34,7 +36,8 @@ M.opts = {
     'sqls',
     'tailwindcss-language-server',
     'taplo',
-    'tsgo',
+    'tsc',
+    'unocss-language-server',
     'vtsls',
     'vue-language-server',
     'yaml-language-server',
@@ -50,14 +53,11 @@ M.opts = {
     -- Linters
     'commitlint',
     'cspell',
+    'golangci-lint',
 
     -- DAP adapters
     'delve',
     'js-debug-adapter',
-
-    -- Go tools
-    'gomodifytags',
-    'impl',
   },
   auto_update = false,
   run_on_start = true,

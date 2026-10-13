@@ -8,7 +8,7 @@ end
 
 ---@type table
 M.opts = {
-  servers = { 'astro', 'tsgo', 'vue_ls', 'vtsls' },
+  servers = { 'astro', 'tsc', 'vue_ls', 'vtsls' },
 }
 
 return M

@@ -29,11 +29,12 @@ M.config = function(_, opts)
   end
 
   local function do_lint()
-    local names = lint._resolve_linter_by_ft(vim.bo.filetype)
-    names = vim.list_extend({}, names)
+    local names = vim.list_extend({}, lint.linters_by_ft[vim.bo.filetype] or {})
 
     -- Fallback linters
-    if #names == 0 then vim.list_extend(names, lint.linters_by_ft['_'] or {}) end
+    if #names == 0 then
+      vim.list_extend(names, lint.linters_by_ft['_'] or {})
+    end
 
     -- Global linters
     vim.list_extend(names, lint.linters_by_ft['*'] or {})
@@ -49,7 +50,9 @@ M.config = function(_, opts)
       return linter and not (type(linter) == 'table' and linter.condition and not linter.condition(ctx))
     end, names)
 
-    if #names > 0 then lint.try_lint(names) end
+    if #names > 0 then
+      lint.try_lint(names)
+    end
   end
 
   vim.api.nvim_create_autocmd(opts.events, {
@@ -66,6 +69,7 @@ M.opts = {
   linters_by_ft = {
     fish = { 'fish' },
     gitcommit = { 'commitlint' },
+    go = { 'golangci-lint' },
     ['*'] = { 'cspell' },
   },
   ---@type table<string, table>

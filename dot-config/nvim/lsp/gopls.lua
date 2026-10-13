@@ -2,7 +2,11 @@
 return {
   cmd = { 'gopls' },
   filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' },
+  init_options = {
+    semanticTokens = true,
+  },
   root_markers = { 'go.work', 'go.mod', '.git' },
+  workspace_required = true,
   settings = {
     gopls = {
       analyses = {
@@ -36,7 +40,6 @@ return {
         parameterNames = true,
         rangeVariableTypes = true,
       },
-      semanticTokens = true,
       staticcheck = true,
       usePlaceholders = true,
     },

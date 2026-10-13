@@ -3,8 +3,11 @@ local icons = require('core.icons')
 local M = { gh('saghen/blink.cmp') }
 
 M.dependencies = {
+  gh('brenoprata10/nvim-highlight-colors'),
   gh('fang2hou/blink-copilot'),
+  gh('folke/lazydev.nvim'),
   gh('Kaiser-Yang/blink-cmp-git'),
+  gh('MeanderingProgrammer/render-markdown.nvim'),
   gh('rafamadriz/friendly-snippets'),
   gh('saghen/blink.lib'),
   gh('xzbdmw/colorful-menu.nvim'),
@@ -93,6 +96,8 @@ M.opts = {
   },
   keymap = {
     preset = 'super-tab',
+    ['<Tab>'] = { 'select_and_accept', 'fallback' },
+    ['<CR>'] = { 'select_and_accept', 'fallback' },
     ['<C-y>'] = { 'select_and_accept' },
   },
   signature = {

@@ -1,4 +1,9 @@
-local M = { gh('mfussenegger/nvim-dap') }
+local M = {}
+
+M.name = 'dap_dart'
+M.ft = { 'dart' }
+
+M.dependencies = { gh('mfussenegger/nvim-dap') }
 
 M.config = function()
   local dap = require('dap')

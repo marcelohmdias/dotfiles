@@ -132,7 +132,17 @@ M.opts = function()
         },
       },
       lualine_x = {
-        -- Snacks profiler (already lazy, returns static component)
+        -- Neovim 0.12+ LSP progress status
+        {
+          function()
+            return vim.lsp.status()
+          end,
+          cond = function()
+            return vim.lsp.status() ~= ''
+          end,
+          color = muted,
+        },
+        -- Snacks profiler status (shows captured events when running)
         Snacks.profiler.status(),
         -- Noice recording/mode indicator
         -- stylua: ignore start

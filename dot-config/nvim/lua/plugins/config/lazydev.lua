@@ -10,7 +10,7 @@ M.opts = {
     { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
     { path = 'mini.icons', words = { 'MiniIcons' } },
     { path = 'mini.misc', words = { 'MiniMisc' } },
-    { path = 'mini.session', words = { 'MiniSessions' } },
+    { path = 'mini.sessions', words = { 'MiniSessions' } },
     { path = 'snacks.nvim', words = { 'Snacks' } },
   },
 }

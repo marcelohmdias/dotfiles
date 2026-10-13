@@ -9,10 +9,14 @@ local M = {}
 ---@param str string Version string (e.g. 'v1.2.3', '1.2', '1')
 ---@return { major: integer, minor: integer, patch: integer }?
 function M.parse(str)
-  if not str or str == '' then return nil end
+  if not str or str == '' then
+    return nil
+  end
   local s = str:match('^v?(.+)$') or str
   local major, minor, patch = s:match('^(%d+)%.?(%d*)%.?(%d*)')
-  if not major then return nil end
+  if not major then
+    return nil
+  end
   return {
     major = tonumber(major) or 0,
     minor = tonumber(minor) or 0,
@@ -25,9 +29,15 @@ end
 ---@param b { major: integer, minor: integer, patch: integer }
 ---@return integer -1, 0, or 1
 function M.compare(a, b)
-  if a.major ~= b.major then return a.major < b.major and -1 or 1 end
-  if a.minor ~= b.minor then return a.minor < b.minor and -1 or 1 end
-  if a.patch ~= b.patch then return a.patch < b.patch and -1 or 1 end
+  if a.major ~= b.major then
+    return a.major < b.major and -1 or 1
+  end
+  if a.minor ~= b.minor then
+    return a.minor < b.minor and -1 or 1
+  end
+  if a.patch ~= b.patch then
+    return a.patch < b.patch and -1 or 1
+  end
   return 0
 end
 
@@ -82,18 +92,24 @@ end
 ---@param range string Range expression
 ---@return boolean
 function M.satisfies(version, range)
-  if range == '*' then return true end
+  if range == '*' then
+    return true
+  end
 
   local op, rest = range:match('^([~^>=]+)(.+)$')
   if not op then
     -- Exact match (or bare version like '1.2')
     local target = M.parse(range)
-    if not target then return false end
+    if not target then
+      return false
+    end
     return M.compare(version, target) == 0
   end
 
   local base = M.parse(rest)
-  if not base then return false end
+  if not base then
+    return false
+  end
 
   if op == '^' then
     return M.gte(version, base) and M.lt(version, M._caret_upper(base))
@@ -144,7 +160,9 @@ end
 ---@param version string
 ---@return boolean
 function M.is_range(version)
-  if version == '*' then return true end
+  if version == '*' then
+    return true
+  end
   return version:match('^[~^>=]') ~= nil or version:match('^v?%d') ~= nil
 end
 

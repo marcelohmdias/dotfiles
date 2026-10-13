@@ -38,7 +38,9 @@ end
 
 function detectors.lsp(buf)
   local bufpath = M.root_bufpath(buf)
-  if not bufpath then return {} end
+  if not bufpath then
+    return {}
+  end
 
   local roots = {} ---@type string[]
   local clients = vim.lsp.get_clients({ bufnr = buf })
@@ -68,8 +70,12 @@ function detectors.pattern(buf, patterns)
   local path = M.root_bufpath(buf) or vim.uv.cwd()
   local match = vim.fs.find(function(name)
     for _, p in ipairs(patterns) do
-      if name == p then return true end
-      if p:sub(1, 1) == '*' and name:find(vim.pesc(p:sub(2)) .. '$') then return true end
+      if name == p then
+        return true
+      end
+      if p:sub(1, 1) == '*' and name:find(vim.pesc(p:sub(2)) .. '$') then
+        return true
+      end
     end
     return false
   end, { path = path, upward = true })[1]
@@ -80,7 +86,9 @@ end
 ---@param path? string
 ---@return string?
 function M.root_realpath(path)
-  if not path or path == '' then return nil end
+  if not path or path == '' then
+    return nil
+  end
   path = vim.uv.fs_realpath(path) or path
   return path:gsub('\\', '/')
 end
@@ -96,9 +104,15 @@ end
 ---@param spec MiniPackRootSpec
 ---@return MiniPackRootFn
 local function resolve(spec)
-  if detectors[spec] then return detectors[spec] end
-  if type(spec) == 'function' then return spec end
-  return function(buf) return detectors.pattern(buf, spec) end
+  if detectors[spec] then
+    return detectors[spec]
+  end
+  if type(spec) == 'function' then
+    return spec
+  end
+  return function(buf)
+    return detectors.pattern(buf, spec)
+  end
 end
 
 --- Detect root directories for buffer.
@@ -120,10 +134,14 @@ local function detect(opts)
         roots[#roots + 1] = pp
       end
     end
-    table.sort(roots, function(a, b) return #a > #b end)
+    table.sort(roots, function(a, b)
+      return #a > #b
+    end)
     if #roots > 0 then
       ret[#ret + 1] = { spec = spec, paths = roots }
-      if opts.all == false then break end
+      if opts.all == false then
+        break
+      end
     end
   end
   return ret
@@ -157,14 +175,16 @@ end
 function M.root_setup()
   vim.api.nvim_create_autocmd({ 'LspAttach', 'BufWritePost', 'DirChanged', 'BufEnter' }, {
     group = vim.api.nvim_create_augroup('MiniPack_root_cache', { clear = true }),
-    callback = function(event) root_cache[event.buf] = nil end,
+    callback = function(event)
+      root_cache[event.buf] = nil
+    end,
   })
 end
 
 -- Git conflict markers highlight -----------------------------------------------
 
 local conflict_ns = vim.api.nvim_create_namespace('git_conflict')
-local conflict_timer = vim.uv.new_timer()
+local conflict_timers = {} ---@type table<number, vim.uv_timer_t>
 
 local function conflict_get_hl()
   local C = require('catppuccin.palettes').get_palette()
@@ -207,12 +227,18 @@ end
 --- Skips bigfiles (snacks) and buffers without conflict markers.
 ---@param buf number
 function M.conflict_apply(buf)
-  if not vim.api.nvim_buf_is_valid(buf) then return end
-  if vim.b[buf].snacks_bigfile then return end
+  if not vim.api.nvim_buf_is_valid(buf) then
+    return
+  end
+  if vim.b[buf].snacks_bigfile then
+    return
+  end
 
   -- Skip large files (same threshold as snacks.bigfile: 1.5MB)
   local ok, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(buf))
-  if ok and stats and stats.size > 1.5 * 1024 * 1024 then return end
+  if ok and stats and stats.size > 1.5 * 1024 * 1024 then
+    return
+  end
 
   vim.api.nvim_buf_clear_namespace(buf, conflict_ns, 0, -1)
 
@@ -220,7 +246,9 @@ function M.conflict_apply(buf)
   local has_conflict = vim.api.nvim_buf_call(buf, function()
     return vim.fn.search('^<<<<<<<', 'nw') > 0
   end)
-  if not has_conflict then return end
+  if not has_conflict then
+    return
+  end
 
   local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
   local region = nil -- 'current' | 'ancestor' | 'incoming'
@@ -228,33 +256,84 @@ function M.conflict_apply(buf)
     local lnum = i - 1
     if line:match('^<<<<<<<') then
       region = 'current'
-      vim.api.nvim_buf_set_extmark(buf, conflict_ns, lnum, 0, { line_hl_group = 'GitConflictCurrentLabel', end_row = lnum + 1 })
+      vim.api.nvim_buf_set_extmark(
+        buf,
+        conflict_ns,
+        lnum,
+        0,
+        { line_hl_group = 'GitConflictCurrentLabel', end_row = lnum + 1 }
+      )
     elseif line:match('^||||||') then
       region = 'ancestor'
-      vim.api.nvim_buf_set_extmark(buf, conflict_ns, lnum, 0, { line_hl_group = 'GitConflictAncestorLabel', end_row = lnum + 1 })
+      vim.api.nvim_buf_set_extmark(
+        buf,
+        conflict_ns,
+        lnum,
+        0,
+        { line_hl_group = 'GitConflictAncestorLabel', end_row = lnum + 1 }
+      )
     elseif line:match('^=======') then
       region = 'incoming'
-      vim.api.nvim_buf_set_extmark(buf, conflict_ns, lnum, 0, { line_hl_group = 'GitConflictAncestorLabel', end_row = lnum + 1 })
+      vim.api.nvim_buf_set_extmark(
+        buf,
+        conflict_ns,
+        lnum,
+        0,
+        { line_hl_group = 'GitConflictAncestorLabel', end_row = lnum + 1 }
+      )
     elseif line:match('^>>>>>>>') then
-      vim.api.nvim_buf_set_extmark(buf, conflict_ns, lnum, 0, { line_hl_group = 'GitConflictIncomingLabel', end_row = lnum + 1 })
+      vim.api.nvim_buf_set_extmark(
+        buf,
+        conflict_ns,
+        lnum,
+        0,
+        { line_hl_group = 'GitConflictIncomingLabel', end_row = lnum + 1 }
+      )
       region = nil
     elseif region == 'current' then
-      vim.api.nvim_buf_set_extmark(buf, conflict_ns, lnum, 0, { line_hl_group = 'GitConflictCurrent', end_row = lnum + 1 })
+      vim.api.nvim_buf_set_extmark(
+        buf,
+        conflict_ns,
+        lnum,
+        0,
+        { line_hl_group = 'GitConflictCurrent', end_row = lnum + 1 }
+      )
     elseif region == 'ancestor' then
-      vim.api.nvim_buf_set_extmark(buf, conflict_ns, lnum, 0, { line_hl_group = 'GitConflictAncestor', end_row = lnum + 1 })
+      vim.api.nvim_buf_set_extmark(
+        buf,
+        conflict_ns,
+        lnum,
+        0,
+        { line_hl_group = 'GitConflictAncestor', end_row = lnum + 1 }
+      )
     elseif region == 'incoming' then
-      vim.api.nvim_buf_set_extmark(buf, conflict_ns, lnum, 0, { line_hl_group = 'GitConflictIncoming', end_row = lnum + 1 })
+      vim.api.nvim_buf_set_extmark(
+        buf,
+        conflict_ns,
+        lnum,
+        0,
+        { line_hl_group = 'GitConflictIncoming', end_row = lnum + 1 }
+      )
     end
   end
 end
 
 --- Debounced version of conflict_apply (200ms).
+--- Uses a per-buffer timer so edits in different buffers don't cancel each other.
 ---@param buf number
 function M.conflict_apply_debounced(buf)
-  conflict_timer:stop()
-  conflict_timer:start(200, 0, vim.schedule_wrap(function()
-    M.conflict_apply(buf)
-  end))
+  if not conflict_timers[buf] then
+    conflict_timers[buf] = vim.uv.new_timer()
+  end
+  local timer = conflict_timers[buf]
+  timer:stop()
+  timer:start(
+    200,
+    0,
+    vim.schedule_wrap(function()
+      M.conflict_apply(buf)
+    end)
+  )
 end
 
 return M

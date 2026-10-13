@@ -30,10 +30,18 @@ M.opts = function()
       { title = 'Neotest Output', ft = 'neotest-output-panel', size = { height = 15 } },
     },
     keys = {
-      ['<C-Right>'] = function(win) win:resize('width', 2) end,
-      ['<C-Left>'] = function(win) win:resize('width', -2) end,
-      ['<C-Up>'] = function(win) win:resize('height', 2) end,
-      ['<C-Down>'] = function(win) win:resize('height', -2) end,
+      ['<C-Right>'] = function(win)
+        win:resize('width', 2)
+      end,
+      ['<C-Left>'] = function(win)
+        win:resize('width', -2)
+      end,
+      ['<C-Up>'] = function(win)
+        win:resize('height', 2)
+      end,
+      ['<C-Down>'] = function(win)
+        win:resize('height', -2)
+      end,
     },
     left = {
       { title = 'Neotest Summary', ft = 'neotest-summary' },

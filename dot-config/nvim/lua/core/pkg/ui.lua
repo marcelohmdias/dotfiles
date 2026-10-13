@@ -1198,63 +1198,68 @@ local function update_plugins()
       local head_before = before_out.code == 0 and vim.trim(before_out.stdout or '') or ''
 
       vim.schedule(function()
-        local ok = true
+        local function after_update(ok)
+          vim.system({ 'git', '-C', path, 'rev-parse', 'HEAD' }, { text = true }, function(after_out)
+            vim.schedule(function()
+              local head_after = after_out.code == 0 and vim.trim(after_out.stdout or '') or ''
+              local changed = head_before ~= '' and head_before ~= head_after
+
+              if not changed and (not spec or not release_age.policy(spec).enabled) then
+                changed = git_fallback_update(path)
+              end
+
+              if changed then
+                updated_count = updated_count + 1
+              elseif not ok then
+                failed[#failed + 1] = name
+              end
+
+              if git_cache[name] then
+                git_cache[name].updating = false
+                git_cache[name].has_update = false
+                git_cache[name].pending_label = nil
+              end
+
+              local function continue_update()
+                on_main_loop(function()
+                  if update_progress then
+                    update_progress.current = update_progress.current + 1
+                  end
+                  M._render()
+                  update_next(i + 1)
+                end)
+              end
+
+              if spec then
+                vim.schedule(function()
+                  resolve_update_state(path, name, function(state)
+                    apply_update_state(name, state)
+                    continue_update()
+                  end)
+                end)
+              else
+                pending_updates[name] = false
+                continue_update()
+              end
+            end)
+          end)
+        end
+
         if spec then
           local policy = release_age.policy(spec)
           if policy.enabled and item.state.checkout then
-            vim.system({ 'git', '-C', path, 'fetch', '--quiet', '--tags' }, { text = true }):wait()
-            ok = release_age.checkout(path, item.state.checkout)
-          else
-            ok = pcall(vim.pack.update, { name }, { force = true })
+            vim.system({ 'git', '-C', path, 'fetch', '--quiet', '--tags' }, { text = true }, function(fetch_out)
+              vim.schedule(function()
+                local ok = fetch_out.code == 0 and release_age.checkout(path, item.state.checkout)
+                after_update(ok)
+              end)
+            end)
+            return
           end
-        else
-          ok = pcall(vim.pack.update, { name }, { force = true })
         end
 
-        vim.system({ 'git', '-C', path, 'rev-parse', 'HEAD' }, { text = true }, function(after_out)
-          vim.schedule(function()
-            local head_after = after_out.code == 0 and vim.trim(after_out.stdout or '') or ''
-            local changed = head_before ~= '' and head_before ~= head_after
-
-            if not changed and (not spec or not release_age.policy(spec).enabled) then
-              changed = git_fallback_update(path)
-            end
-
-            if changed then
-              updated_count = updated_count + 1
-            elseif not ok then
-              failed[#failed + 1] = name
-            end
-
-            if git_cache[name] then
-              git_cache[name].updating = false
-              git_cache[name].has_update = false
-              git_cache[name].pending_label = nil
-            end
-
-            local function continue_update()
-              on_main_loop(function()
-                if update_progress then
-                  update_progress.current = update_progress.current + 1
-                end
-                M._render()
-                update_next(i + 1)
-              end)
-            end
-
-            if spec then
-              vim.schedule(function()
-                resolve_update_state(path, name, function(state)
-                  apply_update_state(name, state)
-                  continue_update()
-                end)
-              end)
-            else
-              pending_updates[name] = false
-              continue_update()
-            end
-          end)
-        end)
+        local ok = pcall(vim.pack.update, { name }, { force = true })
+        after_update(ok)
       end)
     end)
   end

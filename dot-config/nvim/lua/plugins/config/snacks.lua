@@ -22,9 +22,13 @@ M.keys = {
     end
   end, desc = 'Notification History' },
   { '<leader>un', function() Snacks.notifier.hide() end, desc = 'Dismiss All Notifications' },
+  { '<leader>dpp', function() Snacks.profiler.toggle() end, desc = 'Toggle Profiler' },
+  { '<leader>dph', function() Snacks.profiler.toggle_highlights() end, desc = 'Toggle Profiler Highlights' },
   { '<leader>dps', function() Snacks.profiler.scratch() end, desc = 'Profiler Scratch Buffer' },
 }
 
+-- Must load eagerly: merged snacks specs (dashboard, picker, etc.) rely on
+-- config being applied during startup.
 M.lazy = false
 
 ---@module 'snacks'
@@ -32,6 +36,7 @@ M.lazy = false
 M.opts = {
   bigfile = { enabled = true },
   input = { enabled = true },
+  profiler = { enabled = true },
   notifier = { enabled = true },
   quickfile = { enabled = true },
   scope = { enabled = true },
@@ -50,5 +55,15 @@ M.opts = {
   },
   words = { enabled = true },
 }
+
+M.config = function(_, opts)
+  require('snacks').setup(opts)
+  if Snacks.input then
+    vim.ui.input = Snacks.input.input
+  end
+  if Snacks.picker then
+    vim.ui.select = Snacks.picker.select
+  end
+end
 
 return M

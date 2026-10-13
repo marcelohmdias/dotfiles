@@ -9,6 +9,7 @@ end
 ---@type table
 M.opts = {
   grace_period = 60 * 10,
+  notifications = true,
 }
 
 return M

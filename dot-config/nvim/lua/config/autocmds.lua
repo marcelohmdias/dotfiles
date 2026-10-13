@@ -1,6 +1,22 @@
 -- Editor autocmds (no plugin autocmds — those live in spec config)
 -- Based on LazyVim autocmds, using global autocmd() helper
 
+-- Filetypes used by LSP configs but not known by the Neovim runtime.
+vim.filetype.add({
+  extension = {
+    mdx = 'markdown.mdx',
+    pcss = 'postcss',
+    postcss = 'postcss',
+    tmpl = 'gotmpl',
+  },
+  pattern = {
+    ['[Dd]ocker%-compose%.yaml'] = { 'yaml.docker-compose', { priority = 100 } },
+    ['[Dd]ocker%-compose%.yml'] = { 'yaml.docker-compose', { priority = 100 } },
+    ['[Cc]ompose%.yaml'] = { 'yaml.docker-compose', { priority = 100 } },
+    ['[Cc]ompose%.yml'] = { 'yaml.docker-compose', { priority = 100 } },
+  },
+})
+
 -- Check if we need to reload the file when it changed
 autocmd({ 'FocusGained', 'TermClose', 'TermLeave' }, {
   callback = function()
@@ -123,7 +139,7 @@ autocmd('BufReadPre', {
     if not ok or not stat or stat.size <= size_limit then
       return
     end
-    vim.b[event.buf].bigfile = true
+    vim.b[event.buf].snacks_bigfile = true
     vim.opt_local.foldmethod = 'manual'
     vim.opt_local.spell = false
     vim.opt_local.swapfile = false

@@ -9,13 +9,13 @@ g.maplocalleader = '\\'
 g.transparency_enabled = true
 
 -- AI
-g.claudecode_enabled = true
+g.claudecode_enabled = false
 g.copilot_enabled = true
 g.opencode_enabled = true
 
 -- LSP
 g.docker_enabled = true
-g.tsgo_enabled = true
+g.tsc_enabled = true
 
 -- Markdown
 g.markdown_recommended_style = 0
@@ -37,11 +37,15 @@ local disabled_builtins = {
   'matchit',
   'matchparen',
   'netrwPlugin',
+  'sql_completion',
   'tarPlugin',
   'tohtml',
   'tutor',
   'zipPlugin',
 }
+
+-- Disable SQL omnicompletion defaults to avoid conflict with blink.cmp
+g.omni_sql_no_default_maps = 1
 
 for _, plugin in ipairs(disabled_builtins) do
   vim.g['loaded_' .. plugin] = 1

@@ -191,43 +191,6 @@ local function resolve_branch_ref(path)
 end
 
 ---@param path string
----@return string?
-local function resolve_default_branch(src)
-  local result = git({ 'ls-remote', '--symref', src, 'HEAD' })
-  if result.code ~= 0 then
-    return nil
-  end
-  local branch = result.stdout:match('ref:%s+refs/heads/([^%s]+)%s+HEAD')
-  return branch
-end
-
----@param src string
----@param branch string
----@return string?
-local function prepare_remote_repo(src, branch)
-  local tmp = vim.fn.tempname()
-  vim.fn.mkdir(tmp, 'p')
-
-  if git({ 'init' }, tmp).code ~= 0 then
-    vim.fn.delete(tmp, 'rf')
-    return nil
-  end
-  if git({ 'remote', 'add', 'origin', src }, tmp).code ~= 0 then
-    vim.fn.delete(tmp, 'rf')
-    return nil
-  end
-  local fetch = git(
-    { 'fetch', '--quiet', '--force', '--tags', 'origin', 'refs/heads/' .. branch .. ':refs/remotes/origin/' .. branch },
-    tmp
-  )
-  if fetch.code ~= 0 then
-    vim.fn.delete(tmp, 'rf')
-    return nil
-  end
-  return tmp
-end
-
----@param path string
 ---@return table<string, { name: string, timestamp: integer, hash: string }>
 local function tag_metadata(path)
   local result = git({ 'for-each-ref', '--format=%(refname:strip=2)|||%(creatordate:unix)', 'refs/tags' }, path)
@@ -457,40 +420,11 @@ function M.resolve_local(path, spec, policy, now)
   }
 end
 
----@param spec table
----@param policy { enabled: boolean, seconds: integer, label: string, downgrade: boolean }
----@param now? integer
----@return { enabled: boolean, actionable: boolean, checkout: string?, pending: boolean, pending_label: string?, policy_label: string?, latest_hash: string?, latest_ref: string?, error: string?, current_hash: string? }
-function M.resolve_remote(spec, policy, now)
-  if not policy.enabled or not spec.src then
-    return { enabled = false, actionable = false, pending = false }
-  end
-
-  local branch = spec.version and 'HEAD' or resolve_default_branch(spec.src)
-  if not branch then
-    return { enabled = true, actionable = false, pending = false, error = 'Failed to resolve remote default branch' }
-  end
-
-  local repo = prepare_remote_repo(spec.src, branch)
-  if not repo then
-    return { enabled = true, actionable = false, pending = false, error = 'Failed to fetch remote metadata' }
-  end
-
-  local result = M.resolve_local(repo, spec, policy, now)
-  vim.fn.delete(repo, 'rf')
-  return result
-end
-
 ---@param path string
 ---@param target string
 ---@return boolean
 function M.checkout(path, target)
   return git({ 'checkout', '--quiet', target }, path).code == 0
-end
-
----@return string
-function M.pending_message()
-  return 'relax minimum_release_age or retry later'
 end
 
 return M

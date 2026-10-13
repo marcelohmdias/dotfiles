@@ -29,7 +29,7 @@ M.keys = {
   { '<leader>gp', cmd('Octo pr list'), desc = 'List PRs (Octo)' },
   { '<leader>gP', cmd('Octo pr search'), desc = 'Search PRs (Octo)' },
   { '<leader>gr', cmd('Octo repo list'), desc = 'List Repos (Octo)' },
-  { '<leader>gS', cmd('Octo search'), desc = 'Search (Octo)' },
+  { '<leader>gO', cmd('Octo search'), desc = 'Search (Octo)' },
   { '<localleader>a', '', desc = '+assignee (Octo)', ft = 'octo' },
   { '<localleader>c', '', desc = '+comment/code (Octo)', ft = 'octo' },
   { '<localleader>l', '', desc = '+label (Octo)', ft = 'octo' },

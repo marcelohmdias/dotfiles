@@ -1,19 +1,19 @@
 ---@type vim.lsp.Config
 return {
   cmd = { 'vscode-json-language-server', '--stdio' },
-  filetypes = { 'json', 'jsonc' },
+  filetypes = { 'json', 'jsonc', 'json5' },
   init_options = { provideFormatter = true },
   root_markers = { '.git' },
-  on_init = function(client)
+  before_init = function(_, config)
+    pcall(vim.cmd.packadd, 'schemastore')
     local ok, schemastore = pcall(require, 'schemastore')
-    if not ok then return end
+    if not ok then
+      return
+    end
 
-    client.settings = vim.tbl_deep_extend('force', client.settings or {}, {
-      json = {
-        schemas = schemastore.json.schemas(),
-        validate = { enable = true },
-      },
-    })
-    client:notify('workspace/didChangeConfiguration', { settings = client.settings })
+    config.settings = config.settings or {}
+    config.settings.json = config.settings.json or {}
+    config.settings.json.schemas = schemastore.json.schemas()
+    config.settings.json.validate = { enable = true }
   end,
 }

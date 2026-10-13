@@ -9,7 +9,7 @@ M.config = function(_, opts)
       vim.list_extend(group, opts.groups.default)
     end
   end
-  require("dial.config").augends:register_group(opts.groups)
+  require('dial.config').augends:register_group(opts.groups)
   vim.g.dials_by_ft = opts.dials_by_ft
 end
 
@@ -27,7 +27,7 @@ M.opts = function()
   local logical_alias = augend.constant.new({
     elements = { '&&', '||' },
     word = false,
-    cyclic = true
+    cyclic = true,
   })
 
   local ordinal_numbers = augend.constant.new({
@@ -38,8 +38,18 @@ M.opts = function()
 
   local months = augend.constant.new({
     elements = {
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December',
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
     },
     word = true,
     cyclic = true,

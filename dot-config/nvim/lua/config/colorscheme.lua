@@ -10,17 +10,17 @@ require('catppuccin').setup({
   },
   highlight_overrides = {
     all = function()
-      local C = require("catppuccin.palettes").get_palette()
+      local C = require('catppuccin.palettes').get_palette()
       local is_transparent = vim.g.transparency_enabled
       return {
-        BlinkCmpMenu = is_transparent and { link = "NormalFloat" } or {},
-        BlinkCmpMenuBorder = is_transparent and { link = "FloatBorder" } or {},
+        BlinkCmpMenu = is_transparent and { link = 'NormalFloat' } or {},
+        BlinkCmpMenuBorder = is_transparent and { link = 'FloatBorder' } or {},
         BlinkCmpMenuSelection = { bg = C.blue, fg = C.base },
 
         CodewindowBorder = { fg = C.surface1 },
         CodewindowUnderline = { sp = C.overlay0, underline = true },
 
-        SnacksBackdrop = is_transparent and { link = "NormalFloat" } or {},
+        SnacksBackdrop = is_transparent and { link = 'NormalFloat' } or {},
         SnacksDashboardIcon = { fg = C.lavender, bold = true },
       }
     end,

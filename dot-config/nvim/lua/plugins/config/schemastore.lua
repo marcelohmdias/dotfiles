@@ -1,5 +1,5 @@
 local M = { gh('b0o/SchemaStore.nvim') }
 
-M.lazy = true
+M.event = 'LazyFile'
 
 return M

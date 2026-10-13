@@ -4,9 +4,9 @@ M.cmd = 'CodeDiff'
 
 -- stylua: ignore
 M.keys = {
-  { '<leader>gd', cmd('CodeDiff'),            desc = 'Diff Explorer' },
-  { '<leader>gf', cmd('CodeDiff file HEAD'),  desc = 'Diff File (HEAD)' },
-  { '<leader>gF', cmd('CodeDiff history'),    desc = 'File History' },
+  { '<leader>gD', cmd('CodeDiff'),           desc = 'Diff Explorer' },
+  { '<leader>gH', cmd('CodeDiff file HEAD'), desc = 'Diff File (HEAD)' },
+  { '<leader>gF', cmd('CodeDiff history'),   desc = 'File History' },
 }
 
 ---@module 'codediff'
