@@ -1,5 +1,14 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "autoupdate": "notify",
+  "instructions": [
+    "~/.config/opencode/rules/*.md"
+  ],
+  "plugin": [
+    "@franlol/opencode-md-table-formatter",
+    "@mohak34/opencode-notifier",
+    "context-mode"
+  ],
   "mcp": {
     "browsermcp": {
       "type": "local",
@@ -10,6 +19,15 @@
       ],
       "enabled": false
     },
+    "codegraph": {
+      "type": "local",
+      "command": [
+        "codegraph",
+        "serve",
+        "--mcp"
+      ],
+      "enabled": true
+    },
     "context7": {
       "type": "remote",
       "url": "https://mcp.context7.com/mcp",
@@ -18,23 +36,16 @@
       },
       "enabled": true
     },
-    "context-mode": {
-      "type": "local",
-      "command": [
-        "context-mode"
-      ],
-      "enabled": true
-    },
     "figma": {
       "type": "remote",
       "url": "https://mcp.figma.com/mcp",
-      "enabled": true
+      "enabled": false
     },
     "github": {
       "type": "remote",
       "url": "https://api.githubcopilot.com/mcp/",
       "headers": {
-        "Authorization": "Bearer ${env:GITHUB_MCP_API_KEY}"
+        "Authorization": "Bearer {env:GITHUB_MCP_API_KEY}"
       },
       "enabled": false
     },
@@ -47,5 +58,6 @@
       ],
       "enabled": false
     }
-  }
+  },
+  "shell": "fish"
 }

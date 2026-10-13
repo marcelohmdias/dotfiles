@@ -6,5 +6,5 @@
     "sidebar_toggle": "<leader>b",
     "status_view": "<leader>s"
   },
-	"theme": "catppuccin-frappe"
+	"theme": "catppuccin-frappe-blue"
 }
