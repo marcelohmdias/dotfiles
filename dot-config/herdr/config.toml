@@ -58,7 +58,7 @@ command = "gh dash"
 description = "gh dash"
 
 [[keys.command]]
-key = "prefix+shift+l"
+key = "prefix+shift+f"
 type = "pane"
 command = "lfk"
 description = "lfk"

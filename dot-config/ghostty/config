@@ -217,7 +217,7 @@ keybind = ctrl+alt+g=text:\x01\x67
 keybind = ctrl+alt+shift+g=text:\x01\x47
 
 # Open lfk
-keybind = ctrl+alt+shift+l=text:\x01\x4C
+keybind = ctrl+alt+shift+f=text:\x01\x46
 
 # Open sesh
 keybind = ctrl+alt+k=text:\x01\x6B
