@@ -5,10 +5,75 @@ kitty_graphics = true
 pane_history = true
 
 [keys]
+prefix = "ctrl+a"
 focus_pane_left = "ctrl+h"
 focus_pane_down = "ctrl+j"
 focus_pane_up = "ctrl+k"
 focus_pane_right = "ctrl+l"
+new_tab = "prefix+n"
+new_workspace = "prefix+shift+n"
+next_tab = "prefix+alt+l"
+next_workspace = "prefix+)"
+previous_tab = "prefix+alt+h"
+previous_workspace = "prefix+("
+reload_config = "prefix+r"
+resize_pane_down = "prefix+shift+j"
+resize_pane_left = "prefix+shift+h"
+resize_pane_right = "prefix+shift+l"
+resize_pane_up = "prefix+shift+k"
+split_horizontal = "prefix+minus"
+split_vertical = "prefix+\\"
+swap_pane_right = "prefix+}"
+swap_pane_left = "prefix+{"
+toggle_sidebar = "prefix+/"
+
+[[keys.command]]
+key = "prefix+b"
+type = "pane"
+command = "btop"
+description = "btop"
+
+[[keys.command]]
+key = "prefix+shift+b"
+type = "pane"
+command = "btm"
+description = "bottom"
+
+[[keys.command]]
+key = "prefix+shift+d"
+type = "pane"
+command = "lazydocker"
+description = "lazydocker"
+
+[[keys.command]]
+key = "prefix+g"
+type = "pane"
+command = "lazygit"
+description = "Lazygit"
+
+[[keys.command]]
+key = "prefix+shift+g"
+type = "pane"
+command = "gh dash"
+description = "gh dash"
+
+[[keys.command]]
+key = "prefix+shift+l"
+type = "pane"
+command = "lfk"
+description = "lfk"
+
+[[keys.command]]
+key = "prefix+t"
+type = "pane"
+command = "tig"
+description = "tig"
+
+[[keys.command]]
+key = "prefix+y"
+type = "pane"
+command = "yazi"
+description = "yazi"
 
 [theme]
 name = "catppuccin"
@@ -16,6 +81,7 @@ auto_switch = false
 
 [theme.custom]
 accent = "#8caaee"
+active_row_bg= "#292c3c"
 panel_bg = "#292c3c"
 surface0 = "#414559"
 surface1 = "#51576d"
@@ -35,14 +101,22 @@ peach = "#ef9f76"
 [ui]
 accent = "#8caaee"
 confirm_close = true
-hide_tab_bar_when_single_tab = true
+hide_tab_bar_when_single_tab = false
 pane_borders = true
 pane_gaps = true
+prompt_new_tab_name = false
 show_agent_labels_on_pane_borders = false
 sidebar_collapsed_mode = "hidden"
 sidebar_max_width = 60
 sidebar_min_width = 30
 sidebar_width = 40
+tab_bar_position = "bottom"
+tab_bar_right = [
+  { type = "command", command = "~/.config/herdr/scripts/git-status.sh", interval_seconds = 5, timeout_seconds = 1 },
+  { type = "datetime", format = "󰸗  %a, %b %d, %Y" },
+  { type = "datetime", format = "󰅐 %H:%M" }
+]
+tab_bar_right_separator = " · "
 
 [ui.sidebar.agents]
 row_gap = 1

@@ -42,7 +42,7 @@ font-size = 11
 
 adjust-underline-position = 4
 background-blur = true
-background-opacity = 0.85
+background-opacity = 0.95
 link-url = true
 mouse-hide-while-typing = true
 
@@ -142,12 +142,21 @@ keybind = ctrl+/>p=toggle_command_palette
 # --------------- Tmux Keybinds --------------- #
 # --------------------------------------------- #
 
-# Manage plugins
+# Tmux Manage plugins
 keybind = ctrl+alt+shift+i=text:\x01\x49
 keybind = ctrl+alt+shift+u=text:\x01\x55
 
+# Herdr keybinding help
+keybind = ctrl+alt+shift+/=text:\x01\x3f
+
+# Herdr Toggle sidebar collapse
+keybind = ctrl+alt+/=text:\x01\x2f
+
 # New pane
 keybind = ctrl+alt+n=text:\x01\x6E
+
+# New workspace
+keybind = ctrl+alt+shift+n=text:\x01\x4E
 
 # Kill window or panel
 keybind = ctrl+alt+x=text:\x01\x78
@@ -192,17 +201,11 @@ keybind = ctrl+alt+p=text:\x01\x70
 # Tmux URL search
 keybind = ctrl+alt+u=text:\x01\x75
 
-# Open ai tools
-keybind = ctrl+alt+a=text:\x01\x61
-
 # Open btop
 keybind = ctrl+alt+b=text:\x01\x62
 
 # Open btm
 keybind = ctrl+alt+shift+b=text:\x01\x42
-
-# Open dooit
-keybind = ctrl+alt+shift+d=text:\x01\x44
 
 # Open lazydocker
 keybind = ctrl+alt+d=text:\x01\x64
@@ -212,6 +215,9 @@ keybind = ctrl+alt+g=text:\x01\x67
 
 # Open gh dash
 keybind = ctrl+alt+shift+g=text:\x01\x47
+
+# Open lfk
+keybind = ctrl+alt+shift+l=text:\x01\x4C
 
 # Open sesh
 keybind = ctrl+alt+k=text:\x01\x6B
